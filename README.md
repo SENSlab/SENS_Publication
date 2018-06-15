@@ -13,19 +13,20 @@ You can register publication data from the link below.
 
 # Directory Structure
 ```
-index.html  
-app/
-    |- Code.gs     # サーバーサイドの処理 / Server side processing
-assets/
-    |- js/         # クライアントサイドの処理 / Cleint side processing
-    |- css/        # 個人設定したcss / My custom css
-vendor/            # 外部ライブラリ / External library
-    |- MDL/  
-    |- GETMDL-SELECT/
-    |- jQuery
-    |- FontAwesome
-    |- CryptoJS
-    |- CryptoGS
+sens publication register/
+    |- index.html  
+    |- app/
+        |- Code.gs     # サーバーサイドの処理 / Server side processing
+    |- assets/
+        |- js/         # クライアントサイドの処理 / Cleint side processing
+        |- css/        # 個人設定したcss / My custom css
+    |- vendor/            # 外部ライブラリ / External library
+        |- MDL/  
+        |- GETMDL-SELECT/
+        |- jQuery
+        |- FontAwesome
+        |- CryptoJS
+        |- CryptoGS
 ```
 
 # For Developers
