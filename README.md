@@ -20,13 +20,13 @@ sens publication register/
     |- assets/
         |- js/         # クライアントサイドの処理 / Cleint side processing
         |- css/        # 個人設定したcss / My custom css
-    |- vendor/            # 外部ライブラリ / External library
+    |- vendor/         # 外部ライブラリ / External library
         |- MDL/  
         |- GETMDL-SELECT/
-        |- jQuery
-        |- FontAwesome
-        |- CryptoJS
-        |- CryptoGS
+        |- jQuery/
+        |- FontAwesome/
+        |- CryptoJS/
+        |- CryptoGS/
 ```
 
 # For Developers
