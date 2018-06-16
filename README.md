@@ -13,7 +13,7 @@ You can register publication data from the link below.
 
 # Directory Structure
 ```
-sens publication register/
+sens_publication_register/
     |- index.html  
     |- app/
         |- Code.gs     # サーバーサイドの処理 / Server side processing
