@@ -1,4 +1,4 @@
-Since 2018 © SENS Laboratory (Osaka University) [redesign by moji and naruki]. All Rights Reserved.// exec（公開版）
+// exec（公開版）
 //  https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbx83bRrCsXBxZspYmc8H4hlQb4uXStNlL8RuuSmR_0yZKsPh9Ak/exec
 // dev（開発版）
 //  https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbxu4V8cwYDQLCEUBU28eTvsra5ecYl8qIBwd4lhNlHT/dev
@@ -11,32 +11,40 @@ var ENCRYPTED_PRESS_FOLDER_ID = 'U2FsdGVkX19KDub0XK+lrX9JEn/FCm9y/+KzLJScxucdP4m
 var ENCRYPTED_BOOK_FOLDER_ID = 'U2FsdGVkX18P4qhTjfvPYeVI7Mj10FXhvPxD5Z4taGvH6ZirrEMk4uhBXB9CDvkcnfeaUaMcVtfzhTrvQfoylA==';
 var ENCRYPTED_UNKNOWN_FOLDER_ID = 'U2FsdGVkX19iP/Fr+Bif81/QA9w0PTE2MNX34Qxvr8PRE4RQneaiAkT8GEmjz75mqqbvEKVcBG6rJEr9+4OU+Q==';
 
+/**
+ * HTTPのGETに対して応答する
+ *     詳しくは公式ドキュメント参照
+ *     https://developers.google.com/apps-script/guides/web
+ * @return {HtmlOutput Object} 表示するhtmlオブジェクト
+ */
 function doGet() {
   var template = HtmlService.createTemplateFromFile('index.html');
   return template.evaluate().setTitle('sens');
 }
 
 
+
+/**
+ * index.htmlから外部htmlを読み込む
+ * @param  {String} filename includeしたいhtmlファイルのファイル名
+ * @return {String}          指定したファイルからHtmlOutputオブジェクトを作成し，
+ *     そのHtmlOutputオブジェクトのコンテンツを文字列として返す
+ */
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
 
-function processFormAward() {
-  return 'Success';
-}
 
-
+/**
+ * 文字列の暗号化・復号化のためのクラス
+ * @param       {String} pass 暗号化・復号化のためのパスワード
+ * @constructor
+ */
 function Cipher (pass) {
-
   var self = this;
-  // we'll allow case errors for algos.
   var pass_ = pass;
   var algo_ = 'AES';
-
-  if (!algo_) {
-    throw 'unknown crypto algo ' + optAlgo;
-  }
 
   if (!pass_) {
     throw 'you must provide a passphrase';
@@ -46,18 +54,18 @@ function Cipher (pass) {
     return algo_;
   };
   /**
-   * encrypt a message
-   * @param {string} message the message to be encrypted
-   * @return {string} the encrypted message
+   * messageを暗号化する
+   * @param {string} message 暗号化する文字列
+   * @return {string} 暗号化された結果の文字列
    */
   self.encrypt = function  (message) {
     return CryptoJS[algo_].encrypt(message, pass_).toString();
   };
 
   /**
-   * decrypt a message
-   * @param {string} message the encrypted message to be decrypted
-   * @return {string} the decrypted message
+   * messageを復号化する
+   * @param {string} message 復号化する文字列
+   * @return {string} 復号化された結果の文字列
    */
   self.decrypt = function  (encryptedMessage) {
     return CryptoJS[algo_].decrypt(encryptedMessage, pass_).toString(CryptoJS.enc.Utf8);
@@ -66,6 +74,28 @@ function Cipher (pass) {
   return self;
 }
 
+
+
+/**
+ * main_js.html内のhandleFormSubmit関数内の
+ *     各カテゴリーに応じた処理を統一するために
+ *     作成しただけの形式的な関数
+ * @return {String} 形式的なので何を返してもOK
+ */
+function processFormAward() {
+  return 'Success';
+}
+
+
+
+/**
+ * index.html内で添付したファイルをGoogle Driveの
+ *     Journalフォルダに保存し，保存したファイルの
+ *     urlを返す
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @return {String}            保存したファイルのURLを返す
+ *     ファイルが存在しない場合はnullを返す
+ */
 function processFormJournal(formObject) {
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_JOURNAL_FOLDER_ID));
@@ -76,6 +106,16 @@ function processFormJournal(formObject) {
   return file_url;
 }
 
+
+
+/**
+ * index.html内で添付したファイルをGoogle Driveの
+ *     International Conferenceフォルダに保存し，保存したファイルの
+ *     urlを返す
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @return {String}            保存したファイルのURLを返す
+ *     ファイルが存在しない場合はnullを返す
+ */
 function processFormInternationalConference(formObject) {
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_INTERNATIONAL_CONFERENCE_FOLDER_ID));
@@ -86,6 +126,16 @@ function processFormInternationalConference(formObject) {
   return file_url;
 }
 
+
+
+/**
+ * index.html内で添付したファイルをGoogle Driveの
+ *     Domestic Conferenceフォルダに保存し，保存したファイルの
+ *     urlを返す
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @return {String}            保存したファイルのURLを返す
+ *     ファイルが存在しない場合はnullを返す
+ */
 function processFormDomesticConference(formObject) {
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_DOMESTIC_CONFERENCE_FOLDER_ID));
@@ -96,6 +146,16 @@ function processFormDomesticConference(formObject) {
   return file_url;
 }
 
+
+
+/**
+ * index.html内で添付したファイルをGoogle Driveの
+ *     Surveyフォルダに保存し，保存したファイルの
+ *     urlを返す
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @return {String}            保存したファイルのURLを返す
+ *     ファイルが存在しない場合はnullを返す
+ */
 function processFormSurvey(formObject) {
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_SURVEY_FOLDER_ID));
@@ -106,6 +166,16 @@ function processFormSurvey(formObject) {
   return file_url;
 }
 
+
+
+/**
+ * index.html内で添付したファイルをGoogle Driveの
+ *     Pressフォルダに保存し，保存したファイルの
+ *     urlを返す
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @return {String}            保存したファイルのURLを返す
+ *     ファイルが存在しない場合はnullを返す
+ */
 function processFormPress(formObject) {
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_PRESS_FOLDER_ID));
@@ -116,6 +186,16 @@ function processFormPress(formObject) {
   return file_url;
 }
 
+
+
+/**
+ * index.html内で添付したファイルをGoogle Driveの
+ *     Bookフォルダに保存し，保存したファイルの
+ *     urlを返す
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @return {String}            保存したファイルのURLを返す
+ *     ファイルが存在しない場合はnullを返す
+ */
 function processFormBook(formObject) {
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_BOOK_FOLDER_ID));
@@ -126,6 +206,16 @@ function processFormBook(formObject) {
   return file_url;
 }
 
+
+
+/**
+ * index.html内で添付したファイルをGoogle Driveの
+ *     Unknownフォルダに保存し，保存したファイルの
+ *     urlを返す
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @return {String}            保存したファイルのURLを返す
+ *     ファイルが存在しない場合はnullを返す
+ */
 function processFormUnknown(formObject) {
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_UNKNOWN_FOLDER_ID));
@@ -136,6 +226,15 @@ function processFormUnknown(formObject) {
   return file_url;
 }
 
+
+
+/**
+ * Award情報をSpread Sheetに出力する
+ * @param {String} SPREADSHEET_ID 出力先のSpread SheetのID
+ * @param {String} year           受賞年
+ * @param {String} award          賞
+ * @param {String} detail         受賞内容
+ */
 function setAwardInSpreadSheet(SPREADSHEET_ID, year, award, detail){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = spreadSheet.getSheetByName('Award');
@@ -193,7 +292,6 @@ function setAwardInSpreadSheet(SPREADSHEET_ID, year, award, detail){
     sheet.getRange(i + 2, 1, 2, 3).setValues([[year, '', ''],['', award, detail]]);
   }
   else if(!isNewYear && !isOldYear){
-    Logger.log('hoge');
     sheet.insertRowAfter(i + 1);
     sheet.getRange(i + 2, 2, 1, 2).setValues([[award, detail]]);
   }
@@ -202,13 +300,14 @@ function setAwardInSpreadSheet(SPREADSHEET_ID, year, award, detail){
 
 
 
-function isEndOfYear(values, year, i){
-  if(values[i+1] === undefined || values[i+1][0] !== ''){
-    return true;
-  }
-  return false;
-}
-
+/**
+ * Award以外の，あるカテゴリーの情報をSpread Sheetに出力する
+ * @param {String} SPREADSHEET_ID 出力先のSpread SheetのID
+ * @param {String} year           イベントのあった年
+ * @param {String} detail         詳細
+ * @param {String} url            添付ファイルの保存先url
+ * @param {String} category       イベントのカテゴリー（Award以外）
+ */
 function setPublicationWithFileInSpreadSheet(SPREADSHEET_ID, year, detail, url, category){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = '';
@@ -303,4 +402,22 @@ function setPublicationWithFileInSpreadSheet(SPREADSHEET_ID, year, detail, url, 
     sheet.getRange(i + 2, 3, 1, 1).setFormula(hyperlink);
   }
 
+}
+
+
+
+/**
+ * Spread Sheet内において，現在の行が出力したい年の
+ *     最終行かどうかを判定する
+ * @param  {Object[][]}  values SpreadSheetから取得した，ある範囲内のセル内の値を
+ *     2次元配列データとして格納したもの
+ * @param  {String}  year   index.html内で選択された年
+ * @param  {Number}  i      Spread Sheetにおける行インデックス
+ * @return {Boolean}        true: i行目が最終行  false: i行目が最終行ではない
+ */
+function isEndOfYear(values, year, i){
+  if(values[i+1] === undefined || values[i+1][0] !== ''){
+    return true;
+  }
+  return false;
 }
