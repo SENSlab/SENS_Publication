@@ -307,8 +307,9 @@ function setAwardInSpreadSheet(SPREADSHEET_ID, year, award, detail){
  * @param {String} detail         詳細
  * @param {String} url            添付ファイルの保存先url
  * @param {String} category       イベントのカテゴリー（Award以外）
+ * @param {String} fileName       ファイル名
  */
-function setPublicationWithFileInSpreadSheet(SPREADSHEET_ID, year, detail, url, category){
+function setPublicationWithFileInSpreadSheet(SPREADSHEET_ID, year, detail, url, category, fileName){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = '';
   switch(category){
@@ -383,21 +384,21 @@ function setPublicationWithFileInSpreadSheet(SPREADSHEET_ID, year, detail, url, 
     sheet.insertRows(i + 1, 2);
     sheet.getRange(i + 1, 1, 2, 2).setValues([[year, ''],['', detail]]);
 
-    var text = "View";
+    var text = fileName;
     var hyperlink = '=Hyperlink("' + url + text + '","' + text + '")';
     sheet.getRange(i + 2, 3, 1, 1).setFormula(hyperlink);
   }
   else if(isOldYear){
     sheet.insertRows(i + 2, 2);
     sheet.getRange(i + 2, 1, 2, 2).setValues([[year, ''],['', detail]]);
-    var text = "View";
+    var text = fileName;
     var hyperlink = '=Hyperlink("' + url + text + '","' + text + '")';
     sheet.getRange(i + 3, 3, 1, 1).setFormula(hyperlink);
   }
   else if(!isNewYear && !isOldYear){
     sheet.insertRowAfter(i + 1);
     sheet.getRange(i + 2, 2, 1, 1).setValues([[detail]]);
-    var text = "View";
+    var text = fileName;
     var hyperlink = '=Hyperlink("' + url + text + '","' + text + '")';
     sheet.getRange(i + 2, 3, 1, 1).setFormula(hyperlink);
   }

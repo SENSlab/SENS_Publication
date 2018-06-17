@@ -90,12 +90,14 @@ addYearOptions().then(function(){
 // 表示する
 // -------------------------------
 /*******************************************/
+var fileName;
 $('#upload_btn')[0].onchange = function () {
     $('#uploadFile').parent().addClass('is-focused');
     $('#uploadFile').parent().removeClass('is-invalid');
 
     if(isValidFileName(this.files[0].name)){
         $('#uploadFile')[0].value = this.files[0].name;
+        fileName = this.files[0].name;
     }
 
     else if(!isValidFileName(this.files[0].name)){
@@ -237,7 +239,7 @@ function sendData(url) {
     }
 
     else if(category !== 'award'){
-        google.script.run.setPublicationWithFileInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, url, category);
+        google.script.run.setPublicationWithFileInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, url, category, fileName);
     }
 
     $('#result').empty();
