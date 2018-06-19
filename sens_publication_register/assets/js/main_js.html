@@ -84,6 +84,8 @@ addYearOptions().then(function(){
 /*******************************************/
 
 
+
+
 // -------------------------------
 // 添付ファイルアップロードボタンを
 // 押した際，ファイル名を
@@ -114,6 +116,7 @@ var file_form = $('#file_form')[0];
 
 $("#submit_btn")[0].addEventListener('click', function() { ;
     if(isRequiredComplete()){
+        $('html, main').scrollTop( $(document).height() );
         $('#submit_btn').attr('disabled', true);
         $('#result').empty();
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--green-900\">送信中．．． / Now sending...</div>');
