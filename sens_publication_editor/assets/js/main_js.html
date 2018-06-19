@@ -1,0 +1,422 @@
+<script>
+// "sens publication for homepage"
+const ENCRYPTED_SPREADSHEET_HP_ID = 'ddc70788a0e35a8833805b99a19f141b,3a70d873d07b0dad959085fec8f02403,MTxY3vz8Kz0q/cj36EpLxKTAQyiXeFyJx3Y1oSew9Sg34ShKVzmGw1GHigZdef3n';
+var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
+
+// "sens publication for homepage (edit/delete)"
+const ENCRYPTED_SPREADSHEET_HP_EDIT_ID = '2d90152a1426401d288b7389661f62a6,bb0536f92c76b6330bc553a5eb2e1805,Ua+dp4XPxdWt+jrEGYfs3JcZ7PznvXS1IQTt05VlPj7ziCFkekwqOMRuRhbMEQvq';
+var SPREADSHEET_HP_EDIT_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_EDIT_ID);
+
+// "sens publication (private)"
+const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
+var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
+
+$('#loading_bar').hide();
+$('#edit_btn').attr('disabled', true);
+$('#award_edit_element_select_parent').hide();
+$('#award_type_parent').hide();
+$('#detail_text_parent').hide();
+$('#file_form_parent').hide();
+
+$('#publication_edit_element_select_parent').hide();
+
+function dynamicalFormHide(){
+    $('#award_edit_element_select_parent').hide();
+    $('#publication_edit_element_select_parent').hide();
+    $('#award_type_parent').hide();
+    $('#detail_text_parent').hide();
+    $('#file_form_parent').hide();
+}
+
+
+// -------------------------------
+// Awardなら受賞内容
+// それ以外ならファイル添付フォーム
+// を作成する
+// -------------------------------
+/*******************************************/
+var existFileForm = false;
+var preSelectedCategory = '';
+var category;
+var editElement;
+var editElementIndex;
+var searchResultArray;
+var editedContent;
+
+$('#category_select li').on('click', function(){
+    dynamicalFormHide();
+    getmdlSelect.init('#year_select_initializer');
+    category = $(this).attr('data-val');
+    google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_PRIVATE_ID, category);
+});
+/*******************************************/
+
+
+function createYear(yearArray){
+    $('#year_select').empty();
+
+    for(let i = 0; i < yearArray.length; ++i){
+        let yearOpt = '<li class=\"mdl-menu__item\" data-val=\"' + yearArray[i] + '\">' + yearArray[i] + '</li>';
+        $('#year_select').append(yearOpt);
+        getmdlSelect.init('#year_select_initializer');
+    }
+
+}
+
+var year;
+
+$('#year_select').on('click', 'li', function(){
+    dynamicalFormHide();
+    year = $(this).attr('data-val');
+});
+
+
+$('#award_edit_element_select').on('click', 'li', function(){
+    editElement = $(this).attr('data-val');
+
+    if(editElement === 'award'){
+        $('#detail_text_parent').hide();
+        $('#award_type_parent').show();
+        $('#award_type').val(searchResultArray[editElementIndex][0]).parent().addClass('is-focused');
+    }
+    else if(editElement === 'detail'){
+        $('#award_type_parent').hide();
+        $('#detail_text_parent').show();
+        $('#detail_text').val(searchResultArray[editElementIndex][1]).parent().addClass('is-focused');
+    }
+});
+
+$('#publication_edit_element_select').on('click', 'li', function(){
+    editElement = $(this).attr('data-val');
+
+    if(editElement === 'detail'){
+        $('#file_form_parent').hide();
+        $('#detail_text_parent').show();
+        $('#detail_text').val(searchResultArray[editElementIndex][0]).parent().addClass('is-focused');
+    }
+    else if(editElement === 'file'){
+        $('#detail_text_parent').hide();
+        $('#file_form_parent').show();
+        $('#uploadFile').parent().addClass('is-focused');
+        $('#uploadFile')[0].value = searchResultArray[editElementIndex][1];
+    }
+});
+
+var editedFileName;
+$('#upload_btn')[0].onchange = function () {
+    $('#uploadFile').parent().addClass('is-focused');
+    $('#uploadFile').parent().removeClass('is-invalid');
+
+    if(isValidFileName(this.files[0].name)){
+        $('#uploadFile')[0].value = this.files[0].name;
+        editedFileName = this.files[0].name;
+    }
+
+    else if(!isValidFileName(this.files[0].name)){
+        $('#attached_error').hide();
+        $('#filename_error').show();
+        $('#uploadFile').parent().addClass('is-invalid');
+        $('#uploadFile')[0].value = '';
+    }
+};
+
+
+$("#search_btn")[0].addEventListener('click', function() {
+    if(isRequiredComplete()){
+        if(pencilBtnOnId != 'null'){
+            $('#' + pencilBtnOnId).trigger('click');
+            $('#edit_btn').attr('disabled', false);
+            pencilBtnOnId = 'null'
+        }
+
+        $('#award_edit_element_select_parent').hide();
+        $('#search_btn').attr('disabled', true);
+        $('#result').empty();
+        $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">検索中．．． / Now searching...</div>');
+        $('#loading_bar').show();
+        $('#search_result').empty();
+        google.script.run.withSuccessHandler(showSearchResult).searchByCategoryAndYear(SPREADSHEET_PRIVATE_ID, category, year);
+    }
+});
+
+var editRowIndex;
+
+$("#edit_btn")[0].addEventListener('click', function() {
+    if(isRequiredComplete()){
+        $('#edit_btn').attr('disabled', true);
+        $('#result').empty();
+        $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">編集中．．． / Now editing...</div>');
+        $('#loading_bar').show();
+        $('#search_result').empty();
+
+        if(category == 'award'){
+            if(editElement === 'award'){
+                editedContent = $('#award_type').val();
+            }
+            else if(editElement === 'detail'){
+                editedContent = $('#detail_text').val();
+            }
+            google.script.run.withSuccessHandler(showEditResult).editAward(SPREADSHEET_PRIVATE_ID, category, editRowIndex, editElement, editedContent);
+        }
+        else if(category != 'award'){
+            if(editElement === 'detail'){
+                editedContent = $('#detail_text').val();
+                google.script.run.withSuccessHandler(showEditResult).editPublication(SPREADSHEET_PRIVATE_ID, category, editRowIndex, editedContent);
+            }
+            else if(editElement === 'file'){
+                let file_form = $('#file_form')[0];
+                handleFormSubmit(file_form, category);
+            }
+        }
+    }
+});
+
+
+// -------------------------------
+// カテゴリーに応じたフォルダに
+// 添付ファイルを保存する
+// -------------------------------
+/*******************************************/
+function handleFormSubmit(formObject, category) {
+    switch(category){
+        case 'journal':
+            google.script.run.withSuccessHandler(sendData).processFormJournal(formObject);
+            break;
+        case 'international_conference':
+            google.script.run.withSuccessHandler(sendData).processFormInternationalConference(formObject);
+            break;
+        case 'domestic_conference':
+            google.script.run.withSuccessHandler(sendData).processFormDomesticConference(formObject);
+            break;
+        case 'survey':
+            google.script.run.withSuccessHandler(sendData).processFormSurvey(formObject);
+            break;
+        case 'press':
+            google.script.run.withSuccessHandler(sendData).processFormPress(formObject);
+            break;
+        case 'book':
+            google.script.run.withSuccessHandler(sendData).processFormBook(formObject);
+            break;
+        case 'unknown':
+            google.script.run.withSuccessHandler(sendData).processFormUnknown(formObject);
+            break;
+    }
+}
+/*******************************************/
+
+
+// -------------------------------
+// ファイルを添付するかどうかの
+// カテゴリーに応じて（Award か Award以外か）
+// Spread Sheetにデータを登録する関数set*InSpreadSheetに
+// データを渡す
+// -------------------------------
+/*******************************************/
+function sendData(url) {
+    google.script.run.withSuccessHandler(showEditResult).editPublicationFile(SPREADSHEET_PRIVATE_ID, category, url, editRowIndex, editedFileName);
+}
+/*******************************************/
+
+function showEditResult(){
+    $('#edit_btn').attr('disabled', false);
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">編集しました / Edited</div>');
+    $('#loading_bar').hide();
+    dynamicalFormHide();
+}
+
+function showSearchResult(result){
+    searchResultArray = result;
+
+    $('#search_btn').attr('disabled', false);
+    $('#loading_bar').hide();
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">検索完了 / Searched</div>');
+    $('#search_result').empty();
+
+
+    let shapedResult =
+    '<table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\" id=\"result_table\">' +
+        '<thead>' +
+            '<tr>' +
+                '<th class=\"mdl-data-table__cell--non-numeric\"></th>' +
+                '<th>' +
+                result[0][0] +
+                '</th>' +
+                '<th>' +
+                result[0][1] +
+                '</th>' +
+            '</tr>' +
+        '</thead>' +
+        '<tbody>';
+
+    for(let i=1; i<result.length; i++) {
+        if(result[i][0] !== ''){
+            shapedResult +=
+            '<tr>' +
+                '<td class=\"mdl-data-table__cell--non-numeric\">' +
+                    '<i class=\"fas fa-pencil-alt fa-lg pencil_btn\" value=\"' + String(result[i][2]) + '\" id=\"pencil_btn_' + String(i) + '\"></i>' +
+                '</td>' +
+                '<td>' +
+                    result[i][0] +
+                '</td>' +
+                '<td>' +
+                    result[i][1] +
+                '</td>' +
+            '</tr>';
+        }
+    }
+
+    shapedResult += '</tbody>' +'</table>';
+
+    $('#search_result').append(shapedResult);
+}
+
+var pencilBtnOnId = 'null';
+
+//鉛筆ボタン押したときの処理
+$('#search_result').on('click', '.pencil_btn', function() {
+    editRowIndex = $(this).attr('value');
+    getmdlSelect.init('#award_edit_element_initializer');
+    getmdlSelect.init('#publication_edit_element_initializer');
+    dynamicalFormHide();
+
+    if($(this).hasClass('on')){
+        $('#edit_btn').attr('disabled', true);
+
+        if(category === 'award'){
+            $('#award_edit_element_select_parent').hide();
+        }
+        else if(category !== 'award'){
+            $('#publication_edit_element_select_parent').hide();
+        }
+
+        pencilBtnOnId = 'null';
+
+        let options = {
+		    from: 'fa-pencil-alt',
+		    to: 'fa-pencil-alt',
+            animation: 'zoomIn'
+	    };
+
+        iconate(this, options);
+
+        $(this).toggleClass('on');
+    }
+
+    else if(!$(this).hasClass('on')){
+        $('#edit_btn').attr('disabled', false);
+
+        if(category === 'award'){
+            $('#award_edit_element_select_parent').show();
+        }
+        else if(category !== 'award'){
+            $('#publication_edit_element_select_parent').show();
+        }
+
+        if(pencilBtnOnId != 'null'){
+            $('#' + pencilBtnOnId).trigger('click');
+            $('#edit_btn').attr('disabled', false);
+
+            if(category === 'award'){
+                $('#award_edit_element_select_parent').show();
+            }
+            else if(category !== 'award'){
+            $('#publication_edit_element_select_parent').show();
+            }
+        }
+
+        pencilBtnOnId = $(this).attr('id');
+
+        editElementIndex = $(this).attr('id').replace(/pencil_btn_/, '');
+
+        let options = {
+		    from: 'fa-pencil-alt',
+            to: 'fa-pencil-alt',
+            animation: 'rubberBand'
+	    };
+
+        iconate(this, options);
+
+        $(this).toggleClass('on');
+    }
+
+});
+
+
+
+
+
+// -------------------------------
+// 必須フォームに
+// 値が入力されているかどうかを判定する
+// ret: bool(入力されている: true/入力されていない: false)
+// -------------------------------
+/*******************************************/
+function isRequiredComplete(){
+    let isEmpty = false;
+
+    if(category === undefined){
+        $('#category_box').parent().addClass('is-invalid');
+        isEmpty = true;
+    }
+    if(year === undefined){
+        $('#year_box').parent().addClass('is-invalid');
+        isEmpty = true;
+    }
+
+    if(isEmpty){
+        return false;
+    }
+    return true;
+}
+/*******************************************/
+
+// -------------------------------
+// ファイル名が命名規則に
+// 則っているかを判定する
+// ret: bool(則っている: true/則っていない: false)
+// -------------------------------
+/*******************************************/
+function isValidFileName(fileName){
+    if(/^\d{4}_[0-9a-zA-Z]+_[0-9a-zA-Z]+\.[0-9a-zA-Z]+$/.test(fileName)){
+        return true;
+    }
+
+    return false;
+}
+/*******************************************/
+
+
+/*******************************************/
+// -------------------------------
+// クライアントサイドの
+// データを復号する
+// -------------------------------
+/*******************************************/
+function decrypt(encryptedString){
+    var array_rawData = encryptedString.split(',');
+
+    var salt = CryptoJS.enc.Hex.parse(array_rawData[0]);  // パスワードSalt
+    var iv = CryptoJS.enc.Hex.parse(array_rawData[1]);    // 初期化ベクトル（IV）
+    var encrypted_data = CryptoJS.enc.Base64.parse(array_rawData[2]); //暗号化データ本体
+
+    //パスワード（鍵空間の定義）
+    var secret_passphrase = CryptoJS.enc.Utf8.parse('&dHk#Dg4!L6n%3d');
+    var key128Bits500Iterations =
+    CryptoJS.PBKDF2(secret_passphrase, salt, {keySize: 128 / 8, iterations: 500 });
+
+    //復号オプション（暗号化と同様）
+    var options = {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7};
+
+    //復号
+    var decrypted = CryptoJS.AES.decrypt({"ciphertext":encrypted_data}, key128Bits500Iterations, options);
+    // 文字コードをUTF-8にする
+
+    return decrypted.toString(CryptoJS.enc.Utf8);
+}
+
+
+
+
+</script>
