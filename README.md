@@ -3,7 +3,7 @@
 There are three functions.
 1. Register publication data
 2. Delete publication data
-3. Edit publication data (Now coding...)
+3. Edit publication data
 
 # Sens Publication Register
 You can register publication data from the link below.  
@@ -14,6 +14,12 @@ You can register publication data from the link below.
 # Sens Publication Remover
 You can delete publication data from the link below.  
 [sens publicaion remover](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwGlMmniX9q-62zITyaNu4IwRe5BYjvVQZ8z6uEnUABXoVZnxPn/exec)  
+
+**You need sens account.**
+
+# Sens Publication Editor
+You can edit publication data from the link below.  
+[sens publicaion editor](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbxZrSKdxNEmOZHbtHSFlWG8IZnLbkkkyrWfVXJAqj2XBTJD_dL7/exec)  
 
 **You need sens account.**
 
@@ -37,6 +43,24 @@ sens_publication_register/
         |- CryptoGS/
 
 sens_publication_remover/
+    |- index.html  
+    |- app/
+        |- Code.gs     # サーバーサイドの処理 / Server side processing
+    |- assets/
+        |- js/         # クライアントサイドの処理 / Cleint side processing
+            |- main_js.html
+        |- css/        # 個人設定したcss / My custom css
+            |- myCustom_css.html
+    |- vendor/         # 外部ライブラリ / External library
+        |- MDL/  
+        |- GETMDL-SELECT/
+        |- jQuery/
+        |- FontAwesome/
+        |- CryptoJS/
+        |- CryptoGS/
+        |- iconatejs/
+
+sens_publication_editor/
     |- index.html  
     |- app/
         |- Code.gs     # サーバーサイドの処理 / Server side processing
