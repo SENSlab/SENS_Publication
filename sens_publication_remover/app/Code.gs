@@ -55,8 +55,8 @@ function Cipher (pass) {
   };
   /**
    * messageを暗号化する
-   * @param {string} message 暗号化する文字列
-   * @return {string} 暗号化された結果の文字列
+   * @param {String} message 暗号化する文字列
+   * @return {String} 暗号化された結果の文字列
    */
   self.encrypt = function  (message) {
     return CryptoJS[algo_].encrypt(message, pass_).toString();
@@ -64,8 +64,8 @@ function Cipher (pass) {
 
   /**
    * messageを復号化する
-   * @param {string} message 復号化する文字列
-   * @return {string} 復号化された結果の文字列
+   * @param {String} message 復号化する文字列
+   * @return {String} 復号化された結果の文字列
    */
   self.decrypt = function  (encryptedMessage) {
     return CryptoJS[algo_].decrypt(encryptedMessage, pass_).toString(CryptoJS.enc.Utf8);
@@ -76,6 +76,12 @@ function Cipher (pass) {
 
 
 
+/**
+ * 指定されたカテゴリーのsheetに存在する年を探す
+ * @param {String} SPREADSHEET_ID 検索先のSpread SheetのID
+ * @param {String} category 検索対象のカテゴリー
+ * @return {Array} 検索された年の配列
+ */
 function searchYear(SPREADSHEET_ID, category){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
 
@@ -103,6 +109,15 @@ function searchYear(SPREADSHEET_ID, category){
 }
 
 
+
+/**
+ * 指定されたカテゴリーと年に該当する内容を探す
+ * @param  {String} SPREADSHEET_ID 検索対象のSpread SheetのID
+ * @param  {String} category       検索対象のカテゴリー
+ * @param  {String} year           検索対象の年
+ * @return {Array[][]}                SpreadSheetから取得した，検索結果であるセル内の値を
+ *     2次元配列データとして格納したもの（第一要素: 行 第二要素: 列）
+ */
 function searchByCategoryAndYear(SPREADSHEET_ID, category, year){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
 
@@ -149,6 +164,14 @@ function searchByCategoryAndYear(SPREADSHEET_ID, category, year){
   return allValues;
 }
 
+
+
+/**
+ * 指定されたカテゴリーに対応するsheetを取得する
+ * @param  {Spreadsheet} spreadSheet 指定したSpread Sheet
+ * @param  {String} category    指定したカテゴリー
+ * @return {Sheet}             取得したSheet
+ */
 function getSheetByCategory(spreadSheet, category){
   switch(category){
     case 'award':
@@ -170,6 +193,13 @@ function getSheetByCategory(spreadSheet, category){
   }
 }
 
+
+
+/**
+ * 指定されたカテゴリーに対応するフォルダのIDを取得する
+ * @param  {String} category 指定したカテゴリー
+ * @return {Folder}          取得したFolder
+ */
 function getFolderIdByCategory(category){
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
 
@@ -191,6 +221,15 @@ function getFolderIdByCategory(category){
   }
 }
 
+
+
+/**
+ * 指定行に存在するAward情報をSheetから削除する
+ * @param  {String} SPREADSHEET_ID 指定したSpread SheetのID
+ * @param  {String} category       指定したカテゴリー
+ * @param  {Number} deleteRowIndex 削除したい行番号
+ * @return {Void}
+ */
 function deleteAward(SPREADSHEET_ID, category, deleteRowIndex){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
@@ -198,6 +237,17 @@ function deleteAward(SPREADSHEET_ID, category, deleteRowIndex){
   sheet.deleteRow(deleteRowIndex);
 }
 
+
+
+/**
+ * Award以外のカテゴリーの情報を以下の2点のように削除する
+ *     ・指定行に存在するリンク先のファイルをGoogle Driveから削除する
+ *     ・指定行に存在する情報をSheetから削除する
+ * @param  {String} SPREADSHEET_ID 指定したSpread SheetのID
+ * @param  {String} category       指定したカテゴリー
+ * @param  {Number} deleteRowIndex 削除したい行番号
+ * @return {Void}
+ */
 function deletePublication(SPREADSHEET_ID, category, deleteRowIndex){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
@@ -219,7 +269,7 @@ function deletePublication(SPREADSHEET_ID, category, deleteRowIndex){
 /**
  * Spread Sheet内において，現在の行が出力したい年の
  *     最終行かどうかを判定する
- * @param  {Object[][]}  values SpreadSheetから取得した，ある範囲内のセル内の値を
+ * @param  {Array[][]}  values SpreadSheetから取得した，ある範囲内のセル内の値を
  *     2次元配列データとして格納したもの
  * @param  {String}  year   index.html内で選択された年
  * @param  {Number}  i      Spread Sheetにおける行インデックス
