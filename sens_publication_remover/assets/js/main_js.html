@@ -25,6 +25,7 @@ $('#delete_btn').attr('disabled', true);
 var existFileForm = false;
 var preSelectedCategory = '';
 var category;
+var isLastDataInYear = false;
 
 $('#category_select li').on('click', function(){
     getmdlSelect.init('#year_select_parent');
@@ -82,10 +83,10 @@ $("#delete_btn")[0].addEventListener('click', function() {
         $('#search_result').empty();
 
         if(category == 'award'){
-            google.script.run.withSuccessHandler(showDeleteResult).deleteAward(SPREADSHEET_PRIVATE_ID, category, deleteRowIndex);
+            google.script.run.withSuccessHandler(showDeleteResult).deleteAward(SPREADSHEET_PRIVATE_ID, category, deleteRowIndex, isLastDataInYear);
         }
         else if(category != 'award'){
-            google.script.run.withSuccessHandler(showDeleteResult).deletePublication(SPREADSHEET_PRIVATE_ID, category, deleteRowIndex);
+            google.script.run.withSuccessHandler(showDeleteResult).deletePublication(SPREADSHEET_PRIVATE_ID, category, deleteRowIndex, isLastDataInYear);
         }
     }
 });
@@ -103,6 +104,14 @@ function showSearchResult(result){
     $('#result').empty();
     $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">検索完了 / Searched</div>');
     $('#search_result').empty();
+
+    if(result.length === 2){  //表頭 + 実データ1個 の2個
+        isLastDataInYear = true;
+    }
+    else if(result.length !== 2){
+        isLastDataInYear = false;
+    }
+
 
     let shapedResult =
     '<table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\" id=\"result_table\">' +
