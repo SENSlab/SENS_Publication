@@ -26,8 +26,8 @@ function doGet() {
 
 /**
  * index.htmlから外部htmlを読み込む
- * @param  {String} filename includeしたいhtmlファイルのファイル名
- * @return {String}          指定したファイルからHtmlOutputオブジェクトを作成し，
+ * @param  {string} filename includeしたいhtmlファイルのファイル名
+ * @return {string}          指定したファイルからHtmlOutputオブジェクトを作成し，
  *     そのHtmlOutputオブジェクトのコンテンツを文字列として返す
  */
 function include(filename) {
@@ -38,7 +38,7 @@ function include(filename) {
 
 /**
  * 文字列の暗号化・復号化のためのクラス
- * @param       {String} pass 暗号化・復号化のためのパスワード
+ * @param       {string} pass 暗号化・復号化のためのパスワード
  * @constructor
  */
 function Cipher (pass) {
@@ -80,7 +80,7 @@ function Cipher (pass) {
  * main_js.html内のhandleFormSubmit関数内の
  *     各カテゴリーに応じた処理を統一するために
  *     作成しただけの形式的な関数
- * @return {String} 形式的なので何を返してもOK
+ * @return {string} 形式的なので何を返してもOK
  */
 function processFormAward() {
   return 'Success';
@@ -93,7 +93,7 @@ function processFormAward() {
  *     Journalフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
- * @return {String}            保存したファイルのURLを返す
+ * @return {string}            保存したファイルのURLを返す
  *     ファイルが存在しない場合はnullを返す
  */
 function processFormJournal(formObject) {
@@ -113,7 +113,7 @@ function processFormJournal(formObject) {
  *     International Conferenceフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
- * @return {String}            保存したファイルのURLを返す
+ * @return {string}            保存したファイルのURLを返す
  *     ファイルが存在しない場合はnullを返す
  */
 function processFormInternationalConference(formObject) {
@@ -133,7 +133,7 @@ function processFormInternationalConference(formObject) {
  *     Domestic Conferenceフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
- * @return {String}            保存したファイルのURLを返す
+ * @return {string}            保存したファイルのURLを返す
  *     ファイルが存在しない場合はnullを返す
  */
 function processFormDomesticConference(formObject) {
@@ -153,7 +153,7 @@ function processFormDomesticConference(formObject) {
  *     Surveyフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
- * @return {String}            保存したファイルのURLを返す
+ * @return {string}            保存したファイルのURLを返す
  *     ファイルが存在しない場合はnullを返す
  */
 function processFormSurvey(formObject) {
@@ -173,7 +173,7 @@ function processFormSurvey(formObject) {
  *     Pressフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
- * @return {String}            保存したファイルのURLを返す
+ * @return {string}            保存したファイルのURLを返す
  *     ファイルが存在しない場合はnullを返す
  */
 function processFormPress(formObject) {
@@ -193,7 +193,7 @@ function processFormPress(formObject) {
  *     Bookフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
- * @return {String}            保存したファイルのURLを返す
+ * @return {string}            保存したファイルのURLを返す
  *     ファイルが存在しない場合はnullを返す
  */
 function processFormBook(formObject) {
@@ -213,7 +213,7 @@ function processFormBook(formObject) {
  *     Unknownフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
- * @return {String}            保存したファイルのURLを返す
+ * @return {string}            保存したファイルのURLを返す
  *     ファイルが存在しない場合はnullを返す
  */
 function processFormUnknown(formObject) {
@@ -230,10 +230,10 @@ function processFormUnknown(formObject) {
 
 /**
  * Award情報をSpread Sheetに出力する
- * @param {String} SPREADSHEET_ID 出力先のSpread SheetのID
- * @param {String} year           受賞年
- * @param {String} award          賞
- * @param {String} detail         受賞内容
+ * @param {string} SPREADSHEET_ID 出力先のSpread SheetのID
+ * @param {string} year           受賞年
+ * @param {string} award          賞
+ * @param {string} detail         受賞内容
  */
 function setAwardInSpreadSheet(SPREADSHEET_ID, year, award, detail){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
@@ -302,12 +302,12 @@ function setAwardInSpreadSheet(SPREADSHEET_ID, year, award, detail){
 
 /**
  * Award以外の，あるカテゴリーの情報をSpread Sheetに出力する
- * @param {String} SPREADSHEET_ID 出力先のSpread SheetのID
- * @param {String} year           イベントのあった年
- * @param {String} detail         詳細
- * @param {String} url            添付ファイルの保存先url
- * @param {String} category       イベントのカテゴリー（Award以外）
- * @param {String} fileName       ファイル名
+ * @param {string} SPREADSHEET_ID 出力先のSpread SheetのID
+ * @param {string} year           イベントのあった年
+ * @param {string} detail         詳細
+ * @param {string} url            添付ファイルの保存先url
+ * @param {string} category       イベントのカテゴリー（Award以外）
+ * @param {string} fileName       ファイル名
  */
 function setPublicationWithFileInSpreadSheet(SPREADSHEET_ID, year, detail, url, category, fileName){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
@@ -410,11 +410,11 @@ function setPublicationWithFileInSpreadSheet(SPREADSHEET_ID, year, detail, url, 
 /**
  * Spread Sheet内において，現在の行が出力したい年の
  *     最終行かどうかを判定する
- * @param  {Object[][]}  values SpreadSheetから取得した，ある範囲内のセル内の値を
+ * @param  {Array.<Array.<string>>}  values SpreadSheetから取得した，ある範囲内のセル内の値を
  *     2次元配列データとして格納したもの
- * @param  {String}  year   index.html内で選択された年
- * @param  {Number}  i      Spread Sheetにおける行インデックス
- * @return {Boolean}        true: i行目が最終行  false: i行目が最終行ではない
+ * @param  {string}  year   index.html内で選択された年
+ * @param  {number}  i      Spread Sheetにおける行インデックス
+ * @return {boolean}        true: i行目が最終行  false: i行目が最終行ではない
  */
 function isEndOfYear(values, year, i){
   if(values[i+1] === undefined || values[i+1][0] !== ''){
