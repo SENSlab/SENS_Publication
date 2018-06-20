@@ -1,4 +1,3 @@
-
 # Sens Publication (Will be released in September)
 There are three functions.
 1. Register publication data
@@ -7,76 +6,54 @@ There are three functions.
 
 # Sens Publication Register
 You can register publication data from the link below.  
-[sens publicaion register](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbx83bRrCsXBxZspYmc8H4hlQb4uXStNlL8RuuSmR_0yZKsPh9Ak/exec)  
+[sens publicaion register](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=register)  
 
 **You need sens account.**
 
 # Sens Publication Remover
 You can delete publication data from the link below.  
-[sens publicaion remover](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwGlMmniX9q-62zITyaNu4IwRe5BYjvVQZ8z6uEnUABXoVZnxPn/exec)  
+[sens publicaion remover](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=remover)  
 
 **You need sens account.**
 
 # Sens Publication Editor
 You can edit publication data from the link below.  
-[sens publicaion editor](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbxZrSKdxNEmOZHbtHSFlWG8IZnLbkkkyrWfVXJAqj2XBTJD_dL7/exec)  
+[sens publicaion editor](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=editor)  
 
 **You need sens account.**
 
 # Directory Structure
 ```
-sens_publication_register/
-    |- index.html  
-    |- app/
-        |- Code.gs     # サーバーサイドの処理 / Server side processing
-    |- assets/
-        |- js/         # クライアントサイドの処理 / Cleint side processing
-            |- main_js.html
-        |- css/        # 個人設定したcss / My custom css
-            |- myCustom_css.html
-    |- vendor/         # 外部ライブラリ / External library
-        |- MDL/  
-        |- GETMDL-SELECT/
-        |- jQuery/
-        |- FontAwesome/
-        |- CryptoJS/
-        |- CryptoGS/
-
-sens_publication_remover/
-    |- index.html  
-    |- app/
-        |- Code.gs     # サーバーサイドの処理 / Server side processing
-    |- assets/
-        |- js/         # クライアントサイドの処理 / Cleint side processing
-            |- main_js.html
-        |- css/        # 個人設定したcss / My custom css
-            |- myCustom_css.html
-    |- vendor/         # 外部ライブラリ / External library
-        |- MDL/  
-        |- GETMDL-SELECT/
-        |- jQuery/
-        |- FontAwesome/
-        |- CryptoJS/
-        |- CryptoGS/
-        |- iconatejs/
-
-sens_publication_editor/
-    |- index.html  
-    |- app/
-        |- Code.gs     # サーバーサイドの処理 / Server side processing
-    |- assets/
-        |- js/         # クライアントサイドの処理 / Cleint side processing
-            |- main_js.html
-        |- css/        # 個人設定したcss / My custom css
-            |- myCustom_css.html
-    |- vendor/         # 外部ライブラリ / External library
-        |- MDL/  
-        |- GETMDL-SELECT/
-        |- jQuery/
-        |- FontAwesome/
-        |- CryptoJS/
-        |- CryptoGS/
-        |- iconatejs/
+App/             # サーバーサイドの処理 / Server side processing
+  |- Main.gs
+  |- Cipher.gs
+  |- DriveManager.gs
+  |- FileManager.gs
+  |- SpreadSheetManager.gs
+  |- Register.gs
+  |- Remover.gs
+  |- Editor.gs
+Public/          # クライアントサイドの処理 / Cleint side processing
+  |- css/
+    |- myCustomRegister_css.html
+    |- myCustomRemover_css.html
+    |- myCustomEditor_css.html
+  |- html/
+    |- render.html
+    |- remover.html
+    |- editor.html
+  |- js/         
+    |- mainRegister_js.html
+    |- mainRemover_js.html
+    |- mainEditor_js.html
+Vendor/         # 外部ライブラリ / External library
+    |- MDL/  
+    |- GETMDL-SELECT/
+    |- jQuery/
+    |- FontAwesome/
+    |- CryptoJS/
+    |- CryptoGS/
+    |- iconatejs/
 ```
 
 # For Developers
