@@ -1,0 +1,284 @@
+<script>
+// "sens publication for homepage"
+const ENCRYPTED_SPREADSHEET_HP_ID = 'ddc70788a0e35a8833805b99a19f141b,3a70d873d07b0dad959085fec8f02403,MTxY3vz8Kz0q/cj36EpLxKTAQyiXeFyJx3Y1oSew9Sg34ShKVzmGw1GHigZdef3n';
+var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
+
+// "sens publication for homepage (edit/delete)"
+const ENCRYPTED_SPREADSHEET_HP_EDIT_ID = '2d90152a1426401d288b7389661f62a6,bb0536f92c76b6330bc553a5eb2e1805,Ua+dp4XPxdWt+jrEGYfs3JcZ7PznvXS1IQTt05VlPj7ziCFkekwqOMRuRhbMEQvq';
+var SPREADSHEET_HP_EDIT_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_EDIT_ID);
+
+// "sens publication (private)"
+const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
+var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
+
+
+var preSelectedCategory = '';
+var category;
+var year;
+
+/**
+ * ファイルフォームが存在するかどうか
+ *     存在する: true/存在しない: faulse
+ * @type {boolean}
+ */
+var existFileForm = false;
+
+/**
+ * 添付したファイル名
+ * @type {string}
+ */
+var fileName;
+
+$('#loading_bar').hide();
+$('#award_type_parent').hide();
+$('#file_form_parent').hide();
+
+
+
+/**
+ * カテゴリーを選択した際の処理
+ * @return {void}
+ */
+$('#category_select li').on('click', function(){
+    category = $(this).attr('data-val');
+
+    if($(this).attr('data-val') !== preSelectedCategory){
+
+        // Make type of award when award is selected
+        if($(this).attr('data-val') === 'award'){
+            $('#file_form_parent').hide();
+            existFileForm = false;
+            $('#award_type_parent').show();
+        }
+        else if($(this).attr('data-val') !== 'award'){
+            $('#award_type_parent').hide();
+
+            if(!existFileForm){
+                $('#file_form_parent').show();
+                existFileForm = true;
+            }
+        }
+        preSelectedCategory = $(this).attr('data-val');
+    }
+});
+
+
+
+/**
+ * 年の選択肢の作成（2003年～現在の年までを作成する）
+ * @return {[type]} [description]
+ */
+var addYearOptions = function(){
+    return new Promise (function(resolve){
+        let now = new Date();
+        let nowYear = now.getFullYear();
+
+        for(let i = parseInt(nowYear); i > 2002; --i){
+            let yearOpt = '<li class=\"mdl-menu__item\" data-val=\"' + String(i) + '\">' + String(i) + '</li>';
+            $('#year_select').append(yearOpt);
+        }
+        resolve('Success');
+    });
+}
+
+addYearOptions().then(function(){
+    $('#year_select li').on('click', function(){
+        year = $(this).attr('data-val');
+    });
+});
+
+
+
+/**
+ * ファイルを添付した際の処理
+ * @return {void}
+ */
+$('#upload_btn')[0].onchange = function () {
+    $('#uploadFile').parent().addClass('is-focused');
+    $('#uploadFile').parent().removeClass('is-invalid');
+
+    if(isValidFileName(this.files[0].name)){
+        $('#uploadFile')[0].value = this.files[0].name;
+        fileName = this.files[0].name;
+    }
+
+    else if(!isValidFileName(this.files[0].name)){
+        $('#attached_error').hide();
+        $('#filename_error').show();
+        $('#uploadFile').parent().addClass('is-invalid');
+        $('#uploadFile')[0].value = '';
+    }
+};
+
+
+
+/**
+ * SUBMITボタンを押した際の処理
+ * @return {void}
+ */
+$("#submit_btn")[0].addEventListener('click', function() { ;
+    if(isRequiredComplete()){
+        $('html, main').scrollTop( $(document).height() );
+        $('#submit_btn').attr('disabled', true);
+        $('#result').empty();
+        $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--green-900\">送信中．．． / Now sending...</div>');
+        $('#loading_bar').show();
+
+        let file_form = $('#file_form')[0];
+
+        handleFormSubmit(file_form, category);
+    }
+});
+
+
+
+/**
+ * 必須フォームに値が入力されているかどうかを判定する
+ * @return {boolean} 入力されている: true/入力されていない: false
+ */
+function isRequiredComplete(){
+    let isEmpty = false;
+
+    if(category === undefined){
+        $('#category_box').parent().addClass('is-invalid');
+        isEmpty = true;
+    }
+    if(year === undefined){
+        $('#year_box').parent().addClass('is-invalid');
+        isEmpty = true;
+    }
+    if(category === 'award'){
+        if($('#award_type').val() === ''){
+            $('#award_type').parent().addClass('is-invalid');
+            isEmpty = true;
+        }
+    }
+
+    if($('#detail_text').val() === ''){
+        $('#detail_text').parent().addClass('is-invalid');
+        isEmpty = true;
+    }
+
+    if(category !== 'award'){
+        if($('#uploadFile')[0].value === ''){
+            $('#uploadFile').parent().removeClass('is-invalid');
+            $('#filename_error').hide();
+            $('#attached_error').show();
+            $('#uploadFile').parent().addClass('is-invalid');
+            isEmpty = true;
+        }
+    }
+
+    if(isEmpty){
+        return false;
+    }
+    return true;
+}
+
+
+
+/**
+ * ファイル名が命名規則に則っているかを判定する
+ * @param  {string}  fileName 添付したファイル名
+ * @return {boolean}          則っている: true/則っていない: false
+ */
+function isValidFileName(fileName){
+    if(/^\d{4}_[0-9a-zA-Z]+_[0-9a-zA-Z]+\.[0-9a-zA-Z]+$/.test(fileName)){
+        return true;
+    }
+
+    return false;
+}
+
+
+
+/**
+ * カテゴリーに応じたフォルダに添付ファイルを保存する
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @param  {string} category        ファイルを追加したいカテゴリー
+ * @return {void}
+ */
+function handleFormSubmit(formObject, category) {
+    switch(category){
+        case 'award':
+          google.script.run.withSuccessHandler(sendData).processFormAward();
+          break;
+        case 'journal':
+          google.script.run.withSuccessHandler(sendData).processFormJournal(formObject);
+          break;
+        case 'international_conference':
+          google.script.run.withSuccessHandler(sendData).processFormInternationalConference(formObject);
+          break;
+        case 'domestic_conference':
+          google.script.run.withSuccessHandler(sendData).processFormDomesticConference(formObject);
+          break;
+        case 'survey':
+          google.script.run.withSuccessHandler(sendData).processFormSurvey(formObject);
+          break;
+        case 'press':
+          google.script.run.withSuccessHandler(sendData).processFormPress(formObject);
+          break;
+        case 'book':
+          google.script.run.withSuccessHandler(sendData).processFormBook(formObject);
+          break;
+        case 'unknown':
+            google.script.run.withSuccessHandler(sendData).processFormUnknown(formObject);
+            break;
+    }
+}
+
+
+
+/**
+ * ファイルを添付するかどうかのカテゴリーに応じて(award か award以外か)
+ *     Spread Sheetにデータを登録する関数set*InSpreadSheetにデータを渡す
+ * @param  {string} url 編集後のfileのurl
+ *     (awardの時は'Success'というメタ文字列使用)
+ * @return {void}
+ */
+function sendData(url) {
+    let detail = $('#detail_text').val();
+
+    if(category === 'award'){
+        let award_type = $('#award_type').val();
+        google.script.run.setAwardInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, award_type, detail);
+    }
+
+    else if(category !== 'award'){
+        google.script.run.setPublicationWithFileInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, url, category, fileName);
+    }
+
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--blue\">送信しました． / Complete.</div>')
+    $('#loading_bar').hide();
+    $('#submit_btn').attr('disabled', false);
+}
+
+
+
+/**
+ * クライアントサイドのデータを復号する
+ * @param  {string} encryptedString 暗号化された文字列
+ * @return {string}                 復号後の文字列
+ */
+function decrypt(encryptedString){
+    var array_rawData = encryptedString.split(',');
+
+    var salt = CryptoJS.enc.Hex.parse(array_rawData[0]);  // パスワードSalt
+    var iv = CryptoJS.enc.Hex.parse(array_rawData[1]);    // 初期化ベクトル（IV）
+    var encrypted_data = CryptoJS.enc.Base64.parse(array_rawData[2]); //暗号化データ本体
+
+    //パスワード（鍵空間の定義）
+    var secret_passphrase = CryptoJS.enc.Utf8.parse('&dHk#Dg4!L6n%3d');
+    var key128Bits500Iterations =
+    CryptoJS.PBKDF2(secret_passphrase, salt, {keySize: 128 / 8, iterations: 500 });
+
+    //復号オプション（暗号化と同様）
+    var options = {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7};
+
+    //復号
+    var decrypted = CryptoJS.AES.decrypt({"ciphertext":encrypted_data}, key128Bits500Iterations, options);
+    // 文字コードをUTF-8にする
+    return decrypted.toString(CryptoJS.enc.Utf8);
+}
+</script>

@@ -1,0 +1,304 @@
+<script>
+// "sens publication for homepage"
+const ENCRYPTED_SPREADSHEET_HP_ID = 'ddc70788a0e35a8833805b99a19f141b,3a70d873d07b0dad959085fec8f02403,MTxY3vz8Kz0q/cj36EpLxKTAQyiXeFyJx3Y1oSew9Sg34ShKVzmGw1GHigZdef3n';
+var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
+
+// "sens publication for homepage (edit/delete)"
+const ENCRYPTED_SPREADSHEET_HP_EDIT_ID = '2d90152a1426401d288b7389661f62a6,bb0536f92c76b6330bc553a5eb2e1805,Ua+dp4XPxdWt+jrEGYfs3JcZ7PznvXS1IQTt05VlPj7ziCFkekwqOMRuRhbMEQvq';
+var SPREADSHEET_HP_EDIT_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_EDIT_ID);
+
+// "sens publication (private)"
+const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
+var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
+
+var preSelectedCategory = '';
+var category;
+var year;
+
+/**
+ * 押したマイナスボタンのid
+ * @type {String}
+ */
+var minusBtnOnId = 'null';
+
+/**
+ * 削除したい行番号
+ * @type {number}
+ */
+var deleteRowIndex;
+
+/**
+ * 削除したいデータがその年の唯一のデータかどうか
+ * 唯一のデータ: true/唯一のデータではない: faulse
+ * @type {boolean}
+ */
+var isLastDataInYear = false;
+
+$('#loading_bar').hide();
+$('#delete_btn').attr('disabled', true);
+
+
+
+/**
+ * カテゴリーを選択した際の処理
+ * @return {void}
+ */
+$('#category_select li').on('click', function(){
+    getmdlSelect.init('#year_select_parent');
+    category = $(this).attr('data-val');
+    google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_PRIVATE_ID, category);
+});
+
+
+
+/**
+ * 年フォームの選択肢に配列として指定した年を追加する
+ * @param  {Array.<string>} yearArray 年の配列
+ * @return {void}
+ */
+function createYear(yearArray){
+    $('#year_select').empty();
+
+    for(let i = 0; i < yearArray.length; ++i){
+        let yearOpt = '<li class=\"mdl-menu__item\" data-val=\"' + yearArray[i] + '\">' + yearArray[i] + '</li>';
+        $('#year_select').append(yearOpt);
+        getmdlSelect.init('#year_select_parent');
+    }
+
+}
+
+
+
+/**
+ * 年を選択した際の処理
+ * @return {void}
+ */
+$('#year_select').on('click', 'li', function(){
+    year = $(this).attr('data-val');
+});
+
+
+
+/**
+ * SEARCHボタンを押した際の処理
+ * @return {void}
+ */
+$("#search_btn")[0].addEventListener('click', function() {
+    if(isRequiredComplete()){
+        if(minusBtnOnId != 'null'){
+            $('#' + minusBtnOnId).trigger('click');
+            $('#delete_btn').attr('disabled', false);
+            minusBtnOnId = 'null'
+        }
+
+        $('#search_btn').attr('disabled', true);
+        $('#result').empty();
+        $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">検索中．．． / Now searching...</div>');
+        $('#loading_bar').show();
+        $('#search_result').empty();
+        google.script.run.withSuccessHandler(showSearchResult).searchDeleteDataByCategoryAndYear(SPREADSHEET_PRIVATE_ID, category, year);
+    }
+});
+
+
+
+/**
+ * DELETEボタンを押した際の処理
+ * @return {void}
+ */
+$("#delete_btn")[0].addEventListener('click', function() {
+    if(isRequiredComplete()){
+        $('#delete_btn').attr('disabled', true);
+        $('#result').empty();
+        $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">削除中．．． / Now deleting...</div>');
+        $('#loading_bar').show();
+        $('#search_result').empty();
+
+        if(category == 'award'){
+            google.script.run.withSuccessHandler(showDeleteResult).deleteAward(SPREADSHEET_PRIVATE_ID, category, deleteRowIndex, isLastDataInYear);
+        }
+        else if(category != 'award'){
+            google.script.run.withSuccessHandler(showDeleteResult).deletePublication(SPREADSHEET_PRIVATE_ID, category, deleteRowIndex, isLastDataInYear);
+        }
+    }
+});
+
+
+
+/**
+ * 削除が完了したことを表示する
+ * @return {void}
+ */
+function showDeleteResult(){
+    $('#delete_btn').attr('disabled', false);
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">削除しました / Deleted</div>');
+    $('#loading_bar').hide();
+}
+
+
+
+/**
+ * 検索結果を表示する
+ * @param  {{Array.<Array.<string>>} result SpreadSheetから取得した，検索結果であるセル内の値を
+ *     2次元配列データとして格納したもの（第一要素: 行 第二要素: 列）
+ * @return {void}
+ */
+function showSearchResult(result){
+    $('#search_btn').attr('disabled', false);
+    $('#loading_bar').hide();
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">検索完了 / Searched</div>');
+    $('#search_result').empty();
+
+    if(result.length === 2){  //表頭 + 実データ1個 の2個
+        isLastDataInYear = true;
+    }
+    else if(result.length !== 2){
+        isLastDataInYear = false;
+    }
+
+
+    let shapedResult =
+    '<table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\" id=\"result_table\">' +
+        '<thead>' +
+            '<tr>' +
+                '<th class=\"mdl-data-table__cell--non-numeric\"></th>' +
+                '<th>' +
+                result[0][0] +
+                '</th>' +
+                '<th>' +
+                result[0][1] +
+                '</th>' +
+            '</tr>' +
+        '</thead>' +
+        '<tbody>';
+
+    for(let i=1; i<result.length; i++) {
+        if(result[i][0] !== ''){
+            shapedResult +=
+            '<tr>' +
+                '<td class=\"mdl-data-table__cell--non-numeric\">' +
+                    '<i class=\"fas fa-minus-circle fa-lg minus_btn\" value=\"' + String(result[i][2]) + '\" id=\"minus_btn_' + String(i) + '\"></i>' +
+                '</td>' +
+                '<td>' +
+                    result[i][0] +
+                '</td>' +
+                '<td>' +
+                    result[i][1] +
+                '</td>' +
+            '</tr>';
+        }
+    }
+
+    shapedResult += '</tbody>' +'</table>';
+
+    $('#search_result').append(shapedResult);
+}
+
+
+
+/**
+ * マイナスボタンを押したときの処理
+ * @return {void}
+ */
+$('#search_result').on('click', '.minus_btn', function() {
+    deleteRowIndex = $(this).attr('value');
+
+    if($(this).hasClass('on')){
+        $('#delete_btn').attr('disabled', true);
+
+        minusBtnOnId = 'null';
+
+        let options = {
+		    from: 'fa-minus-circle',
+		    to: 'fa-minus-circle',
+            animation: 'zoomIn'
+	    };
+
+        iconate(this, options);
+
+        $(this).toggleClass('on');
+    }
+
+    else if(!$(this).hasClass('on')){
+        $('#delete_btn').attr('disabled', false);
+
+        if(minusBtnOnId != 'null'){
+            $('#' + minusBtnOnId).trigger('click');
+            $('#delete_btn').attr('disabled', false);
+        }
+
+        minusBtnOnId = $(this).attr('id');
+
+        let options = {
+		    from: 'fa-minus-circle',
+            to: 'fa-minus-circle',
+            animation: 'rubberBand'
+	    };
+
+        iconate(this, options);
+
+        $(this).toggleClass('on');
+    }
+
+});
+
+
+
+/**
+ * 必須フォームに値が入力されているかどうかを判定する
+ * @return {boolean} 入力されている: true/入力されていない: false
+ */
+function isRequiredComplete(){
+    let isEmpty = false;
+
+    if(category === undefined){
+        $('#category_box').parent().addClass('is-invalid');
+        isEmpty = true;
+    }
+    if(year === undefined){
+        $('#year_box').parent().addClass('is-invalid');
+        isEmpty = true;
+    }
+
+    if($('#detail_text').val() === ''){
+        $('#detail_text').parent().addClass('is-invalid');
+        isEmpty = true;
+    }
+
+    if(isEmpty){
+        return false;
+    }
+    return true;
+}
+
+
+
+/**
+ * クライアントサイドのデータを復号する
+ * @param  {string} encryptedString 暗号化された文字列
+ * @return {string}                 復号後の文字列
+ */
+function decrypt(encryptedString){
+    var array_rawData = encryptedString.split(',');
+
+    var salt = CryptoJS.enc.Hex.parse(array_rawData[0]);  // パスワードSalt
+    var iv = CryptoJS.enc.Hex.parse(array_rawData[1]);    // 初期化ベクトル（IV）
+    var encrypted_data = CryptoJS.enc.Base64.parse(array_rawData[2]); //暗号化データ本体
+
+    //パスワード（鍵空間の定義）
+    var secret_passphrase = CryptoJS.enc.Utf8.parse('&dHk#Dg4!L6n%3d');
+    var key128Bits500Iterations =
+    CryptoJS.PBKDF2(secret_passphrase, salt, {keySize: 128 / 8, iterations: 500 });
+
+    //復号オプション（暗号化と同様）
+    var options = {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7};
+
+    //復号
+    var decrypted = CryptoJS.AES.decrypt({"ciphertext":encrypted_data}, key128Bits500Iterations, options);
+
+    // 文字コードをUTF-8にする
+    return decrypted.toString(CryptoJS.enc.Utf8);
+}
+</script>
