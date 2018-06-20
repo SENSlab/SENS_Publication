@@ -12,61 +12,71 @@ const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b0
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
 
 
-$('#loading_bar').hide();
-
-/*******************************************/
-
-// -------------------------------
-// Awardなら受賞内容
-// それ以外ならファイル添付フォーム
-// を作成する
-// -------------------------------
-/*******************************************/
-var existFileForm = false;
 var preSelectedCategory = '';
 var category;
+var year;
+
+/**
+ * ファイルフォームが存在するかどうか
+ *     存在する: true/存在しない: faulse
+ * @type {boolean}
+ */
+var existFileForm = false;
+
+/**
+ * 添付したファイル名
+ * @type {string}
+ */
+var fileName;
+
+
+$('#loading_bar').hide();
+
+
+
 $('#award_type_parent').hide();
 $('#file_form_parent').hide();
 
+
+
+/**
+ * カテゴリーを選択した際の処理
+ * @return {void}
+ */
 $('#category_select li').on('click', function(){
     category = $(this).attr('data-val');
 
     if($(this).attr('data-val') !== preSelectedCategory){
 
-    // Make type of award when award is selected
-    if($(this).attr('data-val') === 'award'){
-        $('#file_form_parent').hide();
-        existFileForm = false;
-        $('#award_type_parent').show();
-    }
-    else if($(this).attr('data-val') !== 'award'){
-        $('#award_type_parent').hide();
-
-        if(!existFileForm){
-            $('#file_form_parent').show();
-            existFileForm = true;
+        // Make type of award when award is selected
+        if($(this).attr('data-val') === 'award'){
+            $('#file_form_parent').hide();
+            existFileForm = false;
+            $('#award_type_parent').show();
         }
+        else if($(this).attr('data-val') !== 'award'){
+            $('#award_type_parent').hide();
+
+            if(!existFileForm){
+                $('#file_form_parent').show();
+                existFileForm = true;
+            }
+        }
+        preSelectedCategory = $(this).attr('data-val');
     }
-
-    preSelectedCategory = $(this).attr('data-val');
-}
-
 });
-/*******************************************/
 
 
-// -------------------------------
-// 年の選択肢の作成
-// 2003年～現在の年
-// までを作成する
-// -------------------------------
-/*******************************************/
-// Make select option for year
-let now = new Date();
-let nowYear = now.getFullYear();
 
+/**
+ * 年の選択肢の作成（2003年～現在の年までを作成する）
+ * @return {[type]} [description]
+ */
 var addYearOptions = function(){
     return new Promise (function(resolve){
+        let now = new Date();
+        let nowYear = now.getFullYear();
+
         for(let i = parseInt(nowYear); i > 2002; --i){
             let yearOpt = '<li class=\"mdl-menu__item\" data-val=\"' + String(i) + '\">' + String(i) + '</li>';
             $('#year_select').append(yearOpt);
@@ -75,24 +85,18 @@ var addYearOptions = function(){
     });
 }
 
-var year;
 addYearOptions().then(function(){
     $('#year_select li').on('click', function(){
         year = $(this).attr('data-val');
     });
 });
-/*******************************************/
 
 
 
-
-// -------------------------------
-// 添付ファイルアップロードボタンを
-// 押した際，ファイル名を
-// 表示する
-// -------------------------------
-/*******************************************/
-var fileName;
+/**
+ * ファイルを添付した際の処理
+ * @return {void}
+ */
 $('#upload_btn')[0].onchange = function () {
     $('#uploadFile').parent().addClass('is-focused');
     $('#uploadFile').parent().removeClass('is-invalid');
@@ -109,11 +113,13 @@ $('#upload_btn')[0].onchange = function () {
         $('#uploadFile')[0].value = '';
     }
 };
-/*******************************************/
 
 
-var file_form = $('#file_form')[0];
 
+/**
+ * SUBMITボタンを押した際の処理
+ * @return {void}
+ */
 $("#submit_btn")[0].addEventListener('click', function() { ;
     if(isRequiredComplete()){
         $('html, main').scrollTop( $(document).height() );
@@ -122,17 +128,18 @@ $("#submit_btn")[0].addEventListener('click', function() { ;
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--green-900\">送信中．．． / Now sending...</div>');
         $('#loading_bar').show();
 
+        let file_form = $('#file_form')[0];
 
         handleFormSubmit(file_form, category);
     }
 });
 
-// -------------------------------
-// 必須フォームに
-// 値が入力されているかどうかを判定する
-// ret: bool(入力されている: true/入力されていない: false)
-// -------------------------------
-/*******************************************/
+
+
+/**
+ * 必須フォームに値が入力されているかどうかを判定する
+ * @return {boolean} 入力されている: true/入力されていない: false
+ */
 function isRequiredComplete(){
     let isEmpty = false;
 
@@ -171,15 +178,14 @@ function isRequiredComplete(){
     }
     return true;
 }
-/*******************************************/
 
 
-// -------------------------------
-// ファイル名が命名規則に
-// 則っているかを判定する
-// ret: bool(則っている: true/則っていない: false)
-// -------------------------------
-/*******************************************/
+
+/**
+ * ファイル名が命名規則に則っているかを判定する
+ * @param  {string}  fileName 添付したファイル名
+ * @return {boolean}          則っている: true/則っていない: false
+ */
 function isValidFileName(fileName){
     if(/^\d{4}_[0-9a-zA-Z]+_[0-9a-zA-Z]+\.[0-9a-zA-Z]+$/.test(fileName)){
         return true;
@@ -187,14 +193,15 @@ function isValidFileName(fileName){
 
     return false;
 }
-/*******************************************/
 
 
-// -------------------------------
-// カテゴリーに応じたフォルダに
-// 添付ファイルを保存する
-// -------------------------------
-/*******************************************/
+
+/**
+ * カテゴリーに応じたフォルダに添付ファイルを保存する
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @param  {string} category        ファイルを追加したいカテゴリー
+ * @return {void}
+ */
 function handleFormSubmit(formObject, category) {
     switch(category){
         case 'award':
@@ -223,16 +230,16 @@ function handleFormSubmit(formObject, category) {
             break;
     }
 }
-/*******************************************/
 
 
-// -------------------------------
-// ファイルを添付するかどうかの
-// カテゴリーに応じて（Award か Award以外か）
-// Spread Sheetにデータを登録する関数set*InSpreadSheetに
-// データを渡す
-// -------------------------------
-/*******************************************/
+
+/**
+ * ファイルを添付するかどうかのカテゴリーに応じて(award か award以外か)
+ *     Spread Sheetにデータを登録する関数set*InSpreadSheetにデータを渡す
+ * @param  {string} url 編集後のfileのurl
+ *     (awardの時は'Success'というメタ文字列使用)
+ * @return {void}
+ */
 function sendData(url) {
     let detail = $('#detail_text').val();
 
@@ -250,14 +257,14 @@ function sendData(url) {
     $('#loading_bar').hide();
     $('#submit_btn').attr('disabled', false);
 }
-/*******************************************/
 
 
-// -------------------------------
-// クライアントサイドの
-// データを復号する
-// -------------------------------
-/*******************************************/
+
+/**
+ * クライアントサイドのデータを復号する
+ * @param  {string} encryptedString 暗号化された文字列
+ * @return {string}                 復号後の文字列
+ */
 function decrypt(encryptedString){
     var array_rawData = encryptedString.split(',');
 
@@ -276,7 +283,6 @@ function decrypt(encryptedString){
     //復号
     var decrypted = CryptoJS.AES.decrypt({"ciphertext":encrypted_data}, key128Bits500Iterations, options);
     // 文字コードをUTF-8にする
-
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
 </script>
