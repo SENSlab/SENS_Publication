@@ -11,30 +11,51 @@ var SPREADSHEET_HP_EDIT_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_EDIT_ID);
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
 
+var preSelectedCategory = '';
+var category;
+var year;
+
+/**
+ * 押したマイナスボタンのid
+ * @type {String}
+ */
+var minusBtnOnId = 'null';
+
+/**
+ * 削除したい行番号
+ * @type {number}
+ */
+var deleteRowIndex;
+
+/**
+ * 削除したいデータがその年の唯一のデータかどうか
+ * 唯一のデータ: true/唯一のデータではない: faulse
+ * @type {boolean}
+ */
+var isLastDataInYear = false;
+
 $('#loading_bar').hide();
 $('#delete_btn').attr('disabled', true);
 
 
 
-// -------------------------------
-// Awardなら受賞内容
-// それ以外ならファイル添付フォーム
-// を作成する
-// -------------------------------
-/*******************************************/
-var existFileForm = false;
-var preSelectedCategory = '';
-var category;
-var isLastDataInYear = false;
-
+/**
+ * カテゴリーを選択した際の処理
+ * @return {void}
+ */
 $('#category_select li').on('click', function(){
     getmdlSelect.init('#year_select_parent');
     category = $(this).attr('data-val');
     google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_PRIVATE_ID, category);
 });
-/*******************************************/
 
 
+
+/**
+ * 年フォームの選択肢に配列として指定した年を追加する
+ * @param  {Array.<string>} yearArray 年の配列
+ * @return {void}
+ */
 function createYear(yearArray){
     $('#year_select').empty();
 
@@ -46,15 +67,22 @@ function createYear(yearArray){
 
 }
 
-var year;
 
+
+/**
+ * 年を選択した際の処理
+ * @return {void}
+ */
 $('#year_select').on('click', 'li', function(){
     year = $(this).attr('data-val');
 });
 
 
 
-
+/**
+ * SEARCHボタンを押した際の処理
+ * @return {void}
+ */
 $("#search_btn")[0].addEventListener('click', function() {
     if(isRequiredComplete()){
         if(minusBtnOnId != 'null'){
@@ -72,8 +100,12 @@ $("#search_btn")[0].addEventListener('click', function() {
     }
 });
 
-var deleteRowIndex;
 
+
+/**
+ * DELETEボタンを押した際の処理
+ * @return {void}
+ */
 $("#delete_btn")[0].addEventListener('click', function() {
     if(isRequiredComplete()){
         $('#delete_btn').attr('disabled', true);
@@ -91,6 +123,12 @@ $("#delete_btn")[0].addEventListener('click', function() {
     }
 });
 
+
+
+/**
+ * 削除が完了したことを表示する
+ * @return {void}
+ */
 function showDeleteResult(){
     $('#delete_btn').attr('disabled', false);
     $('#result').empty();
@@ -98,6 +136,14 @@ function showDeleteResult(){
     $('#loading_bar').hide();
 }
 
+
+
+/**
+ * 検索結果を表示する
+ * @param  {{Array.<Array.<string>>} result SpreadSheetから取得した，検索結果であるセル内の値を
+ *     2次元配列データとして格納したもの（第一要素: 行 第二要素: 列）
+ * @return {void}
+ */
 function showSearchResult(result){
     $('#search_btn').attr('disabled', false);
     $('#loading_bar').hide();
@@ -150,9 +196,12 @@ function showSearchResult(result){
     $('#search_result').append(shapedResult);
 }
 
-var minusBtnOnId = 'null';
 
 
+/**
+ * マイナスボタンを押したときの処理
+ * @return {void}
+ */
 $('#search_result').on('click', '.minus_btn', function() {
     deleteRowIndex = $(this).attr('value');
 
@@ -195,12 +244,12 @@ $('#search_result').on('click', '.minus_btn', function() {
 
 });
 
-// -------------------------------
-// 必須フォームに
-// 値が入力されているかどうかを判定する
-// ret: bool(入力されている: true/入力されていない: false)
-// -------------------------------
-/*******************************************/
+
+
+/**
+ * 必須フォームに値が入力されているかどうかを判定する
+ * @return {boolean} 入力されている: true/入力されていない: false
+ */
 function isRequiredComplete(){
     let isEmpty = false;
 
@@ -223,15 +272,14 @@ function isRequiredComplete(){
     }
     return true;
 }
-/*******************************************/
 
 
-/*******************************************/
-// -------------------------------
-// クライアントサイドの
-// データを復号する
-// -------------------------------
-/*******************************************/
+
+/**
+ * クライアントサイドのデータを復号する
+ * @param  {string} encryptedString 暗号化された文字列
+ * @return {string}                 復号後の文字列
+ */
 function decrypt(encryptedString){
     var array_rawData = encryptedString.split(',');
 
@@ -249,12 +297,8 @@ function decrypt(encryptedString){
 
     //復号
     var decrypted = CryptoJS.AES.decrypt({"ciphertext":encrypted_data}, key128Bits500Iterations, options);
-    // 文字コードをUTF-8にする
 
+    // 文字コードをUTF-8にする
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
-
-
-
-
 </script>
