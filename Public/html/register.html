@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!--jQuery 3.2.1-->
+    <?!= include('jquery3-2-1_min_js'); ?>
+
+    <!--getmdl-->
+    <?!= include('Material-Icons'); ?>
+    <?!= include('mdl1-3-0_material_min_css'); ?>
+    <?!= include('mdl1-3-0_material_min_js'); ?>
+
+    <!--getmdl-select-->
+    <?!= include('getmdl-select_min_js'); ?>
+    <?!= include('getmdl-select_min_css'); ?>
+
+    <!--my custom-->
+    <?!= include('myCustomRegister_css'); ?>
+
+    <!--font awesome-->
+    <?!= include('fontawesome-all5-0-13_js'); ?>
+
+    <!--crypto-js-->
+    <?!= include('cryptoJs3-1-2-aes_js'); ?>
+    <?!= include('cryptoJs3-1-2-pbkdf2_js'); ?>
+
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-color--green-900">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">Sens Publication Register</span>
+                <div class="mdl-layout-spacer"></div>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">メニュー</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwm5QXOywlJLLPlvTf5VNF-t3E88CnhYOD1ddNMHi8/dev?p=editor">編集用フォーム</a>
+                <a class="mdl-navigation__link" href="https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwm5QXOywlJLLPlvTf5VNF-t3E88CnhYOD1ddNMHi8/dev?p=remover">削除用フォーム</a>
+            </nav>
+        </div>
+        <main class="mdl-layout__content">
+            <!--コンテンツ-->
+            <div class="page-content">
+                <div class="mdl-grid">
+                    <div class="mdl-color--white mdl-cell mdl-cell--6-col">
+                        <h5 class="mdl-color-text--black">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            注意点 / Notes
+                        </h5>
+
+                        <u><h6 class="mdl-color-text--black">
+                            受賞内容の記入例 / Ex. of Type of Award
+                        </h6></u>
+                        最優秀発表賞, 楠本賞
+                        <br><br>
+                        Best Paper Runner Up Award (IEEE ISMAR 2016), Best Student Volunteer (ACM UIST 2016)
+
+                        <u><h6 class="mdl-color-text--black">
+                            詳細(受賞)の記入例 / Ex. of Detail (Other than Award)
+                        </h6></u>
+                        竹澤拓朗
+                        <br><br>
+                        Parinya Punpongsanon
+
+                        <u><h6 class="mdl-color-text--black">
+                            詳細(受賞以外)の記入例 / Ex. of Detail (Award)
+                        </h6></u>
+                        上田雄太, 浅井唯貴, 榎本龍一, 新明拓也, 武村紀子, 岩井大輔, 佐藤宏介,
+                        "タブレット駆動型身体拡張インタフェース ～スタンドアローン型ExtendedHand～",
+                        情報処理学会インタラクション2016論文集,
+                        pp. 1004-1009,
+                        2016.
+                        <br><br>
+                        Hirotaka Asayama, Daisuke Iwai, and Kosuke Sato,
+                        "Fabricating Diminishable Visual Markers for Geometric Registration in Projection Mapping",
+                        IEEE Transactions on Visualization and Computer Graphics,
+                        Vol. 24,
+                        No. 2,
+                        pp. 1091-1102,
+                        2018.
+
+                        <u><h6 class="mdl-color-text--black">
+                            ファイルの命名規則 / File naming rule
+                        </h6></u>
+                        <div class="mdl-color-text--red-800">
+                            ファイル名は、Year_JournalName or BookName or ConferenceName_AuthorName.pdfのようにしてください。<br>
+                            つまり、以下の命名規則に則っていないファイル名は無効としています。<br>
+                            [4桁の半角数字]_[1文字以上の半角英数字]_[1文字以上の半角英数字].[1文字以上の半角英数字]<br>
+                        </div>
+                        ([]はファイル名に含めないでください。説明用の表現です。)
+                        <br><br>
+                        <div class="mdl-color-text--red-800">
+                            Please rename your file name like this: Year_JournalName or BookName or ConferenceName_AuthorName.pdf<br>
+                            Please follow the following naming rule.<br>
+                            [4 digit number]_[One or more alphanumeric characters]_[One or more alphanumeric characters].[One or more alphanumeric characters]<br>
+                        </div>
+                        (Do not include [] in the file name. It is an expression for explanation.)
+
+
+                        <u><h6 class="mdl-color-text--black">
+                            ファイル名の例 / Ex. of File Name
+                        </h6></u>
+                        2018_IEEEHapticsSymposium_Tanabe.pdf
+                        <br>
+                        2018_SCI_Hiratani.pdf
+                        <br>
+                        2017_ACMSCF_Hagino.pdf
+                    </div>
+                </div>
+
+                <div class="mdl-grid">
+                    <div class="mdl-color--white mdl-cell mdl-cell--5-col">
+                        <h5 class="mdl-color-text--black">
+                            <i class="fas fa-plus-circle"></i>
+                            追加用フォーム
+                        </h5>
+                        <div class="mdl-color-text--red-800">*: 必須項目 / Required</div>
+
+                        <!--選択ボックス（カテゴリー / Category）-->
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+                            <input type="text" value="" class="mdl-textfield__input" id="category_box" readonly>
+                            <input type="hidden" value="" >
+                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>カテゴリー / Category</label>
+                            <ul  class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="category_select">
+                                <li class="mdl-menu__item" data-val="award">受賞 / Award</li>
+                                <li class="mdl-menu__item" data-val="journal">論文 / Journal Papers</li>
+                                <li class="mdl-menu__item" data-val="international_conference">国際会議 / International Conference</li>
+                                <li class="mdl-menu__item" data-val="domestic_conference">国内会議 / Domestic Conference</li>
+                                <li class="mdl-menu__item" data-val="survey">解説記事 / Survey</li>
+                                <li class="mdl-menu__item" data-val="press">報道発表 / Press</li>
+                                <li class="mdl-menu__item" data-val="book">著書 / Book</li>
+                                <li class="mdl-menu__item" data-val="unknown">不明 / Unknown</li>
+                            </ul>
+                            <span class="mdl-textfield__error">選択してください / Required</span>
+                        </div>
+
+                        <!--選択ボックス（年 / Year）-->
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+                            <input type="text" value="" class="mdl-textfield__input" id="year_box" readonly>
+                            <input type="hidden" value="" >
+                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                            <label  class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>年 / Year</label>
+                            <ul  class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="year_select"></ul>
+                            <span class="mdl-textfield__error">選択してください / Required</span>
+                        </div>
+
+                        <!--テキストエリア（受賞内容 / Type of Award）-->
+                        <div id="award_type_parent">
+                            <form action="#">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>受賞内容 / Type of Award</label>
+                                    <textarea class="mdl-textfield__input" type="text" rows= "3" id="award_type" ></textarea>
+                                    <span class="mdl-textfield__error">入力してください / Required</span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--テキストエリア（詳細 / Detail）-->
+                        <form action="#">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>詳細 / Detail</label>
+                                <textarea class="mdl-textfield__input" type="text" rows= "3" id="detail_text"></textarea>
+                                <span class="mdl-textfield__error">入力してください / Required</span>
+                            </div>
+                        </form>
+
+                        <!--ファイルアップロード（ファイル / File）-->
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--file mdl-textfield--floating-label" id="file_form_parent">
+                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>ファイル / File</label>
+                            <input class="mdl-textfield__input" type="text" id="uploadFile" readonly/>
+                            <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
+                                <i class="material-icons">attach_file</i><form id="file_form"><input name="attached_file" type="file" id="upload_btn"/></form>
+                            </div>
+                            <span class="mdl-textfield__error" id="attached_error">添付してください / Required</span>
+                            <span class="mdl-textfield__error" id="filename_error">Rename: Year_ConferenceName or etc_AuthorName.*</span>
+                        </div>
+
+                        <p></p>
+
+                        <!--ボタン-->
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--green-900 mdl-color-text--white" id="submit_btn">
+                        Submit
+                        </button>
+
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="mdl-color--white mdl-cell mdl-cell--5-col mdl-grid">
+                    <div id="result"></div>
+                </div>
+
+                <div class="mdl-color--white mdl-cell mdl-cell--5-col mdl-grid">
+                    <div id="loading_bar" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+                </div>
+
+                <footer class="mdl-layout__footer mdl-color--green-900">
+                    <div class="mdl-layout__header-row">
+                        <div class="mdl-layout-title mdl-color-text--white">
+                            <font size="3">Since 2018 © SENS Laboratory (Osaka University)</font><br>
+                            <font size="2">Design by
+                                <u><a href="https://github.com/narugit" target="_blank" class="footer_link">Naruki</a></u>.
+                                All Rights Reserved.
+                            </font>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                </footer>
+
+            </div>
+        </main>
+
+
+    </div>
+    <?!= include('mainRegister_js'); ?>
+</body>
+</html>
