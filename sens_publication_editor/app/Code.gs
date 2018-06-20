@@ -167,6 +167,24 @@ function searchByCategoryAndYear(SPREADSHEET_ID, category, year){
 
 
 /**
+ * Spread Sheet内において，現在の行が出力したい年の
+ *     最終行かどうかを判定する
+ * @param  {Array.<Array.<string>>} values SpreadSheetから取得した，ある範囲内のセル内の値を
+ *     2次元配列データとして格納したもの
+ * @param  {string}  year   index.html内で選択された年
+ * @param  {number}  i      Spread Sheetにおける行インデックス
+ * @return {boolean}        true: i行目が最終行  false: i行目が最終行ではない
+ */
+function isEndOfYear(values, year, i){
+  if(values[i+1] === undefined || values[i+1][0] !== ''){
+    return true;
+  }
+  return false;
+}
+
+
+
+/**
  * 指定されたカテゴリーに対応するsheetを取得する
  * @param  {Spreadsheet} spreadSheet 指定したSpread Sheet
  * @param  {string} category    指定したカテゴリー
@@ -224,10 +242,12 @@ function getFolderIdByCategory(category){
 
 
 /**
- * 指定行に存在するAward情報をSheetから削除する
- * @param  {string} SPREADSHEET_ID 指定したSpread SheetのID
- * @param  {string} category       指定したカテゴリー
+ * 指定行に存在する指定表頭の情報を編集する（Award用）
+ * @param  {string} SPREADSHEET_ID 編集したいSpread SheetのID
+ * @param  {string} category       編集したいカテゴリー
  * @param  {number} editRowIndex   編集したい行番号
+ * @param  {string} editElement    編集したい表頭（'award' or 'detail'）
+ * @param  {string} editedContent  編集後の内容
  * @return {void}
  */
 function editAward(SPREADSHEET_ID, category, editRowIndex, editElement, editedContent){
@@ -243,6 +263,16 @@ function editAward(SPREADSHEET_ID, category, editRowIndex, editElement, editedCo
 
 }
 
+
+
+/**
+ * 指定行に存在するdetail情報を編集する(Award以外のカテゴリー用)
+ * @param  {string} SPREADSHEET_ID 編集したいSpread SheetのID
+ * @param  {string} category       編集したいカテゴリー
+ * @param  {number} editRowIndex   編集したい行番号
+ * @param  {string} editedContent  編集後の内容
+ * @return {void}
+ */
 function editPublication(SPREADSHEET_ID, category, editRowIndex, editedContent){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
@@ -252,6 +282,15 @@ function editPublication(SPREADSHEET_ID, category, editRowIndex, editedContent){
 
 
 
+/**
+ * 指定行に存在するfile情報を編集する(Award以外のカテゴリー用)
+ * @param  {string} SPREADSHEET_ID 編集したいSpread SheetのID
+ * @param  {string} category       編集したいカテゴリー
+ * @param  {string} url            編集前のfileのurl
+ * @param  {number} editRowIndex   編集したい行番号
+ * @param  {string} editedFileName 編集後のfileの名前
+ * @return {void}
+ */
 function editPublicationFile(SPREADSHEET_ID, category, url, editRowIndex, editedFileName){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
@@ -410,22 +449,4 @@ function processFormUnknown(formObject) {
   var file_url = drive_file.getUrl();
 
   return file_url;
-}
-
-
-
-/**
- * Spread Sheet内において，現在の行が出力したい年の
- *     最終行かどうかを判定する
- * @param  {Array.<Array.<string>>} values SpreadSheetから取得した，ある範囲内のセル内の値を
- *     2次元配列データとして格納したもの
- * @param  {string}  year   index.html内で選択された年
- * @param  {number}  i      Spread Sheetにおける行インデックス
- * @return {boolean}        true: i行目が最終行  false: i行目が最終行ではない
- */
-function isEndOfYear(values, year, i){
-  if(values[i+1] === undefined || values[i+1][0] !== ''){
-    return true;
-  }
-  return false;
 }
