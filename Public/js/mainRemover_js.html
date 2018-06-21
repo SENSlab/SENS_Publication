@@ -108,7 +108,7 @@ $("#search_btn")[0].addEventListener('click', function() {
  */
 $("#delete_btn_parent").on('click', '#delete_btn', function() {
     if(isRequiredComplete()){
-        $('#delete_btn').attr('disabled', true);
+        $('#delete_btn').hide();
         $('#result').empty();
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">削除中．．． / Now deleting...</div>');
         $('#loading_bar').show();
