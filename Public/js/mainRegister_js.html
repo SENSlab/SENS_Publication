@@ -3,10 +3,6 @@
 const ENCRYPTED_SPREADSHEET_HP_ID = 'ddc70788a0e35a8833805b99a19f141b,3a70d873d07b0dad959085fec8f02403,MTxY3vz8Kz0q/cj36EpLxKTAQyiXeFyJx3Y1oSew9Sg34ShKVzmGw1GHigZdef3n';
 var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
 
-// "sens publication for homepage (edit/delete)"
-const ENCRYPTED_SPREADSHEET_HP_EDIT_ID = '2d90152a1426401d288b7389661f62a6,bb0536f92c76b6330bc553a5eb2e1805,Ua+dp4XPxdWt+jrEGYfs3JcZ7PznvXS1IQTt05VlPj7ziCFkekwqOMRuRhbMEQvq';
-var SPREADSHEET_HP_EDIT_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_EDIT_ID);
-
 // "sens publication (private)"
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
@@ -201,28 +197,28 @@ function isValidFileName(fileName){
 function handleFormSubmit(formObject, category) {
     switch(category){
         case 'award':
-          google.script.run.withSuccessHandler(sendData).processFormAward();
+          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormAward();
           break;
         case 'journal':
-          google.script.run.withSuccessHandler(sendData).processFormJournal(formObject);
+          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormJournal(formObject);
           break;
         case 'international_conference':
-          google.script.run.withSuccessHandler(sendData).processFormInternationalConference(formObject);
+          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormInternationalConference(formObject);
           break;
         case 'domestic_conference':
-          google.script.run.withSuccessHandler(sendData).processFormDomesticConference(formObject);
+          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormDomesticConference(formObject);
           break;
         case 'survey':
-          google.script.run.withSuccessHandler(sendData).processFormSurvey(formObject);
+          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormSurvey(formObject);
           break;
         case 'press':
-          google.script.run.withSuccessHandler(sendData).processFormPress(formObject);
+          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormPress(formObject);
           break;
         case 'book':
-          google.script.run.withSuccessHandler(sendData).processFormBook(formObject);
+          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormBook(formObject);
           break;
         case 'unknown':
-            google.script.run.withSuccessHandler(sendData).processFormUnknown(formObject);
+            google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormUnknown(formObject);
             break;
     }
 }
@@ -231,7 +227,7 @@ function handleFormSubmit(formObject, category) {
 
 /**
  * ファイルを添付するかどうかのカテゴリーに応じて(award か award以外か)
- *     Spread Sheetにデータを登録する関数set*InSpreadSheetにデータを渡す
+ *     Spread Sheetにデータを登録する関数set*In*SpreadSheetにデータを渡す
  * @param  {string} url 編集後のfileのurl
  *     (awardの時は'Success'というメタ文字列使用)
  * @return {void}
@@ -241,15 +237,62 @@ function sendData(url) {
 
     if(category === 'award'){
         let award_type = $('#award_type').val();
-        google.script.run.setAwardInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, award_type, detail);
+        if($('#private_checkbox').is(':checked')){
+            google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setAwardInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, year, award_type, detail);
+        }
+
+        if($('#public_checkbox').is(':checked')){
+            google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setAwardInPublicSpreadSheet(SPREADSHEET_HP_ID, year, award_type, detail);
+        }
     }
 
     else if(category !== 'award'){
-        google.script.run.setPublicationWithFileInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, url, category, fileName);
+        if($('#private_checkbox').is(':checked')){
+            google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setPublicationWithFileInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, url, category, fileName);
+        }
+
+        if($('#public_checkbox').is(':checked')){
+            google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setPublicationWithFileInPublicSpreadSheet(SPREADSHEET_HP_ID, year, detail, category);
+        }
     }
 
+}
+
+
+
+/**
+ * データの追加が成功したことを表示する
+ * @return {void}
+ */
+function showResultSuccess(){
     $('#result').empty();
     $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--blue\">送信しました． / Complete.</div>')
+    $('#loading_bar').hide();
+    $('#submit_btn').attr('disabled', false);
+}
+
+
+
+/**
+ * データの追加が失敗したことを表示する
+ * @return {void}
+ */
+function showResultSpreadSheetError(){
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--blue\">データの追加に失敗しました． / Fail to add data in spreadsheet.</div>')
+    $('#loading_bar').hide();
+    $('#submit_btn').attr('disabled', false);
+}
+
+
+
+/**
+ * ファイルの追加が失敗したことを表示する
+ * @return {void}
+ */
+function showResultFileError(){
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--blue\">ファイルの追加に失敗しました． / Fail to add file in spreadsheet.</div>')
     $('#loading_bar').hide();
     $('#submit_btn').attr('disabled', false);
 }
