@@ -58,9 +58,8 @@ var editedFileName;
 var editedContent;
 
 $('#loading_bar').hide();
-$('#edit_btn').attr('disabled', true);
+$('#edit_btn').hide();
 dynamicalFormHide();
-
 
 /**
  * 動的に追加するフォームをすべて隠す
@@ -125,6 +124,7 @@ $('#year_select').on('click', 'li', function(){
  */
 $('#award_edit_element_select').on('click', 'li', function(){
     editElement = $(this).attr('data-val');
+    $('#edit_btn').show();
 
     if(editElement === 'award'){
         $('#detail_text_parent').hide();  //detail編集フォームを隠す
@@ -146,6 +146,7 @@ $('#award_edit_element_select').on('click', 'li', function(){
  */
 $('#publication_edit_element_select').on('click', 'li', function(){
     editElement = $(this).attr('data-val');
+    $('#edit_btn').show();
 
     if(editElement === 'detail'){
         $('#file_form_parent').hide();
@@ -214,9 +215,9 @@ $("#search_btn")[0].addEventListener('click', function() {
  * EDITボタンを押した際の処理
  * @return {void}
  */
-$("#edit_btn")[0].addEventListener('click', function() {
+$("#edit_btn_parent").on('click', '#edit_btn', function() {
     if(isRequiredComplete()){
-        $('#edit_btn').attr('disabled', true);
+        $('#edit_btn').hide();
         $('#result').empty();
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">編集中．．． / Now editing...</div>');
         $('#loading_bar').show();
@@ -372,8 +373,6 @@ $('#search_result').on('click', '.pencil_btn', function() {
     dynamicalFormHide();
 
     if($(this).hasClass('on')){
-        $('#edit_btn').attr('disabled', true);
-
         if(category === 'award'){
             $('#award_edit_element_select_parent').hide();
         }
@@ -395,8 +394,6 @@ $('#search_result').on('click', '.pencil_btn', function() {
     }
 
     else if(!$(this).hasClass('on')){
-        $('#edit_btn').attr('disabled', false);
-
         if(category === 'award'){
             $('#award_edit_element_select_parent').show();
         }
@@ -406,13 +403,12 @@ $('#search_result').on('click', '.pencil_btn', function() {
 
         if(pencilBtnOnId != 'null'){
             $('#' + pencilBtnOnId).trigger('click');
-            $('#edit_btn').attr('disabled', false);
 
             if(category === 'award'){
                 $('#award_edit_element_select_parent').show();
             }
             else if(category !== 'award'){
-            $('#publication_edit_element_select_parent').show();
+                $('#publication_edit_element_select_parent').show();
             }
         }
 
