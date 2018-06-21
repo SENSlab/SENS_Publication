@@ -11,27 +11,67 @@ var SPREADSHEET_HP_EDIT_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_EDIT_ID);
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
 
-
 var preSelectedCategory = '';
 var category;
 var year;
 
 /**
- * ファイルフォームが存在するかどうか
- *     存在する: true/存在しない: faulse
- * @type {boolean}
+ * Spread Sheetから取得した情報を2次元配列として格納
+ * @type {Array.<Array.<string>>}
  */
-var existFileForm = false;
+var searchResultArray;
 
 /**
- * 添付したファイル名
+ * 押した鉛筆ボタンのid
+ * @type {String}
+ */
+var pencilBtnOnId = 'null';
+
+/**
+ * 編集したい行番号
+ * @type {number}
+ */
+var editRowIndex;
+
+/**
+ * 編集項目
  * @type {string}
  */
-var fileName;
+var editElement;
+
+/**
+ * 編集したいデータのsearchResultArrayにおける第一要素番号
+ * @type {number}
+ */
+var editElementIndex;
+
+/**
+ * 編集後のファイル名
+ * @type {string}
+ */
+var editedFileName;
+
+/**
+ * 編集内容
+ * @type {string}
+ */
+var editedContent;
 
 $('#loading_bar').hide();
-$('#award_type_parent').hide();
-$('#file_form_parent').hide();
+$('#edit_btn').hide();
+dynamicalFormHide();
+
+/**
+ * 動的に追加するフォームをすべて隠す
+ * @return {void}
+ */
+function dynamicalFormHide(){
+    $('#award_edit_element_select_parent').hide();
+    $('#publication_edit_element_select_parent').hide();
+    $('#award_type_parent').hide();
+    $('#detail_text_parent').hide();
+    $('#file_form_parent').hide();
+}
 
 
 
@@ -40,51 +80,85 @@ $('#file_form_parent').hide();
  * @return {void}
  */
 $('#category_select li').on('click', function(){
+    dynamicalFormHide();  //動的フォームを全て隠す
+    getmdlSelect.init('#year_select_initializer');  //年フォームを初期化する
     category = $(this).attr('data-val');
+    google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_PRIVATE_ID, category);  //指定したSpread Sheet, カテゴリーに存在する年を
+                                                                                                    //検索後，年のフォームの選択肢に追加する
+});
 
-    if($(this).attr('data-val') !== preSelectedCategory){
 
-        // Make type of award when award is selected
-        if($(this).attr('data-val') === 'award'){
-            $('#file_form_parent').hide();
-            existFileForm = false;
-            $('#award_type_parent').show();
-        }
-        else if($(this).attr('data-val') !== 'award'){
-            $('#award_type_parent').hide();
 
-            if(!existFileForm){
-                $('#file_form_parent').show();
-                existFileForm = true;
-            }
-        }
-        preSelectedCategory = $(this).attr('data-val');
+/**
+ * 年フォームの選択肢に配列として指定した年を追加する
+ * @param  {Array.<string>} yearArray 年の配列
+ * @return {void}
+ */
+function createYear(yearArray){
+    $('#year_select').empty();
+
+    for(let i = 0; i < yearArray.length; ++i){
+        let yearOpt = '<li class=\"mdl-menu__item\" data-val=\"' + yearArray[i] + '\">' + yearArray[i] + '</li>';
+        $('#year_select').append(yearOpt);
+        getmdlSelect.init('#year_select_initializer');
+    }
+
+}
+
+
+
+/**
+ * 年を選択した際の処理
+ * @return {void}
+ */
+$('#year_select').on('click', 'li', function(){
+    dynamicalFormHide();  //動的フォームを全て隠す
+    year = $(this).attr('data-val');
+});
+
+
+
+/**
+ * awardカテゴリーにおいて，編集項目('award' or 'detail')を選択した際の処理
+ * @return {void}
+ */
+$('#award_edit_element_select').on('click', 'li', function(){
+    editElement = $(this).attr('data-val');
+    $('#edit_btn').show();
+
+    if(editElement === 'award'){
+        $('#detail_text_parent').hide();  //detail編集フォームを隠す
+        $('#award_type_parent').show();  //award type編集フォームを表示する
+        $('#award_type').val(searchResultArray[editElementIndex][0]).parent().addClass('is-focused');  //編集前のaward typeの内容をaward type編集フォームにセットする
+    }
+    else if(editElement === 'detail'){
+        $('#award_type_parent').hide();  //award type編集フォームを隠す
+        $('#detail_text_parent').show();  //detail編集フォームを表示する
+        $('#detail_text').val(searchResultArray[editElementIndex][1]).parent().addClass('is-focused');  //編集前のdetailの内容をdetail編集フォームにセットする
     }
 });
 
 
 
 /**
- * 年の選択肢の作成（2003年～現在の年までを作成する）
- * @return {[type]} [description]
+ * award以外のカテゴリーにおいて，編集項目('detail' or 'file')を選択した際の処理
+ * @return {void}
  */
-var addYearOptions = function(){
-    return new Promise (function(resolve){
-        let now = new Date();
-        let nowYear = now.getFullYear();
+$('#publication_edit_element_select').on('click', 'li', function(){
+    editElement = $(this).attr('data-val');
+    $('#edit_btn').show();
 
-        for(let i = parseInt(nowYear); i > 2002; --i){
-            let yearOpt = '<li class=\"mdl-menu__item\" data-val=\"' + String(i) + '\">' + String(i) + '</li>';
-            $('#year_select').append(yearOpt);
-        }
-        resolve('Success');
-    });
-}
-
-addYearOptions().then(function(){
-    $('#year_select li').on('click', function(){
-        year = $(this).attr('data-val');
-    });
+    if(editElement === 'detail'){
+        $('#file_form_parent').hide();
+        $('#detail_text_parent').show();
+        $('#detail_text').val(searchResultArray[editElementIndex][0]).parent().addClass('is-focused');
+    }
+    else if(editElement === 'file'){
+        $('#detail_text_parent').hide();
+        $('#file_form_parent').show();
+        $('#uploadFile').parent().addClass('is-focused');
+        $('#uploadFile')[0].value = searchResultArray[editElementIndex][1];
+    }
 });
 
 
@@ -99,7 +173,7 @@ $('#upload_btn')[0].onchange = function () {
 
     if(isValidFileName(this.files[0].name)){
         $('#uploadFile')[0].value = this.files[0].name;
-        fileName = this.files[0].name;
+        editedFileName = this.files[0].name;
     }
 
     else if(!isValidFileName(this.files[0].name)){
@@ -113,20 +187,244 @@ $('#upload_btn')[0].onchange = function () {
 
 
 /**
- * SUBMITボタンを押した際の処理
+ * SEARCHボタンを押した際の処理
  * @return {void}
  */
-$("#submit_btn")[0].addEventListener('click', function() { ;
+$("#search_btn")[0].addEventListener('click', function() {
     if(isRequiredComplete()){
-        $('html, main').scrollTop( $(document).height() );
-        $('#submit_btn').attr('disabled', true);
+        if(pencilBtnOnId != 'null'){
+            $('#' + pencilBtnOnId).trigger('click');
+            $('#edit_btn').attr('disabled', false);
+            pencilBtnOnId = 'null'
+        }
+
+        $('#award_edit_element_select_parent').hide();
+        $('#search_btn').attr('disabled', true);
         $('#result').empty();
-        $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--green-900\">送信中．．． / Now sending...</div>');
+        $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">検索中．．． / Now searching...</div>');
         $('#loading_bar').show();
+        $('#search_result').empty();
+        google.script.run.withSuccessHandler(showSearchResult).searchEditDataByCategoryAndYear(SPREADSHEET_PRIVATE_ID, category, year);  //指定したSpread Sheet, カテゴリー，年に存在する情報を取得する
+                                                                                                                                 //取得後，画面に取得情報を表示する
+    }
+});
 
-        let file_form = $('#file_form')[0];
 
-        handleFormSubmit(file_form, category);
+
+/**
+ * EDITボタンを押した際の処理
+ * @return {void}
+ */
+$("#edit_btn_parent").on('click', '#edit_btn', function() {
+    if(isRequiredComplete()){
+        $('#edit_btn').hide();
+        $('#result').empty();
+        $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">編集中．．． / Now editing...</div>');
+        $('#loading_bar').show();
+        $('#search_result').empty();
+
+        //対応するカテゴリーの編集内容を取得し，指定したSpread Sheetに情報をセットする
+        if(category == 'award'){
+            if(editElement === 'award'){
+                editedContent = $('#award_type').val();
+            }
+            else if(editElement === 'detail'){
+                editedContent = $('#detail_text').val();
+            }
+            google.script.run.withSuccessHandler(showEditResult).editAward(SPREADSHEET_PRIVATE_ID, category, editRowIndex, editElement, editedContent);
+        }
+        else if(category != 'award'){
+            if(editElement === 'detail'){
+                editedContent = $('#detail_text').val();
+                google.script.run.withSuccessHandler(showEditResult).editPublication(SPREADSHEET_PRIVATE_ID, category, editRowIndex, editedContent);
+            }
+            else if(editElement === 'file'){
+                let file_form = $('#file_form')[0];
+                handleFormSubmit(file_form, category);
+            }
+        }
+    }
+});
+
+
+
+/**
+ * カテゴリーに応じたフォルダに添付ファイルを保存する
+ * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
+ * @param  {string} category        ファイルを追加したいカテゴリー
+ * @return {void}
+ */
+function handleFormSubmit(formObject, category) {
+    switch(category){
+        case 'journal':
+            google.script.run.withSuccessHandler(sendData).processFormJournal(formObject);
+            break;
+        case 'international_conference':
+            google.script.run.withSuccessHandler(sendData).processFormInternationalConference(formObject);
+            break;
+        case 'domestic_conference':
+            google.script.run.withSuccessHandler(sendData).processFormDomesticConference(formObject);
+            break;
+        case 'survey':
+            google.script.run.withSuccessHandler(sendData).processFormSurvey(formObject);
+            break;
+        case 'press':
+            google.script.run.withSuccessHandler(sendData).processFormPress(formObject);
+            break;
+        case 'book':
+            google.script.run.withSuccessHandler(sendData).processFormBook(formObject);
+            break;
+        case 'unknown':
+            google.script.run.withSuccessHandler(sendData).processFormUnknown(formObject);
+            break;
+    }
+}
+
+
+
+/**
+ * 指定したSpread Sheetにfile情報をセットする
+ * @param  {string} url 編集後のfileのurl
+ * @return {void}
+ */
+function sendData(url) {
+    google.script.run.withSuccessHandler(showEditResult).editPublicationFile(SPREADSHEET_PRIVATE_ID, category, url, editRowIndex, editedFileName);
+}
+
+
+
+/**
+ * 編集が完了したことを表示する
+ * @return {void}
+ */
+function showEditResult(){
+    $('#edit_btn').attr('disabled', false);
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">編集しました / Edited</div>');
+    $('#loading_bar').hide();
+    dynamicalFormHide();
+}
+
+
+
+/**
+ * 検索結果を表示する
+ * @param  {{Array.<Array.<string>>} result SpreadSheetから取得した，検索結果であるセル内の値を
+ *     2次元配列データとして格納したもの（第一要素: 行 第二要素: 列）
+ * @return {void}
+ */
+function showSearchResult(result){
+    searchResultArray = result;
+
+    $('#search_btn').attr('disabled', false);
+    $('#loading_bar').hide();
+    $('#result').empty();
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">検索完了 / Searched</div>');
+    $('#search_result').empty();
+
+
+    let shapedResult =
+    '<table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\" id=\"result_table\">' +
+        '<thead>' +
+            '<tr>' +
+                '<th class=\"mdl-data-table__cell--non-numeric\"></th>' +
+                '<th>' +
+                result[0][0] +
+                '</th>' +
+                '<th>' +
+                result[0][1] +
+                '</th>' +
+            '</tr>' +
+        '</thead>' +
+        '<tbody>';
+
+    for(let i=1; i<result.length; i++) {
+        if(result[i][0] !== ''){
+            shapedResult +=
+            '<tr>' +
+                '<td class=\"mdl-data-table__cell--non-numeric\">' +
+                    '<i class=\"fas fa-pencil-alt fa-lg pencil_btn\" value=\"' + String(result[i][2]) + '\" id=\"pencil_btn_' + String(i) + '\"></i>' +
+                '</td>' +
+                '<td>' +
+                    result[i][0] +
+                '</td>' +
+                '<td>' +
+                    result[i][1] +
+                '</td>' +
+            '</tr>';
+        }
+    }
+
+    shapedResult += '</tbody>' +'</table>';
+
+    $('#search_result').append(shapedResult);
+}
+
+
+
+/**
+ * 鉛筆ボタンを押したときの処理
+ * @return {void}
+ */
+$('#search_result').on('click', '.pencil_btn', function() {
+    editRowIndex = $(this).attr('value');
+    getmdlSelect.init('#award_edit_element_initializer');
+    getmdlSelect.init('#publication_edit_element_initializer');
+    dynamicalFormHide();
+
+    if($(this).hasClass('on')){
+        if(category === 'award'){
+            $('#award_edit_element_select_parent').hide();
+        }
+        else if(category !== 'award'){
+            $('#publication_edit_element_select_parent').hide();
+        }
+
+        pencilBtnOnId = 'null';
+
+        let options = {
+		    from: 'fa-pencil-alt',
+		    to: 'fa-pencil-alt',
+            animation: 'zoomIn'
+	    };
+
+        iconate(this, options);
+
+        $(this).toggleClass('on');
+    }
+
+    else if(!$(this).hasClass('on')){
+        if(category === 'award'){
+            $('#award_edit_element_select_parent').show();
+        }
+        else if(category !== 'award'){
+            $('#publication_edit_element_select_parent').show();
+        }
+
+        if(pencilBtnOnId != 'null'){
+            $('#' + pencilBtnOnId).trigger('click');
+
+            if(category === 'award'){
+                $('#award_edit_element_select_parent').show();
+            }
+            else if(category !== 'award'){
+                $('#publication_edit_element_select_parent').show();
+            }
+        }
+
+        pencilBtnOnId = $(this).attr('id');
+
+        editElementIndex = $(this).attr('id').replace(/pencil_btn_/, '');
+
+        let options = {
+		    from: 'fa-pencil-alt',
+            to: 'fa-pencil-alt',
+            animation: 'rubberBand'
+	    };
+
+        iconate(this, options);
+
+        $(this).toggleClass('on');
     }
 });
 
@@ -146,27 +444,6 @@ function isRequiredComplete(){
     if(year === undefined){
         $('#year_box').parent().addClass('is-invalid');
         isEmpty = true;
-    }
-    if(category === 'award'){
-        if($('#award_type').val() === ''){
-            $('#award_type').parent().addClass('is-invalid');
-            isEmpty = true;
-        }
-    }
-
-    if($('#detail_text').val() === ''){
-        $('#detail_text').parent().addClass('is-invalid');
-        isEmpty = true;
-    }
-
-    if(category !== 'award'){
-        if($('#uploadFile')[0].value === ''){
-            $('#uploadFile').parent().removeClass('is-invalid');
-            $('#filename_error').hide();
-            $('#attached_error').show();
-            $('#uploadFile').parent().addClass('is-invalid');
-            isEmpty = true;
-        }
     }
 
     if(isEmpty){
@@ -188,70 +465,6 @@ function isValidFileName(fileName){
     }
 
     return false;
-}
-
-
-
-/**
- * カテゴリーに応じたフォルダに添付ファイルを保存する
- * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
- * @param  {string} category        ファイルを追加したいカテゴリー
- * @return {void}
- */
-function handleFormSubmit(formObject, category) {
-    switch(category){
-        case 'award':
-          google.script.run.withSuccessHandler(sendData).processFormAward();
-          break;
-        case 'journal':
-          google.script.run.withSuccessHandler(sendData).processFormJournal(formObject);
-          break;
-        case 'international_conference':
-          google.script.run.withSuccessHandler(sendData).processFormInternationalConference(formObject);
-          break;
-        case 'domestic_conference':
-          google.script.run.withSuccessHandler(sendData).processFormDomesticConference(formObject);
-          break;
-        case 'survey':
-          google.script.run.withSuccessHandler(sendData).processFormSurvey(formObject);
-          break;
-        case 'press':
-          google.script.run.withSuccessHandler(sendData).processFormPress(formObject);
-          break;
-        case 'book':
-          google.script.run.withSuccessHandler(sendData).processFormBook(formObject);
-          break;
-        case 'unknown':
-            google.script.run.withSuccessHandler(sendData).processFormUnknown(formObject);
-            break;
-    }
-}
-
-
-
-/**
- * ファイルを添付するかどうかのカテゴリーに応じて(award か award以外か)
- *     Spread Sheetにデータを登録する関数set*InSpreadSheetにデータを渡す
- * @param  {string} url 編集後のfileのurl
- *     (awardの時は'Success'というメタ文字列使用)
- * @return {void}
- */
-function sendData(url) {
-    let detail = $('#detail_text').val();
-
-    if(category === 'award'){
-        let award_type = $('#award_type').val();
-        google.script.run.setAwardInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, award_type, detail);
-    }
-
-    else if(category !== 'award'){
-        google.script.run.setPublicationWithFileInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, url, category, fileName);
-    }
-
-    $('#result').empty();
-    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--blue\">送信しました． / Complete.</div>')
-    $('#loading_bar').hide();
-    $('#submit_btn').attr('disabled', false);
 }
 
 
