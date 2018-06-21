@@ -35,7 +35,7 @@ var deleteRowIndex;
 var isLastDataInYear = false;
 
 $('#loading_bar').hide();
-$('#delete_btn').attr('disabled', true);
+$('#delete_btn').hide();
 
 
 
@@ -106,7 +106,7 @@ $("#search_btn")[0].addEventListener('click', function() {
  * DELETEボタンを押した際の処理
  * @return {void}
  */
-$("#delete_btn")[0].addEventListener('click', function() {
+$("#delete_btn_parent").on('click', '#delete_btn', function() {
     if(isRequiredComplete()){
         $('#delete_btn').attr('disabled', true);
         $('#result').empty();
@@ -206,7 +206,7 @@ $('#search_result').on('click', '.minus_btn', function() {
     deleteRowIndex = $(this).attr('value');
 
     if($(this).hasClass('on')){
-        $('#delete_btn').attr('disabled', true);
+        $('#delete_btn').hide();
 
         minusBtnOnId = 'null';
 
@@ -222,11 +222,11 @@ $('#search_result').on('click', '.minus_btn', function() {
     }
 
     else if(!$(this).hasClass('on')){
-        $('#delete_btn').attr('disabled', false);
+        $('#delete_btn').show();
 
         if(minusBtnOnId != 'null'){
             $('#' + minusBtnOnId).trigger('click');
-            $('#delete_btn').attr('disabled', false);
+            $('#delete_btn').show();
         }
 
         minusBtnOnId = $(this).attr('id');
