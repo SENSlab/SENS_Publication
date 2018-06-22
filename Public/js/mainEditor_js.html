@@ -130,6 +130,7 @@ $('#year_select').on('click', 'li', function(){
 $('#award_edit_element_select').on('click', 'li', function(){
     editElement = $(this).attr('data-val');
     $('#edit_btn').show();
+    google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferAwardDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0], searchResultArray[privateInformation.editElementIndex][1]);
 
     if(editElement === 'award'){
         $('#detail_text_parent').hide();  //detail編集フォームを隠す
@@ -151,14 +152,16 @@ $('#award_edit_element_select').on('click', 'li', function(){
  */
 $('#publication_edit_element_select').on('click', 'li', function(){
     editElement = $(this).attr('data-val');
-    $('#edit_btn').show();
 
     if(editElement === 'detail'){
+        google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0]);
+        $('#edit_btn').show();
         $('#file_form_parent').hide();
         $('#detail_text_parent').show();
         $('#detail_text').val(searchResultArray[privateInformation.editElementIndex][0]).parent().addClass('is-focused');
     }
     else if(editElement === 'file'){
+        $('#edit_btn').hide();
         $('#public_result').empty();
         $('#public_checkbox_parent').hide();
         $('#detail_text_parent').hide();
@@ -181,6 +184,7 @@ $('#upload_btn')[0].onchange = function () {
     if(isValidFileName(this.files[0].name)){
         $('#uploadFile')[0].value = this.files[0].name;
         editedFileName = this.files[0].name;
+        $('#edit_btn').show();
     }
 
     else if(!isValidFileName(this.files[0].name)){
@@ -205,6 +209,7 @@ $("#search_btn")[0].addEventListener('click', function() {
             pencilBtnOnId = 'null'
         }
 
+        $('#edit_btn').hide();
         $('#public_result').empty();
         $('#award_edit_element_select_parent').hide();
         $('#search_btn').attr('disabled', true);
