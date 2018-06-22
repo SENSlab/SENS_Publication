@@ -76,3 +76,132 @@ function isEndOfYear(values, year, i){
   }
   return false;
 }
+
+
+
+/**
+ * public Spread Sheet内の削除・編集したいデータに関する情報を集める
+ *     カテゴリーはaward
+ * @param  {string} SPREADSHEET_ID 指定したSpread SheetのID
+ * @param  {string} category       削除・編集したいデータのカテゴリー
+ * @param  {number} year           削除・編集したいデータの年
+ * @param  {string} awardType      削除・編集したいデータのtype of award
+ * @param  {string} detail         削除・編集したいデータのdetail
+ * @return {Object}
+ */
+function ReferAwardDataInPublicSpreadSheet(SPREADSHEET_ID, category, year, awardType, detail){
+  var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = getSheetByCategory(spreadSheet, category);
+
+  var yearRange = sheet.getRange(1, 1, sheet.getLastRow());
+  var yearValues = yearRange.getValues();
+
+  var i = 1;
+  var yearFirstRow;
+  var yearLastRow;
+  var isYear = false;
+
+  while(1){
+    // If the year is in the spreadsheet.
+    if(Number(yearValues[i][0]) == Number(year)){
+      isYear = true;
+      yearFirstRow = i + 2;
+    }
+
+    if(isYear && isEndOfYear(yearValues, year, i)){
+      yearLastRow = i + 1;
+      break;
+    }
+
+    i = i + 1;
+  }
+
+  var contentRange = sheet.getRange(yearFirstRow, 2, yearLastRow - yearFirstRow + 1, 2);
+
+  var contentValues = contentRange.getValues();
+
+  var row = yearFirstRow;
+
+  var awardInformationInPublicSpreadSheet = {existData: false, deleteRowIndex: 0, editRowIndex: 0, isLastDataInYear: false};
+
+  if(yearFirstRow === yearLastRow){
+    awardInformationInPublicSpreadSheet.isLastDataInYear = true;
+  }
+
+  contentValues.forEach(function(element) {
+    if(awardType === element[0] && detail === element[1]){
+      awardInformationInPublicSpreadSheet.existData = true;
+      awardInformationInPublicSpreadSheet.deleteRowIndex = row;
+      awardInformationInPublicSpreadSheet.editRowIndex = row;
+    }
+
+    row = row + 1;
+  });
+
+  return awardInformationInPublicSpreadSheet;
+}
+
+
+
+/**
+ * public Spread Sheet内の削除・編集したいデータに関する情報を集める
+ *     カテゴリーはaward以外
+ * @param  {string} SPREADSHEET_ID 指定したSpread SheetのID
+ * @param  {string} category       削除・編集したいデータのカテゴリー
+ * @param  {number} year           削除・編集したいデータの年
+ * @param  {string} detail         削除・編集したいデータのdetail
+ * @return {void}
+ */
+function ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_ID, category, year, detail){
+  var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = getSheetByCategory(spreadSheet, category);
+
+  var yearRange = sheet.getRange(1, 1, sheet.getLastRow());
+
+  var yearValues = yearRange.getValues();
+
+  var i = 1;
+  var yearFirstRow;
+  var yearLastRow;
+  var isYear = false;
+
+  while(1){
+    // If the year is in the spreadsheet.
+    if(Number(yearValues[i][0]) == Number(year)){
+      isYear = true;
+      yearFirstRow = i + 2;
+    }
+
+    if(isYear && isEndOfYear(yearValues, year, i)){
+      yearLastRow = i + 1;
+      break;
+    }
+
+    i = i + 1;
+  }
+
+  var contentRange = sheet.getRange(yearFirstRow, 2, yearLastRow - yearFirstRow + 1, 1);
+
+  var contentValues = contentRange.getValues();
+
+  var row = yearFirstRow;
+
+  var awardInformationInPublicSpreadSheet = {existData: false, deleteRowIndex: 0, editRowIndex: 0, isLastDataInYear: false};
+
+  if(yearFirstRow === yearLastRow){
+    awardInformationInPublicSpreadSheet.isLastDataInYear = true;
+  }
+
+  contentValues.forEach(function(element) {
+    Logger.log(element);
+    if(detail === element[0]){
+      awardInformationInPublicSpreadSheet.existData = true;
+      awardInformationInPublicSpreadSheet.deleteRowIndex = row;
+      awardInformationInPublicSpreadSheet.editRowIndex = row;
+    }
+
+    row = row + 1;
+  });
+
+  return awardInformationInPublicSpreadSheet;
+}

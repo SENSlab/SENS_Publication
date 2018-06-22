@@ -63,7 +63,7 @@ function searchEditDataByCategoryAndYear(SPREADSHEET_ID, category, year){
  * @param  {string} editedContent  編集後の内容
  * @return {void}
  */
-function editAward(SPREADSHEET_ID, category, editRowIndex, editElement, editedContent){
+function editAwardInSpreadSheet(SPREADSHEET_ID, category, editRowIndex, editElement, editedContent){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
 
@@ -86,7 +86,7 @@ function editAward(SPREADSHEET_ID, category, editRowIndex, editElement, editedCo
  * @param  {string} editedContent  編集後の内容
  * @return {void}
  */
-function editPublication(SPREADSHEET_ID, category, editRowIndex, editedContent){
+function editPublicationInSpreadSheet(SPREADSHEET_ID, category, editRowIndex, editedContent){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
 
@@ -104,7 +104,7 @@ function editPublication(SPREADSHEET_ID, category, editRowIndex, editedContent){
  * @param  {string} editedFileName 編集後のfileの名前
  * @return {void}
  */
-function editPublicationFile(SPREADSHEET_ID, category, url, editRowIndex, editedFileName){
+function editPublicationFileInPrivateSpreadSheet(SPREADSHEET_ID, category, url, editRowIndex, editedFileName){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
 

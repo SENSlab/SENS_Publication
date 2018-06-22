@@ -28,22 +28,10 @@ var searchResultArray;
 var pencilBtnOnId = 'null';
 
 /**
- * 編集したい行番号
- * @type {number}
- */
-var editRowIndex;
-
-/**
  * 編集項目
  * @type {string}
  */
 var editElement;
-
-/**
- * 編集したいデータのsearchResultArrayにおける第一要素番号
- * @type {number}
- */
-var editElementIndex;
 
 /**
  * 編集後のファイル名
@@ -57,9 +45,26 @@ var editedFileName;
  */
 var editedContent;
 
+/**
+ * public Spread Sheetに関する情報
+ * @type {Object}
+ * @param {number} editRowIndex 編集したい行番号
+ */
+var publicInformation = {editRowIndex: 0};
+
+/**
+ * private Spread Sheetに関する情報
+ * @type {Object}
+ * @param {number} editElementIndex 編集したいデータのsearchResultArrayにおける第一要素番号
+ * @param {number} editRowIndex     編集したい行番号
+ */
+var privateInformation = {editElementIndex: 0, editRowIndex: 0};
+
+
 $('#loading_bar').hide();
 $('#edit_btn').hide();
 dynamicalFormHide();
+$('#public_checkbox_parent').hide();
 
 /**
  * 動的に追加するフォームをすべて隠す
@@ -129,12 +134,12 @@ $('#award_edit_element_select').on('click', 'li', function(){
     if(editElement === 'award'){
         $('#detail_text_parent').hide();  //detail編集フォームを隠す
         $('#award_type_parent').show();  //award type編集フォームを表示する
-        $('#award_type').val(searchResultArray[editElementIndex][0]).parent().addClass('is-focused');  //編集前のaward typeの内容をaward type編集フォームにセットする
+        $('#award_type').val(searchResultArray[privateInformation.editElementIndex][0]).parent().addClass('is-focused');  //編集前のaward typeの内容をaward type編集フォームにセットする
     }
     else if(editElement === 'detail'){
         $('#award_type_parent').hide();  //award type編集フォームを隠す
         $('#detail_text_parent').show();  //detail編集フォームを表示する
-        $('#detail_text').val(searchResultArray[editElementIndex][1]).parent().addClass('is-focused');  //編集前のdetailの内容をdetail編集フォームにセットする
+        $('#detail_text').val(searchResultArray[privateInformation.editElementIndex][1]).parent().addClass('is-focused');  //編集前のdetailの内容をdetail編集フォームにセットする
     }
 });
 
@@ -151,13 +156,15 @@ $('#publication_edit_element_select').on('click', 'li', function(){
     if(editElement === 'detail'){
         $('#file_form_parent').hide();
         $('#detail_text_parent').show();
-        $('#detail_text').val(searchResultArray[editElementIndex][0]).parent().addClass('is-focused');
+        $('#detail_text').val(searchResultArray[privateInformation.editElementIndex][0]).parent().addClass('is-focused');
     }
     else if(editElement === 'file'){
+        $('#public_result').empty();
+        $('#public_checkbox_parent').hide();
         $('#detail_text_parent').hide();
         $('#file_form_parent').show();
         $('#uploadFile').parent().addClass('is-focused');
-        $('#uploadFile')[0].value = searchResultArray[editElementIndex][1];
+        $('#uploadFile')[0].value = searchResultArray[privateInformation.editElementIndex][1];
     }
 });
 
@@ -198,6 +205,7 @@ $("#search_btn")[0].addEventListener('click', function() {
             pencilBtnOnId = 'null'
         }
 
+        $('#public_result').empty();
         $('#award_edit_element_select_parent').hide();
         $('#search_btn').attr('disabled', true);
         $('#result').empty();
@@ -222,6 +230,8 @@ $("#edit_btn_parent").on('click', '#edit_btn', function() {
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">編集中．．． / Now editing...</div>');
         $('#loading_bar').show();
         $('#search_result').empty();
+        $('#public_result').empty();
+        $('#public_checkbox_parent').hide();
 
         //対応するカテゴリーの編集内容を取得し，指定したSpread Sheetに情報をセットする
         if(category == 'award'){
@@ -231,12 +241,21 @@ $("#edit_btn_parent").on('click', '#edit_btn', function() {
             else if(editElement === 'detail'){
                 editedContent = $('#detail_text').val();
             }
-            google.script.run.withSuccessHandler(showEditResult).editAward(SPREADSHEET_PRIVATE_ID, category, editRowIndex, editElement, editedContent);
+
+            google.script.run.withSuccessHandler(showEditResult).editAwardInSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.editRowIndex, editElement, editedContent);
+
+            if($('#public_checkbox').is(':checked')){
+                google.script.run.withSuccessHandler(showEditResult).editAwardInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.editRowIndex, editElement, editedContent);
+            }
         }
         else if(category != 'award'){
             if(editElement === 'detail'){
                 editedContent = $('#detail_text').val();
-                google.script.run.withSuccessHandler(showEditResult).editPublication(SPREADSHEET_PRIVATE_ID, category, editRowIndex, editedContent);
+                google.script.run.withSuccessHandler(showEditResult).editPublicationInSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.editRowIndex, editedContent);
+
+                if($('#public_checkbox').is(':checked')){
+                    google.script.run.withSuccessHandler(showEditResult).editPublicationInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.editRowIndex, editedContent);
+                }
             }
             else if(editElement === 'file'){
                 let file_form = $('#file_form')[0];
@@ -288,7 +307,7 @@ function handleFormSubmit(formObject, category) {
  * @return {void}
  */
 function sendData(url) {
-    google.script.run.withSuccessHandler(showEditResult).editPublicationFile(SPREADSHEET_PRIVATE_ID, category, url, editRowIndex, editedFileName);
+    google.script.run.withSuccessHandler(showEditResult).editPublicationFileInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, category, url, privateInformation.editRowIndex, editedFileName);
 }
 
 
@@ -367,12 +386,14 @@ function showSearchResult(result){
  * @return {void}
  */
 $('#search_result').on('click', '.pencil_btn', function() {
-    editRowIndex = $(this).attr('value');
+    privateInformation.editRowIndex = $(this).attr('value');
     getmdlSelect.init('#award_edit_element_initializer');
     getmdlSelect.init('#publication_edit_element_initializer');
     dynamicalFormHide();
 
     if($(this).hasClass('on')){
+        $('#public_checkbox_parent').hide();
+
         if(category === 'award'){
             $('#award_edit_element_select_parent').hide();
         }
@@ -394,6 +415,8 @@ $('#search_result').on('click', '.pencil_btn', function() {
     }
 
     else if(!$(this).hasClass('on')){
+        $('#public_checkbox_parent').show();
+
         if(category === 'award'){
             $('#award_edit_element_select_parent').show();
         }
@@ -403,6 +426,7 @@ $('#search_result').on('click', '.pencil_btn', function() {
 
         if(pencilBtnOnId != 'null'){
             $('#' + pencilBtnOnId).trigger('click');
+            $('#public_checkbox_parent').show();
 
             if(category === 'award'){
                 $('#award_edit_element_select_parent').show();
@@ -414,7 +438,7 @@ $('#search_result').on('click', '.pencil_btn', function() {
 
         pencilBtnOnId = $(this).attr('id');
 
-        editElementIndex = $(this).attr('id').replace(/pencil_btn_/, '');
+        privateInformation.editElementIndex = $(this).attr('id').replace(/pencil_btn_/, '');
 
         let options = {
 		    from: 'fa-pencil-alt',
@@ -425,8 +449,41 @@ $('#search_result').on('click', '.pencil_btn', function() {
         iconate(this, options);
 
         $(this).toggleClass('on');
+
+        if(category === 'award'){
+            google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferAwardDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0], searchResultArray[privateInformation.editElementIndex][1]);
+        }
+
+        else if(category !== 'award'){
+            google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0]);
+        }
     }
 });
+
+
+
+/**
+ * public Spread Sheetにも編集したいデータが存在するなら
+ *     publicにも反映するチェックボックスをチェックした状態で表示する
+ *     存在しない場合はチェックボックスからチェックを外した状態で変更不可モードにする
+ * @param {Object} informationInPublicSpreadSheet public Spread Sheet上の編集したいデータに関する情報
+ * @return {void}
+ */
+function ShowOrDisableCheckBox(informationInPublicSpreadSheet){
+    publicInformation.editRowIndex = informationInPublicSpreadSheet.editRowIndex;
+
+    if(informationInPublicSpreadSheet.existData){
+        $('#public_result').empty();
+        $('#public_checkbox').prop('disabled', false);
+        $('#public_checkbox_parent')[0].MaterialCheckbox.check();
+    }
+    else if(!informationInPublicSpreadSheet.existData){
+        $('#public_result').empty();
+        $('#public_checkbox').prop('disabled', true);
+        $('#public_checkbox_parent')[0].MaterialCheckbox.uncheck();
+        $('#public_result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">Publicには存在しません / This data does not exist in public</div>');
+    }
+}
 
 
 
