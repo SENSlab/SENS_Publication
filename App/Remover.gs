@@ -62,7 +62,7 @@ function searchDeleteDataByCategoryAndYear(SPREADSHEET_ID, category, year){
  * @param  {boolean} isLastDataInYear 削除データがその年の唯一データであるかどうか
  * @return {void}
  */
-function deleteAward(SPREADSHEET_ID, category, deleteRowIndex, isLastDataInYear){
+function deleteAwardInSpreadSheet(SPREADSHEET_ID, category, deleteRowIndex, isLastDataInYear){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
 
@@ -86,7 +86,7 @@ function deleteAward(SPREADSHEET_ID, category, deleteRowIndex, isLastDataInYear)
  * @param  {boolean} isLastDataInYear 削除データがその年の唯一データであるかどうか
  * @return {void}
  */
-function deletePublication(SPREADSHEET_ID, category, deleteRowIndex, isLastDataInYear){
+function deletePublicationInPrivateSpreadSheet(SPREADSHEET_ID, category, deleteRowIndex, isLastDataInYear){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
   var range = sheet.getRange(deleteRowIndex, 3);
@@ -105,4 +105,153 @@ function deletePublication(SPREADSHEET_ID, category, deleteRowIndex, isLastDataI
   else if(!isLastDataInYear){
     sheet.deleteRow(deleteRowIndex);
   }
+}
+
+
+
+/**
+ * 指定行に存在するAward情報をSheetから削除する
+ * @param  {string} SPREADSHEET_ID    指定したSpread SheetのID
+ * @param  {string} category          指定したカテゴリー
+ * @param  {number} deleteRowIndex    削除したい行番号
+ * @param  {boolean} isLastDataInYear 削除データがその年の唯一データであるかどうか
+ * @return {void}
+ */
+function deletePublicationInPublicSpreadSheet(SPREADSHEET_ID, category, deleteRowIndex, isLastDataInYear){
+  var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = getSheetByCategory(spreadSheet, category);
+
+  if(isLastDataInYear){
+    sheet.deleteRows(deleteRowIndex - 1, 2);
+  }
+  else if(!isLastDataInYear){
+    sheet.deleteRow(deleteRowIndex);
+  }
+}
+
+
+
+/**
+ * public Spread Sheet内の削除したいデータに関する情報を集める
+ *     カテゴリーはaward
+ * @param  {string} SPREADSHEET_ID 指定したSpread SheetのID
+ * @param  {string} category       削除したいデータのカテゴリー
+ * @param  {number} year           削除したいデータの年
+ * @param  {string} awardType      削除したいデータのtype of award
+ * @param  {string} detail         削除したいデータのdetail
+ * @return {Object}
+ */
+function ReferAwardDataInPublicSpreadSheet(SPREADSHEET_ID, category, year, awardType, detail){
+  var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = getSheetByCategory(spreadSheet, category);
+
+  var yearRange = sheet.getRange(1, 1, sheet.getLastRow());
+  var yearValues = yearRange.getValues();
+
+  var i = 1;
+  var yearFirstRow;
+  var yearLastRow;
+  var isYear = false;
+
+  while(1){
+    // If the year is in the spreadsheet.
+    if(Number(yearValues[i][0]) == Number(year)){
+      isYear = true;
+      yearFirstRow = i + 2;
+    }
+
+    if(isYear && isEndOfYear(yearValues, year, i)){
+      yearLastRow = i + 1;
+      break;
+    }
+
+    i = i + 1;
+  }
+
+  var contentRange = sheet.getRange(yearFirstRow, 2, yearLastRow - yearFirstRow + 1, 2);
+
+  var contentValues = contentRange.getValues();
+
+  var row = yearFirstRow;
+
+  var awardInformationInPublicSpreadSheet = {existData: false, deleteRowIndex: 0, isLastDataInYear: false};
+
+  if(yearFirstRow === yearLastRow){
+    awardInformationInPublicSpreadSheet.isLastDataInYear = true;
+  }
+
+  contentValues.forEach(function(element) {
+    if(awardType === element[0] && detail === element[1]){
+      awardInformationInPublicSpreadSheet.existData = true;
+      awardInformationInPublicSpreadSheet.deleteRowIndex = row;
+    }
+
+    row = row + 1;
+  });
+
+  return awardInformationInPublicSpreadSheet;
+}
+
+
+
+/**
+ * public Spread Sheet内の削除したいデータに関する情報を集める
+ *     カテゴリーはaward以外
+ * @param  {string} SPREADSHEET_ID 指定したSpread SheetのID
+ * @param  {string} category       削除したいデータのカテゴリー
+ * @param  {number} year           削除したいデータの年
+ * @param  {string} detail         削除したいデータのdetail
+ * @return {void}
+ */
+function ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_ID, category, year, detail){
+  var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = getSheetByCategory(spreadSheet, category);
+
+  var yearRange = sheet.getRange(1, 1, sheet.getLastRow());
+
+  var yearValues = yearRange.getValues();
+
+  var i = 1;
+  var yearFirstRow;
+  var yearLastRow;
+  var isYear = false;
+
+  while(1){
+    // If the year is in the spreadsheet.
+    if(Number(yearValues[i][0]) == Number(year)){
+      isYear = true;
+      yearFirstRow = i + 2;
+    }
+
+    if(isYear && isEndOfYear(yearValues, year, i)){
+      yearLastRow = i + 1;
+      break;
+    }
+
+    i = i + 1;
+  }
+
+  var contentRange = sheet.getRange(yearFirstRow, 2, yearLastRow - yearFirstRow + 1, 1);
+
+  var contentValues = contentRange.getValues();
+
+  var row = yearFirstRow;
+
+  var awardInformationInPublicSpreadSheet = {existData: false, deleteRowIndex: 0, isLastDataInYear: false};
+
+  if(yearFirstRow === yearLastRow){
+    awardInformationInPublicSpreadSheet.isLastDataInYear = true;
+  }
+
+  contentValues.forEach(function(element) {
+    Logger.log(element);
+    if(detail === element[0]){
+      awardInformationInPublicSpreadSheet.existData = true;
+      awardInformationInPublicSpreadSheet.deleteRowIndex = row;
+    }
+
+    row = row + 1;
+  });
+
+  return awardInformationInPublicSpreadSheet;
 }

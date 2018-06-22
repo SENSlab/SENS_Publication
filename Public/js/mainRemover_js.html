@@ -1,11 +1,7 @@
 <script>
-// "sens publication for homepage"
+// "sens publication for homepage (public)"
 const ENCRYPTED_SPREADSHEET_HP_ID = 'ddc70788a0e35a8833805b99a19f141b,3a70d873d07b0dad959085fec8f02403,MTxY3vz8Kz0q/cj36EpLxKTAQyiXeFyJx3Y1oSew9Sg34ShKVzmGw1GHigZdef3n';
 var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
-
-// "sens publication for homepage (edit/delete)"
-const ENCRYPTED_SPREADSHEET_HP_EDIT_ID = '2d90152a1426401d288b7389661f62a6,bb0536f92c76b6330bc553a5eb2e1805,Ua+dp4XPxdWt+jrEGYfs3JcZ7PznvXS1IQTt05VlPj7ziCFkekwqOMRuRhbMEQvq';
-var SPREADSHEET_HP_EDIT_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_EDIT_ID);
 
 // "sens publication (private)"
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
@@ -15,6 +11,9 @@ var preSelectedCategory = '';
 var category;
 var year;
 
+
+var searchResultArray;
+
 /**
  * 押したマイナスボタンのid
  * @type {String}
@@ -22,20 +21,25 @@ var year;
 var minusBtnOnId = 'null';
 
 /**
- * 削除したい行番号
- * @type {number}
+ * public Spread Sheetに関する情報
+ * @type {Object}
+ * @param {number} deleteRowIndex 削除したい行番号
+ * @param {boolean} isLastDataInYear 削除したいデータがその年の唯一のデータかどうか
  */
-var deleteRowIndex;
+var publicInformation = {deleteRowIndex: 0, isLastDataInYear: false};
 
 /**
- * 削除したいデータがその年の唯一のデータかどうか
- * 唯一のデータ: true/唯一のデータではない: faulse
- * @type {boolean}
+ * private Spread Sheetに関する情報
+ * @type {Object}
+ * @param {number} deleteElementIndex 削除したいデータの検索結果におけるインデックス番号
+ * @param {number} deleteRowIndex 削除したい行番号
+ * @param {boolean} isLastDataInYear 削除したいデータがその年の唯一のデータかどうか
  */
-var isLastDataInYear = false;
+var privateInformation = {deleteElementIndex: 0, deleteRowIndex: 0, isLastDataInYear: false}
 
 $('#loading_bar').hide();
 $('#delete_btn').hide();
+$('#public_checkbox_parent').hide();
 
 
 
@@ -91,6 +95,7 @@ $("#search_btn")[0].addEventListener('click', function() {
             minusBtnOnId = 'null'
         }
 
+        $('#public_result').empty();
         $('#search_btn').attr('disabled', true);
         $('#result').empty();
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">検索中．．． / Now searching...</div>');
@@ -108,6 +113,8 @@ $("#search_btn")[0].addEventListener('click', function() {
  */
 $("#delete_btn_parent").on('click', '#delete_btn', function() {
     if(isRequiredComplete()){
+        $('#public_checkbox_parent').hide();
+        $('#public_result').empty();
         $('#delete_btn').hide();
         $('#result').empty();
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">削除中．．． / Now deleting...</div>');
@@ -115,10 +122,18 @@ $("#delete_btn_parent").on('click', '#delete_btn', function() {
         $('#search_result').empty();
 
         if(category == 'award'){
-            google.script.run.withSuccessHandler(showDeleteResult).deleteAward(SPREADSHEET_PRIVATE_ID, category, deleteRowIndex, isLastDataInYear);
+            google.script.run.withSuccessHandler(showDeleteResult).deleteAwardInSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.deleteRowIndex, privateInformation.isLastDataInYear);
+
+            if($('#public_checkbox').is(':checked')){
+                google.script.run.withSuccessHandler(showDeleteResult).deleteAwardInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.deleteRowIndex, publicInformation.isLastDataInYear);
+            }
         }
         else if(category != 'award'){
-            google.script.run.withSuccessHandler(showDeleteResult).deletePublication(SPREADSHEET_PRIVATE_ID, category, deleteRowIndex, isLastDataInYear);
+            google.script.run.withSuccessHandler(showDeleteResult).deletePublicationInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, category, publicInformation.deleteRowIndex, publicInformation.isLastDataInYear);
+
+            if($('#public_checkbox').is(':checked')){
+                google.script.run.withSuccessHandler(showDeleteResult).deletePublicationInPublicSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.deleteRowIndex, publicInformation.isLastDataInYear);
+            }
         }
     }
 });
@@ -145,6 +160,8 @@ function showDeleteResult(){
  * @return {void}
  */
 function showSearchResult(result){
+    searchResultArray = result;
+
     $('#search_btn').attr('disabled', false);
     $('#loading_bar').hide();
     $('#result').empty();
@@ -152,10 +169,10 @@ function showSearchResult(result){
     $('#search_result').empty();
 
     if(result.length === 2){  //表頭 + 実データ1個 の2個
-        isLastDataInYear = true;
+        privateInformation.isLastDataInYear = true;
     }
     else if(result.length !== 2){
-        isLastDataInYear = false;
+        privateInformation.isLastDataInYear = false;
     }
 
 
@@ -203,10 +220,11 @@ function showSearchResult(result){
  * @return {void}
  */
 $('#search_result').on('click', '.minus_btn', function() {
-    deleteRowIndex = $(this).attr('value');
+    privateInformation.deleteRowIndex = $(this).attr('value');
 
     if($(this).hasClass('on')){
         $('#delete_btn').hide();
+        $('#public_checkbox_parent').hide();
 
         minusBtnOnId = 'null';
 
@@ -219,17 +237,22 @@ $('#search_result').on('click', '.minus_btn', function() {
         iconate(this, options);
 
         $(this).toggleClass('on');
+
     }
 
     else if(!$(this).hasClass('on')){
         $('#delete_btn').show();
+        $('#public_checkbox_parent').show();
 
         if(minusBtnOnId != 'null'){
             $('#' + minusBtnOnId).trigger('click');
             $('#delete_btn').show();
+            $('#public_checkbox_parent').show();
         }
 
         minusBtnOnId = $(this).attr('id');
+
+        privateInformation.deleteElementIndex = $(this).attr('id').replace(/minus_btn_/, '');
 
         let options = {
 		    from: 'fa-minus-circle',
@@ -240,10 +263,43 @@ $('#search_result').on('click', '.minus_btn', function() {
         iconate(this, options);
 
         $(this).toggleClass('on');
+
+        if(category === 'award'){
+            //チェックボックスを追加するか減らすか　既に存在している場合に追加するのはなし
+            google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferAwardDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.deleteElementIndex][0], searchResultArray[privateInformation.deleteElementIndex][1]);
+        }
+        else if(category !== 'award'){
+            google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.deleteElementIndex][0]);
+        }
     }
 
 });
 
+
+
+/**
+ * public Spread Sheetにも削除したいデータが存在するなら
+ *     publicにも反映するチェックボックスをチェックした状態で表示する
+ *     存在しない場合はチェックボックスからチェックを外した状態で変更不可モードにする
+ * @param {Object} awardInformationInPublicSpreadSheet public Spread Sheet上の削除したいデータに関する情報
+ * @return {void}
+ */
+function ShowOrDisableCheckBox(informationInPublicSpreadSheet){
+    publicInformation.deleteRowIndex = informationInPublicSpreadSheet.deleteRowIndex;
+    publicInformation.isLastDataInYear = informationInPublicSpreadSheet.isLastDataInYear;
+
+    if(informationInPublicSpreadSheet.existData){
+        $('#public_result').empty();
+        $('#public_checkbox').prop('disabled', false);
+        $('#public_checkbox_parent')[0].MaterialCheckbox.check();
+    }
+    else if(!informationInPublicSpreadSheet.existData){
+        $('#public_result').empty();
+        $('#public_checkbox').prop('disabled', true);
+        $('#public_checkbox_parent')[0].MaterialCheckbox.uncheck();
+        $('#public_result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">Publicには存在しません / This data does not exist in public</div>');
+    }
+}
 
 
 /**
