@@ -7,6 +7,10 @@ var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
 
+// "sens thesis"
+const ENCRYPTED_SPREADSHEET_THESIS_ID = '8346d103bad7085353673bc376f9c1bf,7e7ded3de4cbfa402c464551f910f049,4a6y1PryD1DSKoCjgirKEum45EeekwF/oTpo0V0efgC5c8DotjnUptaY9k0ClYj+';
+var SPREADSHEET_THESIS_ID = decrypt(ENCRYPTED_SPREADSHEET_THESIS_ID);
+
 var preSelectedCategory = '';
 var category;
 var year;
@@ -84,8 +88,16 @@ $('#category_select li').on('click', function(){
     dynamicalFormHide();  //動的フォームを全て隠す
     getmdlSelect.init('#year_select_initializer');  //年フォームを初期化する
     category = $(this).attr('data-val');
-    google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_PRIVATE_ID, category);  //指定したSpread Sheet, カテゴリーに存在する年を
-                                                                                                    //検索後，年のフォームの選択肢に追加する
+
+    if(
+    category === 'award' || category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
+    category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'  //指定したSpread Sheet, カテゴリーに存在する年を
+    ){                                                                                             //検索後，年のフォームの選択肢に追加する
+        google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_PRIVATE_ID, category);
+    }
+    else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
+        google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_THESIS_ID, category);
+    }
 });
 
 
@@ -150,7 +162,13 @@ $('#publication_edit_element_select').on('click', 'li', function(){
     editElement = $(this).attr('data-val');
 
     if(editElement === 'detail'){
-        google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0]);
+        if(
+        category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
+        category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+        ){
+            google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0]);
+        }
+
         $('#edit_btn').show();
         $('#file_form_parent').hide();
         $('#detail_text_parent').show();
@@ -213,8 +231,17 @@ $("#search_btn")[0].addEventListener('click', function() {
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">検索中．．． / Now searching...</div>');
         $('#loading_bar').show();
         $('#search_result').empty();
-        google.script.run.withSuccessHandler(showSearchResult).searchEditDataByCategoryAndYear(SPREADSHEET_PRIVATE_ID, category, year);  //指定したSpread Sheet, カテゴリー，年に存在する情報を取得する
+
+        if(
+        category === 'award' || category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
+        category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+        ){
+            google.script.run.withSuccessHandler(showSearchResult).searchEditDataByCategoryAndYear(SPREADSHEET_PRIVATE_ID, category, year);  //指定したSpread Sheet, カテゴリー，年に存在する情報を取得する
                                                                                                                                  //取得後，画面に取得情報を表示する
+        }
+        else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
+            google.script.run.withSuccessHandler(showSearchResult).searchEditDataByCategoryAndYear(SPREADSHEET_THESIS_ID, category, year);
+        }
     }
 });
 
@@ -249,7 +276,10 @@ $("#edit_btn_parent").on('click', '#edit_btn', function() {
                 google.script.run.withSuccessHandler(showEditResult).editAwardInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.editRowIndex, editElement, editedContent);
             }
         }
-        else if(category != 'award'){
+        else if(
+        category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
+        category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+        ){
             if(editElement === 'detail'){
                 editedContent = $('#detail_text').val();
                 google.script.run.withSuccessHandler(showEditResult).editPublicationInSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.editRowIndex, editedContent);
@@ -257,6 +287,16 @@ $("#edit_btn_parent").on('click', '#edit_btn', function() {
                 if($('#public_checkbox').is(':checked')){
                     google.script.run.withSuccessHandler(showEditResult).editPublicationInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.editRowIndex, editedContent);
                 }
+            }
+            else if(editElement === 'file'){
+                let file_form = $('#file_form')[0];
+                handleFormSubmit(file_form, category);
+            }
+        }
+        else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
+            if(editElement === 'detail'){
+                editedContent = $('#detail_text').val();
+                google.script.run.withSuccessHandler(showEditResult).editPublicationInSpreadSheet(SPREADSHEET_THESIS_ID, category, privateInformation.editRowIndex, editedContent);
             }
             else if(editElement === 'file'){
                 let file_form = $('#file_form')[0];
@@ -297,6 +337,15 @@ function handleFormSubmit(formObject, category) {
         case 'unknown':
             google.script.run.withSuccessHandler(sendData).processFormUnknown(formObject);
             break;
+        case 'phd_thesis':
+            google.script.run.withSuccessHandler(sendData).processFormPhDThesis(formObject);
+            break;
+        case 'master_thesis':
+            google.script.run.withSuccessHandler(sendData).processFormMasterThesis(formObject);
+            break;
+        case 'bachelor_thesis':
+            google.script.run.withSuccessHandler(sendData).processFormBachelorThesis(formObject);
+            break;
     }
 }
 
@@ -308,7 +357,15 @@ function handleFormSubmit(formObject, category) {
  * @return {void}
  */
 function sendData(url) {
-    google.script.run.withSuccessHandler(showEditResult).editPublicationFileInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, category, url, privateInformation.editRowIndex, editedFileName);
+    if(
+    category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
+    category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+    ){
+        google.script.run.withSuccessHandler(showEditResult).editPublicationFileInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, category, url, privateInformation.editRowIndex, editedFileName);
+    }
+    else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
+        google.script.run.withSuccessHandler(showEditResult).editPublicationFileInPrivateSpreadSheet(SPREADSHEET_THESIS_ID, category, url, privateInformation.editRowIndex, editedFileName);
+    }
 }
 
 
@@ -416,7 +473,12 @@ $('#search_result').on('click', '.pencil_btn', function() {
     }
 
     else if(!$(this).hasClass('on')){
-        $('#public_checkbox_parent').show();
+        if(
+        category === 'award' || category === 'journal' || category === 'international_conference' ||
+        category === 'domestic_conference' || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+        ){
+            $('#public_checkbox_parent').show();
+        }
 
         if(category === 'award'){
             $('#award_edit_element_select_parent').show();
@@ -427,7 +489,13 @@ $('#search_result').on('click', '.pencil_btn', function() {
 
         if(pencilBtnOnId != 'null'){
             $('#' + pencilBtnOnId).trigger('click');
-            $('#public_checkbox_parent').show();
+
+            if(
+            category === 'award' || category === 'journal' || category === 'international_conference' ||
+            category === 'domestic_conference' || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+            ){
+                $('#public_checkbox_parent').show();
+            }
 
             if(category === 'award'){
                 $('#award_edit_element_select_parent').show();
@@ -455,7 +523,10 @@ $('#search_result').on('click', '.pencil_btn', function() {
             google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferAwardDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0], searchResultArray[privateInformation.editElementIndex][1]);
         }
 
-        else if(category !== 'award'){
+        else if(
+        category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
+        category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+        ){
             google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0]);
         }
     }
