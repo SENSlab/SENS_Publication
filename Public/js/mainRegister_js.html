@@ -7,6 +7,10 @@ var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
 
+// "sens thesis"
+const ENCRYPTED_SPREADSHEET_THESIS_ID = '8346d103bad7085353673bc376f9c1bf,7e7ded3de4cbfa402c464551f910f049,4a6y1PryD1DSKoCjgirKEum45EeekwF/oTpo0V0efgC5c8DotjnUptaY9k0ClYj+';
+var SPREADSHEET_THESIS_ID = decrypt(ENCRYPTED_SPREADSHEET_THESIS_ID);
+
 
 var preSelectedCategory = '';
 var category;
@@ -45,14 +49,31 @@ $('#category_select li').on('click', function(){
             $('#file_form_parent').hide();
             existFileForm = false;
             $('#award_type_parent').show();
+
+            $('#public_checkbox_parent').show();
+            $('#private_checkbox_parent').show();
         }
-        else if($(this).attr('data-val') !== 'award'){
+        else if($(this).attr('data-val') === 'phd_thesis' || $(this).attr('data-val') === 'master_thesis' || $(this).attr('data-val') === 'bachelor_thesis'){
             $('#award_type_parent').hide();
 
             if(!existFileForm){
                 $('#file_form_parent').show();
                 existFileForm = true;
             }
+
+            $('#public_checkbox_parent').hide();
+            $('#private_checkbox_parent').hide();
+        }
+        else if($(this).attr('data-val') !== 'award' || $(this).attr('data-val') !== 'phd_thesis' || $(this).attr('data-val') !== 'master_thesis' || $(this).attr('data-val') !== 'bachelor_thesis'){
+            $('#award_type_parent').hide();
+
+            if(!existFileForm){
+                $('#file_form_parent').show();
+                existFileForm = true;
+            }
+
+            $('#public_checkbox_parent').show();
+            $('#private_checkbox_parent').show();
         }
         preSelectedCategory = $(this).attr('data-val');
     }
@@ -220,6 +241,15 @@ function handleFormSubmit(formObject, category) {
         case 'unknown':
             google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormUnknown(formObject);
             break;
+        case 'phd_thesis':
+            google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormPhDThesis(formObject);
+            break;
+        case 'master_thesis':
+            google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormMasterThesis(formObject);
+            break;
+        case 'bachelor_thesis':
+            google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormBachelorThesis(formObject);
+            break;
     }
 }
 
@@ -246,7 +276,11 @@ function sendData(url) {
         }
     }
 
-    else if(category !== 'award'){
+    else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
+        google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setPublicationWithFileInPrivateSpreadSheet(SPREADSHEET_THESIS_ID, year, detail, url, category, fileName);
+    }
+
+    else if(category !== 'award' || category !== 'phd_thesis' || category !== 'master_thesis' || category !== 'bachelor_thesis'){
         if($('#private_checkbox').is(':checked')){
             google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setPublicationWithFileInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, url, category, fileName);
         }

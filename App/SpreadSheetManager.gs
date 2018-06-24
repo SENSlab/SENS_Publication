@@ -22,6 +22,12 @@ function getSheetByCategory(spreadSheet, category){
       return spreadSheet.getSheetByName('Book');
     case 'unknown':
       return spreadSheet.getSheetByName('Unknown');
+    case 'phd_thesis':
+      return spreadSheet.getSheetByName('PhD');
+    case 'master_thesis':
+      return spreadSheet.getSheetByName('Master');
+    case 'bachelor_thesis':
+      return spreadSheet.getSheetByName('Bachelor');
   }
 }
 
