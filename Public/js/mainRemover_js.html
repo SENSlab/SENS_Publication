@@ -7,15 +7,13 @@ var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
 
-// "sens thesis"
+// "sens thesis (private)"
 const ENCRYPTED_SPREADSHEET_THESIS_ID = '8346d103bad7085353673bc376f9c1bf,7e7ded3de4cbfa402c464551f910f049,4a6y1PryD1DSKoCjgirKEum45EeekwF/oTpo0V0efgC5c8DotjnUptaY9k0ClYj+';
 var SPREADSHEET_THESIS_ID = decrypt(ENCRYPTED_SPREADSHEET_THESIS_ID);
 
 var preSelectedCategory = '';
 var category;
 var year;
-
-
 var searchResultArray;
 
 /**
@@ -25,7 +23,7 @@ var searchResultArray;
 var minusBtnOnId = 'null';
 
 /**
- * public Spread Sheetに関する情報
+ * Spread Sheet (public)に関する情報
  * @type {Object}
  * @param {number} deleteRowIndex 削除したい行番号
  * @param {boolean} isLastDataInYear 削除したいデータがその年の唯一のデータかどうか
@@ -33,7 +31,7 @@ var minusBtnOnId = 'null';
 var publicInformation = {deleteRowIndex: 0, isLastDataInYear: false};
 
 /**
- * private Spread Sheetに関する情報
+ * Spread Sheet (private)に関する情報
  * @type {Object}
  * @param {number} deleteElementIndex 削除したいデータの検索結果におけるインデックス番号
  * @param {number} deleteRowIndex 削除したい行番号
@@ -114,9 +112,10 @@ $("#search_btn")[0].addEventListener('click', function() {
         $('#search_result').empty();
 
         if(
-        category === 'award' || category === 'journal' || category === 'international_conference' ||
-        category === 'domestic_conference' || category === 'survey' || category === 'press' || category === 'book' ||
-        category === 'unknown'){
+           category === 'award' || category === 'journal' || category === 'international_conference'
+        || category === 'domestic_conference' || category === 'survey' || category === 'press'
+        || category === 'book' || category === 'unknown'
+        ){
             google.script.run.withSuccessHandler(showSearchResult).searchDeleteDataByCategoryAndYear(SPREADSHEET_PRIVATE_ID, category, year);
         }
         else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
@@ -150,8 +149,8 @@ $("#delete_btn_parent").on('click', '#delete_btn', function() {
             }
         }
         else if(
-        category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
-        category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+                category === 'journal' || category === 'international_conference' || category === 'domestic_conference'
+             || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
         ){
             google.script.run.withSuccessHandler(showDeleteResult).deletePublicationInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.deleteRowIndex, privateInformation.isLastDataInYear);
 
@@ -272,8 +271,9 @@ $('#search_result').on('click', '.minus_btn', function() {
         $('#delete_btn').show();
 
         if(
-        category === 'award' || category === 'journal' || category === 'international_conference' ||
-        category === 'domestic_conference' || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+           category === 'award' || category === 'journal' || category === 'international_conference'
+        || category === 'domestic_conference' || category === 'survey' || category === 'press'
+        || category === 'book' ||category === 'unknown'
         ){
             $('#public_checkbox_parent').show();
         }
@@ -309,8 +309,8 @@ $('#search_result').on('click', '.minus_btn', function() {
             google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferAwardDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.deleteElementIndex][0], searchResultArray[privateInformation.deleteElementIndex][1]);
         }
         else if(
-        category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
-        category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
+                category === 'journal' || category === 'international_conference' || category === 'domestic_conference'
+             || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
         ){
             google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.deleteElementIndex][0]);
         }
@@ -321,10 +321,10 @@ $('#search_result').on('click', '.minus_btn', function() {
 
 
 /**
- * public Spread Sheetにも削除したいデータが存在するなら
+ * Spread Sheet (public)にも削除したいデータが存在するなら
  *     publicにも反映するチェックボックスをチェックした状態で表示する
  *     存在しない場合はチェックボックスからチェックを外した状態で変更不可モードにする
- * @param {Object} awardInformationInPublicSpreadSheet public Spread Sheet上の削除したいデータに関する情報
+ * @param {Object} informationInPublicSpreadSheet Spread Sheet (public)上の削除したいデータに関する情報
  * @return {void}
  */
 function ShowOrDisableCheckBox(informationInPublicSpreadSheet){

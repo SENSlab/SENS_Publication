@@ -7,8 +7,10 @@
 
 /**
  * HTTPのGETに対して応答する
+ *     パラメータpで指定したregister/remover/editorのページに遷移する
  *     詳しくは公式ドキュメント参照
  *     https://developers.google.com/apps-script/guides/web
+ * @param {Event Objects} リクエストパラメータに関する情報
  * @return {HtmlOutput Object} 表示するhtmlオブジェクト
  */
 function doGet(e){
@@ -29,7 +31,7 @@ function doGet(e){
 
 
 /**
- * index.htmlから外部htmlを読み込む
+ * *.htmlから他のhtmlを読み込む
  * @param  {string} filename includeしたいhtmlファイルのファイル名
  * @return {string}          指定したファイルからHtmlOutputオブジェクトを作成し，
  *     そのHtmlOutputオブジェクトのコンテンツを文字列として返す

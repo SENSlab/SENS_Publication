@@ -11,7 +11,7 @@ function processFormAward() {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     Journalフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -31,7 +31,7 @@ function processFormJournal(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     International Conferenceフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -51,7 +51,7 @@ function processFormInternationalConference(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     Domestic Conferenceフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -71,7 +71,7 @@ function processFormDomesticConference(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     Surveyフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -91,7 +91,7 @@ function processFormSurvey(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     Pressフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -111,7 +111,7 @@ function processFormPress(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     Bookフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -131,7 +131,7 @@ function processFormBook(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     Unknownフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -151,7 +151,7 @@ function processFormUnknown(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     PhD Thesisフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -171,7 +171,7 @@ function processFormPhDThesis(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     Master Thesisフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト
@@ -191,7 +191,7 @@ function processFormMasterThesis(formObject) {
 
 
 /**
- * index.html内で添付したファイルをGoogle Driveの
+ * html内で添付したファイルをGoogle Driveの
  *     Bachelor Thesisフォルダに保存し，保存したファイルの
  *     urlを返す
  * @param  {form Object} formObject 添付したファイルを含む，formオブジェクト

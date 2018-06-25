@@ -1,5 +1,5 @@
 /**
- * Award情報をPrivateなSpread Sheetに出力する
+ * Award情報をSpread Sheet (private)に出力する
  * @param {string} SPREADSHEET_ID 出力先のSpread SheetのID
  * @param {string} year           受賞年
  * @param {string} award          賞
@@ -71,7 +71,7 @@ function setAwardInPrivateSpreadSheet(SPREADSHEET_ID, year, award, detail){
 
 
 /**
- * Award情報をホームページ用Spread Sheetに出力する
+ * Award情報をSpread Sheet (public)に出力する
  * @param {string} SPREADSHEET_ID 出力先のSpread SheetのID
  * @param {string} year           受賞年
  * @param {string} award          賞
@@ -143,7 +143,7 @@ function setAwardInPublicSpreadSheet(SPREADSHEET_ID, year, award, detail){
 
 
 /**
- * Award以外の，あるカテゴリーの情報をPrivateなSpread Sheetに出力する
+ * Award以外の，あるカテゴリーの情報をSpread Sheet (private)に出力する
  * @param {string} SPREADSHEET_ID 出力先のSpread SheetのID
  * @param {string} year           イベントのあった年
  * @param {string} detail         詳細
@@ -227,7 +227,7 @@ function setPublicationWithFileInPrivateSpreadSheet(SPREADSHEET_ID, year, detail
 
 
 /**
- * Award以外の，あるカテゴリーの情報をホームページ用Spread Sheetに出力する
+ * Award以外の，あるカテゴリーの情報をSpread Sheet (public)に出力する
  * @param {string} SPREADSHEET_ID 出力先のSpread SheetのID
  * @param {string} year           イベントのあった年
  * @param {string} detail         詳細

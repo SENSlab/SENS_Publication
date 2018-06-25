@@ -1,5 +1,5 @@
 <script>
-// "sens publication for homepage"
+// "sens publication for homepage (public)"
 const ENCRYPTED_SPREADSHEET_HP_ID = '851dee44fcba4a593a414274d70455aa,693f664cd3aee976b03b00a78c37085b,vgd38yjm2csCWI1zOOsiZ4f8WrqNe3Kh7kQh0BxZ9xJJS4luMm5zhSowOallT1ma';
 var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
 
@@ -7,7 +7,7 @@ var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
 
-// "sens thesis"
+// "sens thesis (private)"
 const ENCRYPTED_SPREADSHEET_THESIS_ID = '8346d103bad7085353673bc376f9c1bf,7e7ded3de4cbfa402c464551f910f049,4a6y1PryD1DSKoCjgirKEum45EeekwF/oTpo0V0efgC5c8DotjnUptaY9k0ClYj+';
 var SPREADSHEET_THESIS_ID = decrypt(ENCRYPTED_SPREADSHEET_THESIS_ID);
 
@@ -46,20 +46,19 @@ var editedFileName;
 var editedContent;
 
 /**
- * public Spread Sheetに関する情報
+ * Spread Sheet (public)に関する情報
  * @type {Object}
  * @param {number} editRowIndex 編集したい行番号
  */
 var publicInformation = {editRowIndex: 0};
 
 /**
- * private Spread Sheetに関する情報
+ * Spread Sheet (private)に関する情報
  * @type {Object}
  * @param {number} editElementIndex 編集したいデータのsearchResultArrayにおける第一要素番号
  * @param {number} editRowIndex     編集したい行番号
  */
 var privateInformation = {editElementIndex: 0, editRowIndex: 0};
-
 
 $('#loading_bar').hide();
 $('#edit_btn').hide();
@@ -90,13 +89,16 @@ $('#category_select li').on('click', function(){
     category = $(this).attr('data-val');
 
     if(
-    category === 'award' || category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
-    category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'  //指定したSpread Sheet, カテゴリーに存在する年を
-    ){                                                                                             //検索後，年のフォームの選択肢に追加する
-        google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_PRIVATE_ID, category);
+       category === 'award' || category === 'journal' || category === 'international_conference'
+    || category === 'domestic_conference' || category === 'survey' || category === 'press'
+    || category === 'book' ||category === 'unknown'
+    ){
+        google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_PRIVATE_ID, category);  //指定したSpread Sheet, カテゴリーに存在する年を
+                                                                                                        //検索後，年のフォームの選択肢に追加する
     }
     else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
-        google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_THESIS_ID, category);
+        google.script.run.withSuccessHandler(createYear).searchYear(SPREADSHEET_THESIS_ID, category);   //指定したSpread Sheet, カテゴリーに存在する年を
+                                                                                                        //検索後，年のフォームの選択肢に追加する
     }
 });
 
@@ -535,10 +537,10 @@ $('#search_result').on('click', '.pencil_btn', function() {
 
 
 /**
- * public Spread Sheetにも編集したいデータが存在するなら
+ * Spread Sheet (public)にも編集したいデータが存在するなら
  *     publicにも反映するチェックボックスをチェックした状態で表示する
  *     存在しない場合はチェックボックスからチェックを外した状態で変更不可モードにする
- * @param {Object} informationInPublicSpreadSheet public Spread Sheet上の編集したいデータに関する情報
+ * @param {Object} informationInPublicSpreadSheet Spread Sheet (public)上の編集したいデータに関する情報
  * @return {void}
  */
 function ShowOrDisableCheckBox(informationInPublicSpreadSheet){
@@ -620,6 +622,7 @@ function decrypt(encryptedString){
 
     //復号
     var decrypted = CryptoJS.AES.decrypt({"ciphertext":encrypted_data}, key128Bits500Iterations, options);
+
     // 文字コードをUTF-8にする
     return decrypted.toString(CryptoJS.enc.Utf8);
 }

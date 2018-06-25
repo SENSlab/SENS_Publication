@@ -86,7 +86,7 @@ function isEndOfYear(values, year, i){
 
 
 /**
- * public Spread Sheet内の削除・編集したいデータに関する情報を集める
+ * Spread Sheet (public)内の削除・編集したいデータに関する情報を集める
  *     カテゴリーはaward
  * @param  {string} SPREADSHEET_ID 指定したSpread SheetのID
  * @param  {string} category       削除・編集したいデータのカテゴリー
@@ -150,7 +150,7 @@ function ReferAwardDataInPublicSpreadSheet(SPREADSHEET_ID, category, year, award
 
 
 /**
- * public Spread Sheet内の削除・編集したいデータに関する情報を集める
+ * Spread Sheet (public)内の削除・編集したいデータに関する情報を集める
  *     カテゴリーはaward以外
  * @param  {string} SPREADSHEET_ID 指定したSpread SheetのID
  * @param  {string} category       削除・編集したいデータのカテゴリー

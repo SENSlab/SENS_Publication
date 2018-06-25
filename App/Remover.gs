@@ -79,7 +79,7 @@ function deleteAwardInSpreadSheet(SPREADSHEET_ID, category, deleteRowIndex, isLa
 /**
  * Award以外のカテゴリーの情報を以下の2点のように削除する
  *     ・指定行に存在するリンク先のファイルをGoogle Driveから削除する
- *     ・指定行に存在する情報をSheetから削除する
+ *     ・指定行に存在する情報をSpread Sheet (private)から削除する
  * @param  {string} SPREADSHEET_ID    指定したSpread SheetのID
  * @param  {string} category          指定したカテゴリー
  * @param  {number} deleteRowIndex    削除したい行番号
@@ -110,7 +110,7 @@ function deletePublicationInPrivateSpreadSheet(SPREADSHEET_ID, category, deleteR
 
 
 /**
- * 指定行に存在するAward情報をSheetから削除する
+ * 指定行に存在するAward情報をSpread Sheet (public)から削除する
  * @param  {string} SPREADSHEET_ID    指定したSpread SheetのID
  * @param  {string} category          指定したカテゴリー
  * @param  {number} deleteRowIndex    削除したい行番号

@@ -55,7 +55,7 @@ function searchEditDataByCategoryAndYear(SPREADSHEET_ID, category, year){
 
 
 /**
- * 指定行に存在する指定表頭の情報を編集する（Award用）
+ * Spread Sheet (public/private)の指定行に存在する指定表頭の情報を編集する（Award用）
  * @param  {string} SPREADSHEET_ID 編集したいSpread SheetのID
  * @param  {string} category       編集したいカテゴリー
  * @param  {number} editRowIndex   編集したい行番号
@@ -79,7 +79,7 @@ function editAwardInSpreadSheet(SPREADSHEET_ID, category, editRowIndex, editElem
 
 
 /**
- * 指定行に存在するdetail情報を編集する(Award以外のカテゴリー用)
+ * Spread Sheet (public/private)の指定行に存在するdetail情報を編集する(Award以外のカテゴリー用)
  * @param  {string} SPREADSHEET_ID 編集したいSpread SheetのID
  * @param  {string} category       編集したいカテゴリー
  * @param  {number} editRowIndex   編集したい行番号
@@ -96,7 +96,7 @@ function editPublicationInSpreadSheet(SPREADSHEET_ID, category, editRowIndex, ed
 
 
 /**
- * 指定行に存在するfile情報を編集する(Award以外のカテゴリー用)
+ * Spread Sheet (private)の指定行に存在するfile情報を編集する(Award以外のカテゴリー用)
  * @param  {string} SPREADSHEET_ID 編集したいSpread SheetのID
  * @param  {string} category       編集したいカテゴリー
  * @param  {string} url            編集前のfileのurl

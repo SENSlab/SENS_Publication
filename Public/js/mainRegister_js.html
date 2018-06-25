@@ -1,5 +1,5 @@
 <script>
-// "sens publication for homepage"
+// "sens publication for homepage (public)"
 const ENCRYPTED_SPREADSHEET_HP_ID = '851dee44fcba4a593a414274d70455aa,693f664cd3aee976b03b00a78c37085b,vgd38yjm2csCWI1zOOsiZ4f8WrqNe3Kh7kQh0BxZ9xJJS4luMm5zhSowOallT1ma';
 var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
 
@@ -7,7 +7,7 @@ var SPREADSHEET_HP_ID = decrypt(ENCRYPTED_SPREADSHEET_HP_ID);
 const ENCRYPTED_SPREADSHEET_PRIVATE_ID = '5792b78a9d14a888ace4291c7f91e46c,4f4b010e2ab99d49e4da580d83cc626d,gMRAfnE3ZDHUkintwHk4HLAgiiHJ2V9piAPMBYwN8kvKQO/YFT4cQh6QpWrZbVeB';
 var SPREADSHEET_PRIVATE_ID = decrypt(ENCRYPTED_SPREADSHEET_PRIVATE_ID);
 
-// "sens thesis"
+// "sens thesis (private)"
 const ENCRYPTED_SPREADSHEET_THESIS_ID = '8346d103bad7085353673bc376f9c1bf,7e7ded3de4cbfa402c464551f910f049,4a6y1PryD1DSKoCjgirKEum45EeekwF/oTpo0V0efgC5c8DotjnUptaY9k0ClYj+';
 var SPREADSHEET_THESIS_ID = decrypt(ENCRYPTED_SPREADSHEET_THESIS_ID);
 
@@ -18,7 +18,7 @@ var year;
 
 /**
  * ファイルフォームが存在するかどうか
- *     存在する: true/存在しない: faulse
+ *     存在する: true/存在しない: false
  * @type {boolean}
  */
 var existFileForm = false;
@@ -32,6 +32,31 @@ var fileName;
 $('#loading_bar').hide();
 $('#award_type_parent').hide();
 $('#file_form_parent').hide();
+
+
+
+/**
+ * 年の選択肢の作成（2003年～現在の年までを作成する）
+ * @return {[type]} [description]
+ */
+var addYearOptions = function(){
+    return new Promise (function(resolve){
+        let now = new Date();
+        let nowYear = now.getFullYear();
+
+        for(let i = parseInt(nowYear); i > 2002; --i){
+            let yearOpt = '<li class=\"mdl-menu__item\" data-val=\"' + String(i) + '\">' + String(i) + '</li>';
+            $('#year_select').append(yearOpt);
+        }
+        resolve('Success');
+    });
+}
+
+addYearOptions().then(function(){
+    $('#year_select li').on('click', function(){
+        year = $(this).attr('data-val');
+    });
+});
 
 
 
@@ -77,31 +102,6 @@ $('#category_select li').on('click', function(){
         }
         preSelectedCategory = $(this).attr('data-val');
     }
-});
-
-
-
-/**
- * 年の選択肢の作成（2003年～現在の年までを作成する）
- * @return {[type]} [description]
- */
-var addYearOptions = function(){
-    return new Promise (function(resolve){
-        let now = new Date();
-        let nowYear = now.getFullYear();
-
-        for(let i = parseInt(nowYear); i > 2002; --i){
-            let yearOpt = '<li class=\"mdl-menu__item\" data-val=\"' + String(i) + '\">' + String(i) + '</li>';
-            $('#year_select').append(yearOpt);
-        }
-        resolve('Success');
-    });
-}
-
-addYearOptions().then(function(){
-    $('#year_select li').on('click', function(){
-        year = $(this).attr('data-val');
-    });
 });
 
 
@@ -355,6 +355,7 @@ function decrypt(encryptedString){
 
     //復号
     var decrypted = CryptoJS.AES.decrypt({"ciphertext":encrypted_data}, key128Bits500Iterations, options);
+
     // 文字コードをUTF-8にする
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
