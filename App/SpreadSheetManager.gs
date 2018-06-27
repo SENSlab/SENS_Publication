@@ -11,9 +11,9 @@ function getSheetByCategory(spreadSheet, category){
     case 'journal':
       return spreadSheet.getSheetByName('Journal');
     case 'international_conference':
-      return spreadSheet.getSheetByName('International Conference');
+      return spreadSheet.getSheetByName('InternationalConference');
     case 'domestic_conference':
-      return spreadSheet.getSheetByName('Domestic Conference');
+      return spreadSheet.getSheetByName('DomesticConference');
     case 'survey':
       return spreadSheet.getSheetByName('Survey');
     case 'press':
