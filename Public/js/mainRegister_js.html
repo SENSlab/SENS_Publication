@@ -130,6 +130,28 @@ $('#upload_btn')[0].onchange = function () {
 
 
 /**
+ * privateチェックボックスを押した際の処理
+ * @return {void}
+ */
+$('#private_checkbox').on('change', function(){
+    if($('#private_checkbox').is(':checked')){
+        if(
+           category === 'journal' || category === 'international_conference' || category === 'domestic_conference'
+        || category === 'survey' || category === 'press' || category === 'book'
+        || category === 'unknown' || category === 'phd_thesis' || category === 'master_thesis'
+        || category == 'bachelor_thesis'
+        ){
+            $('#file_form_parent').show();
+        }
+    }
+    else if(!$('#private_checkbox').is(':checked')){
+        $('#file_form_parent').hide();
+    }
+});
+
+
+
+/**
  * SUBMITボタンを押した際の処理
  * @return {void}
  */
@@ -177,7 +199,7 @@ function isRequiredComplete(){
     }
 
     if(category !== 'award'){
-        if($('#uploadFile')[0].value === ''){
+        if($('#uploadFile')[0].value === '' && $('#private_checkbox').is(':checked')){
             $('#uploadFile').parent().removeClass('is-invalid');
             $('#filename_error').hide();
             $('#attached_error').show();
