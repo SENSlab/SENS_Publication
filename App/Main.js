@@ -17,13 +17,13 @@ function doGet(e){
   var page=e.parameter["p"];
 
   if(page == "register" || page==null){
-    return HtmlService.createTemplateFromFile('register.html').evaluate().setTitle('sens publication register').setFaviconUrl('https://drive.google.com/uc?id=1ICDCQA-yZ3olcj7ToDDZslgA18dmB3Zb&.ico');
+    return HtmlService.createTemplateFromFile('Public/html/register.html').evaluate().setTitle('sens publication register').setFaviconUrl('https://drive.google.com/uc?id=1ICDCQA-yZ3olcj7ToDDZslgA18dmB3Zb&.ico');
   }
   else if(page =="remover"){
-    return HtmlService.createTemplateFromFile('remover.html').evaluate().setTitle('sens publication remover').setFaviconUrl('https://drive.google.com/uc?id=1ICDCQA-yZ3olcj7ToDDZslgA18dmB3Zb&.ico');
+    return HtmlService.createTemplateFromFile('Public/html/remover.html').evaluate().setTitle('sens publication remover').setFaviconUrl('https://drive.google.com/uc?id=1ICDCQA-yZ3olcj7ToDDZslgA18dmB3Zb&.ico');
   }
   else if(page =="editor"){
-    return HtmlService.createTemplateFromFile('editor.html').evaluate().setTitle('sens publication editor').setFaviconUrl('https://drive.google.com/uc?id=1ICDCQA-yZ3olcj7ToDDZslgA18dmB3Zb&.ico');
+    return HtmlService.createTemplateFromFile('Public/html/editor.html').evaluate().setTitle('sens publication editor').setFaviconUrl('https://drive.google.com/uc?id=1ICDCQA-yZ3olcj7ToDDZslgA18dmB3Zb&.ico');
   }
 
 }
