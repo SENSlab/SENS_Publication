@@ -33,7 +33,7 @@ App/             # サーバーサイドの処理 / Server side processing
   |- Register.gs
   |- Remover.gs
   |- Editor.gs
-Public/          # クライアントサイドの処理 / Cleint side processing
+Public/          # クライアントサイドの処理 / Client side processing
   |- css/
     |- myCustomRegister_css.html
     |- myCustomRemover_css.html
@@ -57,12 +57,24 @@ Vendor/         # 外部ライブラリ / External library
 ```
 
 # For Developers
-開発する際は、Googleのスクリプトエディタを使用します。  
-ディレクトリという概念がないため、すべてのファイルが同じ階層に存在します。  
-GitHubにあげたファイルは、各ファイルの役割が分かりやすくなるよう、説明的な意味でディレクトリ構造にしています。  
-ですので、スクリプトエディタで開発する際は、ディレクトリ構造になっていないことを気にしなくてOKです。
+開発する際は、Googleの[clasp](https://github.com/google/clasp)を使用します．
+1. Node.jsとnpmを入れる
+```
+$ node --version
+```
+でバージョンが4.7.4以上ならOK  
 
-When developing, we use Google's script editor.  
-Because there is no concept of a directory, all files are in the same hierarchy.  
-The file given in GitHub has a directory structure in a descriptive sense so that the role of each file becomes easy to understand.  
-So, when developing with the script editor, do not worry about not having a directory structure
+1. claspを入れる  
+```
+$ npm install -g @google/clasp
+```
+1. ローカルにcloneする
+```
+$ clasp clone <scriptID>
+```
+1. ローカルで修正する  
+
+1. リモートにローカルの更新を反映する
+```
+$ clasp push
+```
