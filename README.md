@@ -1,28 +1,28 @@
-# Sens Publication (Will be released in September)
+### Sens Publication (Will be released in September)
 There are three functions.
 1. Register publication data
 2. Delete publication data
 3. Edit publication data
 
-# Sens Publication Register
+### Sens Publication Register
 You can register publication data from the link below.  
 [sens publicaion register](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=register)  
 
 **You need sens account.**
 
-# Sens Publication Remover
+### Sens Publication Remover
 You can delete publication data from the link below.  
 [sens publicaion remover](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=remover)  
 
 **You need sens account.**
 
-# Sens Publication Editor
+### Sens Publication Editor
 You can edit publication data from the link below.  
 [sens publicaion editor](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=editor)  
 
 **You need sens account.**
 
-# Directory Structure
+### Directory Structure
 ```
 App/             # サーバーサイドの処理 / Server side processing
   |- Main.gs
@@ -56,25 +56,27 @@ Vendor/         # 外部ライブラリ / External library
     |- iconatejs/
 ```
 
-# For Developers
+### For Developers
 開発する際は、Googleの[clasp](https://github.com/google/clasp)を使用します．
-1. Node.jsとnpmを入れる
-```
-$ node --version
-```
-でバージョンが4.7.4以上ならOK  
+1. Node.jsとnpmをインストールする
 
-1. claspを入れる  
-```
-$ npm install -g @google/clasp
-```
-1. ローカルにcloneする
-```
-$ clasp clone <scriptID>
-```
-1. ローカルで修正する  
+    [Windows](https://qiita.com/Masayuki-M/items/840a997a824e18f576d8)
+    [MacOS](https://qiita.com/sugasaki/items/ad4d5d88965057840a04)
 
-1. リモートにローカルの更新を反映する
-```
-$ clasp push
-```
+        $ node --version  
+
+    でバージョンが4.7.4以上ならOK  
+
+2. claspをインストールする
+
+        $ npm install -g @google/clasp
+
+3. ローカルにcloneする
+
+        $ clasp clone <scriptID>
+
+4. ローカルで修正する  
+
+5. リモートにローカルの更新を反映する
+
+        $ clasp push
