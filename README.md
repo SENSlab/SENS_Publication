@@ -60,8 +60,14 @@ Vendor/         # 外部ライブラリ / External library
 開発する際は、Googleの[clasp](https://github.com/google/clasp)を使用します．
 1. Node.jsとnpmをインストールする
 
-    [Windows](https://qiita.com/Masayuki-M/items/840a997a824e18f576d8)
-    [MacOS](https://qiita.com/sugasaki/items/ad4d5d88965057840a04)
+    <a href="https://qiita.com/Masayuki-M/items/840a997a824e18f576d8">
+    Windows
+    </a>
+    <img src="https://raw.githubusercontent.com/SENSlab/SENS_Publication/images/windows-brands.svg?sanitize=true" width="15">&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://qiita.com/sugasaki/items/ad4d5d88965057840a04">
+    MacOS
+    </a>
+    <img src="https://raw.githubusercontent.com/SENSlab/SENS_Publication/images/apple-brands.svg?sanitize=true" width="15" >
 
         $ node --version  
 
