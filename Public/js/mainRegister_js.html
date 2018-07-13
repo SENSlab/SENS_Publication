@@ -220,11 +220,12 @@ function isRequiredComplete(){
  * ファイル名が命名規則に則っているかを判定する
  * 正規表現の記法は以下のURL参照
  * https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_Expressions
+ * \u00c0-\u0024f: ウムラウトを含む特殊アルファベット文字
  * @param  {string}  fileName 添付したファイル名
  * @return {boolean}          則っている: true/則っていない: false
  */
 function isValidFileName(fileName){
-    if(/^\d{4}_[0-9a-zA-Z]+_[a-zA-Z]-[a-zA-Z]+\.[a-zA-Z]+$/.test(fileName)){
+    if(/^\d{4}_[0-9a-zA-Z]+_[a-zA-Z]-[a-zA-Z\u00c0-\u024f]+\.[a-zA-Z]+$/.test(fileName)){
         return true;
     }
 
