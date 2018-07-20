@@ -165,7 +165,7 @@ $("#submit_btn")[0].addEventListener('click', function() { ;
 
         let file_form = $('#file_form')[0];
 
-        handleFormSubmit(file_form, category);
+        handleFormSubmit(file_form, category, year);
     }
 });
 
@@ -240,41 +240,24 @@ function isValidFileName(fileName){
  * @param  {string} category        ファイルを追加したいカテゴリー
  * @return {void}
  */
-function handleFormSubmit(formObject, category) {
-    switch(category){
-        case 'award':
-          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormAward();
-          break;
-        case 'journal':
-          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormJournal(formObject);
-          break;
-        case 'international_conference':
-          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormInternationalConference(formObject);
-          break;
-        case 'domestic_conference':
-          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormDomesticConference(formObject);
-          break;
-        case 'survey':
-          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormSurvey(formObject);
-          break;
-        case 'press':
-          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormPress(formObject);
-          break;
-        case 'book':
-          google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormBook(formObject);
-          break;
-        case 'unknown':
-            google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormUnknown(formObject);
-            break;
-        case 'phd_thesis':
-            google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormPhDThesis(formObject);
-            break;
-        case 'master_thesis':
-            google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormMasterThesis(formObject);
-            break;
-        case 'bachelor_thesis':
-            google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).processFormBachelorThesis(formObject);
-            break;
+function handleFormSubmit(formObject) {
+    let inputCategory = document.createElement('input');
+    inputCategory.name = 'category';
+    inputCategory.value = category;
+    formObject.append(inputCategory);
+    
+    let inputYear = document.createElement('input');
+    inputYear.name = 'year';
+    inputYear.value = year;
+    formObject.append(inputYear);
+    
+    let fileDataWithCategoryAndYear = formObject;
+    
+    if(category === 'award'){
+        sendData('Success');
+    }
+    else if(category !== 'award'){
+        google.script.run.withSuccessHandler(sendData).withFailureHandler(showResultFileError).addFileInDrive(fileDataWithCategoryAndYear);
     }
 }
 

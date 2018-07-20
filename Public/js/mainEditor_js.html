@@ -316,39 +316,20 @@ $("#edit_btn_parent").on('click', '#edit_btn', function() {
  * @param  {string} category        ファイルを追加したいカテゴリー
  * @return {void}
  */
-function handleFormSubmit(formObject, category) {
-    switch(category){
-        case 'journal':
-            google.script.run.withSuccessHandler(sendData).processFormJournal(formObject);
-            break;
-        case 'international_conference':
-            google.script.run.withSuccessHandler(sendData).processFormInternationalConference(formObject);
-            break;
-        case 'domestic_conference':
-            google.script.run.withSuccessHandler(sendData).processFormDomesticConference(formObject);
-            break;
-        case 'survey':
-            google.script.run.withSuccessHandler(sendData).processFormSurvey(formObject);
-            break;
-        case 'press':
-            google.script.run.withSuccessHandler(sendData).processFormPress(formObject);
-            break;
-        case 'book':
-            google.script.run.withSuccessHandler(sendData).processFormBook(formObject);
-            break;
-        case 'unknown':
-            google.script.run.withSuccessHandler(sendData).processFormUnknown(formObject);
-            break;
-        case 'phd_thesis':
-            google.script.run.withSuccessHandler(sendData).processFormPhDThesis(formObject);
-            break;
-        case 'master_thesis':
-            google.script.run.withSuccessHandler(sendData).processFormMasterThesis(formObject);
-            break;
-        case 'bachelor_thesis':
-            google.script.run.withSuccessHandler(sendData).processFormBachelorThesis(formObject);
-            break;
-    }
+function handleFormSubmit(formObject) {
+    let inputCategory = document.createElement('input');
+    inputCategory.name = 'category';
+    inputCategory.value = category;
+    formObject.append(inputCategory);
+    
+    let inputYear = document.createElement('input');
+    inputYear.name = 'year';
+    inputYear.value = year;
+    formObject.append(inputYear);
+    
+    let fileDataWithCategoryAndYear = formObject;
+    
+    google.script.run.withSuccessHandler(sendData).addFileInDrive(fileDataWithCategoryAndYear);
 }
 
 
@@ -591,7 +572,7 @@ function isRequiredComplete(){
  * @return {boolean}          則っている: true/則っていない: false
  */
 function isValidFileName(fileName){
-    if(/^\d{4}_[0-9a-zA-Z]+_[0-9a-zA-Z]+\.[0-9a-zA-Z]+$/.test(fileName)){
+    if(/^\d{4}_[0-9a-zA-Z]+_[a-zA-Z]-[a-zA-Z\u00c0-\u024f]+\.[a-zA-Z]+$/.test(fileName)){
         return true;
     }
 

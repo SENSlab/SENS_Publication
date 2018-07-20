@@ -154,7 +154,7 @@ function setAwardInPublicSpreadSheet(SPREADSHEET_ID, year, award, detail){
 function setPublicationWithFileInPrivateSpreadSheet(SPREADSHEET_ID, year, detail, url, category, fileName){
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
-
+  
   var range = sheet.getRange(1, 1, sheet.getLastRow());
   var values = range.getValues();
 
