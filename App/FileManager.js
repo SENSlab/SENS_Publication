@@ -9,38 +9,23 @@
 function addFileInDrive(fileDataWithCategoryAndYear) {
   cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder;
-  
-  switch(fileDataWithCategoryAndYear.category){
-    case 'journal':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_JOURNAL_FOLDER_ID));
+
+  cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
+
+  var categoryFolder = getFolderIdByCategory(fileDataWithCategoryAndYear.category);
+  var yearFolders = categoryFolder.getFolders();
+
+  while (yearFolders.hasNext()) {
+    var folderItr = yearFolders.next();
+    if(folderItr.getName() === fileDataWithCategoryAndYear.year){
+      folder = folderItr;
       break;
-    case 'international_conference':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_INTERNATIONAL_CONFERENCE_FOLDER_ID));
-      break;
-    case 'domestic_conference':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_DOMESTIC_CONFERENCE_FOLDER_ID));
-      break;
-    case 'survey':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_SURVEY_FOLDER_ID));
-      break;
-    case 'press':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_PRESS_FOLDER_ID));
-      break;
-    case 'book':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_BOOK_FOLDER_ID));
-      break;
-    case 'unknown':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_UNKNOWN_FOLDER_ID));
-      break;
-    case 'phd_thesis':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_PHD_THESIS_FOLDER_ID));
-      break;
-    case 'master_thesis':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_MASTER_THESIS_FOLDER_ID));
-      break;
-    case 'bachelor_thesis':
-      folder = DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_BACHELOR_THESIS_FOLDER_ID));
-      break;
+    }
+  }
+
+  if(folder === undefined){
+    var folderId = categoryFolder.createFolder(fileDataWithCategoryAndYear.year).getId();
+    folder = DriveApp.getFolderById(folderId);
   }
   
   var file = fileDataWithCategoryAndYear.attached_file;
