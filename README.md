@@ -2,7 +2,7 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-[English](sens-publication-manager-in-english) is below!!  
+[English](#sens-publication-manager-in-english) is below!!  
 佐藤研究室の業績情報データベース「SENS Publicaton」へのデータ追加，削除，編集が可能です．
 
 ## 機能
@@ -124,6 +124,10 @@ Vendor/         # 外部ライブラリ
 1. リモートにローカルの更新を反映する
 
         $ clasp push
+
+## ライセンス
+
+[MPL 2.0](https://github.com/SENSlab/SENS_Publication/blob/master/LICENSE)
 
 # Sens Publication Manager (in ENGLISH)
 
@@ -258,3 +262,7 @@ You should use [google/clasp](https://github.com/google/clasp)．
 1. Push your local updates to remote like GitHub
 
         $ clasp push
+
+## License
+
+[MPL 2.0](https://github.com/SENSlab/SENS_Publication/blob/master/LICENSE)
