@@ -92,12 +92,7 @@ function deletePublicationInPrivateSpreadSheet(SPREADSHEET_ID, category, deleteR
   var range = sheet.getRange(deleteRowIndex, 3);
   var url = /"(.*?)"/.exec(range.getFormulaR1C1())[1];
 
-  var IdParsedFromUrl = url.replace(/https:\/\/.*\/file\/d\//, '');
-  IdParsedFromUrl = IdParsedFromUrl.replace(/\/view.*/, '');
-
-  var folder = getFolderIdByCategory(category);
-  var file = DriveApp.getFileById(IdParsedFromUrl);
-  file.setTrashed(true);
+  deleteFileInDrive(url);
 
   if(isLastDataInYear){
     sheet.deleteRows(deleteRowIndex - 1, 2);
@@ -127,4 +122,19 @@ function deletePublicationInPublicSpreadSheet(SPREADSHEET_ID, category, deleteRo
   else if(!isLastDataInYear){
     sheet.deleteRow(deleteRowIndex);
   }
+}
+
+
+
+/**
+ * Driveからファイルを削除する
+ * @param  {string} url    削除したいファイルのurl
+ * @return {void}
+ */
+function deleteFileInDrive(url){
+  var IdParsedFromUrl = url.replace(/https:\/\/.*\/file\/d\//, '');
+  IdParsedFromUrl = IdParsedFromUrl.replace(/\/view.*/, '');
+
+  var file = DriveApp.getFileById(IdParsedFromUrl);
+  file.setTrashed(true);
 }

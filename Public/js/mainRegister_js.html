@@ -29,6 +29,8 @@ var existFileForm = false;
  */
 var fileName;
 
+var url;
+
 $('#loading_bar').hide();
 $('#award_type_parent').hide();
 $('#file_form_parent').hide();
@@ -271,6 +273,8 @@ function handleFormSubmit(formObject) {
  * @return {void}
  */
 function sendData(url) {
+    this.url = url;
+    
     let detail = $('#detail_text').val();
 
     if(category === 'award'){
@@ -320,6 +324,8 @@ function showResultSuccess(){
  * @return {void}
  */
 function showResultSpreadSheetError(){
+    google.script.run.deleteFileInDrive(url);
+    
     $('#result').empty();
     $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--blue\">データの追加に失敗しました． / Fail to add data in spreadsheet.</div>')
     $('#loading_bar').hide();
