@@ -15,7 +15,7 @@
 
 ## 使用方法
 
-### SENS Publicaton Register
+### SENS Publication Register
 
 リンク: [SENS Publication Register](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=register)  
 使用するにはSENSのGoogleアカウントが必要です．
@@ -26,7 +26,7 @@
 #### 注意点
 
 
-### SENS Publicaton Remover
+### SENS Publication Remover
 
 リンク: [SENS Publication Remover](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=remover)  
 使用するにはSENSのGoogleアカウントが必要です．
@@ -39,7 +39,7 @@
 
 
 
-### SENS Publicaton Editor
+### SENS Publication Editor
 
 リンク: [SENS Publication Editor](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=editor)  
 使用するにはSENSのGoogleアカウントが必要です．
@@ -151,7 +151,7 @@ There are three functions.
 You can register publication data from the link below.  
 [sens publicaion register](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=register)  
 
-**You need sens account.**
+**You need SENS's Google account.**
 
 #### Steps
 
@@ -165,7 +165,7 @@ You can register publication data from the link below.
 You can delete publication data from the link below.  
 [sens publicaion remover](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=remover)  
 
-**You need sens account.**
+**You need SENS's Google account.**
 
 #### Steps
 
@@ -179,7 +179,7 @@ You can delete publication data from the link below.
 You can edit publication data from the link below.  
 [sens publicaion editor](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=editor)  
 
-**You need sens account.**
+**You need SENS's Google account.**
 
 #### Steps
 
