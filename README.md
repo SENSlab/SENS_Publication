@@ -32,17 +32,17 @@
 
 1. "カテゴリー"のドロップダウンリストから登録する業績情報のカテゴリーを選択してください．  
 選択可能なカテゴリーは以下の通りです．
-  - 受賞
-  - 論文
-  - 国際会議
-  - 国内会議
-  - 解説記事
-  - 報道発表
-  - 著書
-  - 不明
-  - 博士論文
-  - 修士論文
-  - 学士論文
+    - 受賞
+    - 論文
+    - 国際会議
+    - 国内会議
+    - 解説記事
+    - 報道発表
+    - 著書
+    - 不明
+    - 博士論文
+    - 修士論文
+    - 学士論文
 
 
 2. "年"のドロップダウンリストから登録する業績情報の年を選択してください．  
@@ -52,8 +52,8 @@
 
 3. "受賞内容"のテキストエリアに受賞内容を入力してください．  
 例:
-  - 最優秀発表賞
-  - Best Paper Runner Up Award (IEEE ISMAR 2016)  
+    - 最優秀発表賞
+    - Best Paper Runner Up Award (IEEE ISMAR 2016)  
 
 
 4. "詳細"のテキストエリアに受賞者の名前を入力してください．
@@ -64,14 +64,14 @@
 
 3. "詳細"のテキストエリアに例のような業績情報を入力してください．  
 例:  
-  - 田辺育暉, 浅井唯貴, 榎本龍一, 松倉悠, 岩井大輔, 佐藤宏介, "仮想手操作における非操作手への触覚呈示手法の検討", 情報処理学会インタラクション2018論文集, pp. 785-790, 2018.  
-  - Naruki Tanabe, Yuki Asai, Ryuichi Enomoto, Haruka Matsukura, Daisuke Iwai, and Kosuke Sato, "Haptic Feedback to Non-Manipulating Hand in Manipulating Virtual Hand", In Proceedings of IEEE Haptics Symposium 2018 Demonstrations, p. 125, 2018.
+    - 田辺育暉, 浅井唯貴, 榎本龍一, 松倉悠, 岩井大輔, 佐藤宏介, "仮想手操作における非操作手への触覚呈示手法の検討", 情報処理学会インタラクション2018論文集, pp. 785-790, 2018.  
+    - Naruki Tanabe, Yuki Asai, Ryuichi Enomoto, Haruka Matsukura, Daisuke Iwai, and Kosuke Sato, "Haptic Feedback to Non-Manipulating Hand in Manipulating Virtual Hand", In Proceedings of IEEE Haptics Symposium 2018 Demonstrations, p. 125, 2018.
 
 
 4. "ファイル"のフォームにpdfファイルを添付してください．ファイル名は例のようにしてください．  
 例:
-  - 2018_Interaction_N-Tanabe.pdf
-  - 2018_IEEEHapticsSymposium_N-Tanabe.pdf
+    - 2018_Interaction_N-Tanabe.pdf
+    - 2018_IEEEHapticsSymposium_N-Tanabe.pdf
 
 
 5. 研究室ホームページに情報を反映させる場合，"Public"にチェックを入れてください．研究室内のデータベースに情報を反映させる場合，"Private"にチェックを入れてください．**複数にチェック可能**です．  
