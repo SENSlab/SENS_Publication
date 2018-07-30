@@ -61,7 +61,7 @@
 5. 研究室ホームページに情報を反映させる場合，"Public"にチェックを入れてください．研究室内のデータベースに情報を反映させる場合，"Private"にチェックを入れてください．**複数にチェック可能**です．
 
 6. "SUBMIT"ボタンを押してください．下の画像のような文が表示されていればOKです．  
-<img src="https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width="30%">  
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width="18%">  
 
 **"カテゴリー"で"受賞"以外を選択した場合**  
 
@@ -80,7 +80,7 @@
 5. 研究室ホームページに情報を反映させる場合，"Public"にチェックを入れてください．研究室内のデータベースに情報を反映させる場合，"Private"にチェックを入れてください．**複数にチェック可能**です．  
 
 6. "SUBMIT"ボタンを押してください．下の画像のような文が表示されていればOKです．  
-<img src="https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width="15%">  
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width="18%">  
 
 
 #### 注意点
