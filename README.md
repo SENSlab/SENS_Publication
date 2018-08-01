@@ -118,6 +118,7 @@
 5. 研究室ホームページからも業績情報を削除したい場合は，"Public"にチェックを入れてください．研究室ホームページに該当する業績情報が登録されていない場合は，"Public"にチェックを入れることはできません．
 
 6. "DELETE"ボタンを押してください．下の画像のような文が表示されていればOKです．
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/delete.PNG" width="18%">  
 
 #### 注意点
 - マイナスボタンは一つしか選択できません．
