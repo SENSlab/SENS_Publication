@@ -17,6 +17,8 @@
 
 ### SENS Publication Register
 
+業績情報を登録することができます．
+
 リンク: [SENS Publication Register](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=register)  
 使用するにはSENSのGoogleアカウントが必要です．
 
@@ -94,6 +96,8 @@
 
 ### SENS Publication Remover
 
+業績情報を削除することができます．
+
 リンク: [SENS Publication Remover](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=remover)  
 使用するにはSENSのGoogleアカウントが必要です．
 
@@ -103,10 +107,24 @@
 
 #### 使用手順
 
+1. "カテゴリー"のドロップダウンリストから削除する業績情報のカテゴリーを選択してください．
 
+2. "年"のドロップダウンリストから削除する業績情報の年を選択してください．
+
+3. "SEARCH"ボタンを押してください．削除候補が表示されます．
+
+4. 削除したい業績情報の行のマイナスボタンを押してください．マイナスボタンが赤色になればOKです．
+
+5. 研究室ホームページからも業績情報を削除したい場合は，"Public"にチェックを入れてください．研究室ホームページに該当する業績情報が登録されていない場合は，"Public"にチェックを入れることはできません．
+
+6. "DELETE"ボタンを押してください．下の画像のような文が表示されていればOKです．
 
 #### 注意点
+- マイナスボタンは一つしか選択できません．
 
+- "カテゴリー"を選択した直後に"年"のドロップダウンリストをクリックすると，何も表示されない場合があります．お手数をお掛けしますが，もう一度クリックし直してください．
+
+- 業績情報を削除した後は，業績情報用のSpread SheetやGoogle Driveに削除した情報が存在しないことを確認してください．
 
 
 ### SENS Publication Editor
