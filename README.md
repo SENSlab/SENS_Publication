@@ -156,6 +156,7 @@
 7. 研究室ホームページの業績情報も編集したい場合は，"Public"にチェックを入れてください．研究室ホームページに該当する業績情報が登録されていない場合は，"Public"にチェックを入れることはできません．
 
 8. "EDIT"ボタンを押してください．下の画像のような文が表示されていればOKです．
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/edit.PNG" width="18%">  
 
 #### 注意点
 
