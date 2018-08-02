@@ -2,7 +2,7 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-[English](https://github.com/SENSlab/SENS_Publication/blob/master/README-en.md) is below!!  
+[README in English](https://github.com/SENSlab/SENS_Publication/blob/master/README-en.md) 
 佐藤研究室の業績情報データベース「SENS Publicaton」へのデータ追加，削除，編集が可能です．
 
 ## 機能
