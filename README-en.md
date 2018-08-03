@@ -19,15 +19,95 @@ There are three functions.
 
 You can register publication data from the link below.  
 [sens publicaion register](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=register)  
-
 **You need SENS's Google account.**
+
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/error_CantOpenPage.PNG" width="40%">  
+If you see the aboce screen, please sign in to Google with SENS Google account and try again.  
+Or try opening a link in secret mode.
+
+#### Screen Description
+
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MainRegister.PNG">
+
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MenuRegister.PNG"> 
+
+1. Menu Button  
+When pressed, the menu will be displayed like the second image.
+
+2. Publication information form
+
+3. Public/Private check box  
+Public: If checked, information will be reflected on the homepage.  
+Private: If checked, information will be reflected in the database in the laboratory.
+
+4. SUBMIT button  
+Press to register publication information.
+
+5. Menu bar  
+Remover: Press to switch to SENS Publication Remover.  
+Editor: Press to switch to SENS Publication Editor.
 
 #### Steps
 
+1. Select the category of the publication information to be registered from the "Category" drop down list.  
+Selectable categories are as follows:  
+    - Award
+    - Journal
+    - International Conference
+    - Domestic Conference
+    - Survey
+    - Press
+    - Book
+    - Unknown
+    - PhD Thesis
+    - Master Thesis
+    - Bachelor Thesis
+
+
+2. Select the year of the publication information to be registered from the "Year" drop down list.  
+Selectable years are from 2003 to this year.
+
+**When you select "Award" in "Category"**
+
+3. Enter the award name int the text area of "Type of Award".  
+Ex:
+    - Best Paper Runner Up Award (IEEE ISMAR 2016)  
+
+4. Enter the name of the winner in the text area of "Detail".
+
+5. Please check "Public" to reflect the publication information on the homepage.
+Please check "Private" to reflect information in the database in the laboratory. **It can be checked more than once**.
+
+6. Press the "SUBMIT" button. If the sentence like the image below is displayed, it is OK.  
+<img src = "https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width = "18%">
+
+** When you select other than "Award" in "Category"**
+
+3. Enter performance information like the example in the text area of "Details".
+Ex.:
+    - Naruki Tanabe, Yuki Asai, Ryuichi Enomoto, Haruka Matsukura, Daisuke Iwai, and Kosuke Sato, "Haptic Feedback to Non Manipulating Hand in Manipulating Virtual Hand", In Proceedings of IEEE Haptics Symposium 2018 Demonstrations, p. 125, 2018.
+
+
+4. Attach the pdf file to the "file" form. Please rename the file as shown.  
+Ex:
+    - 2018_Interaction_N-Tanabe.pdf
+    - 2018_IEEEHapticsSymposium_N-Tanabe.pdf
+
+
+5. Please check "Public" to reflect the publication information on the homepage.
+Please check "Private" to reflect information in the database in the laboratory. **It can be checked more than once**.
+
+6. Press the "SUBMIT" button. If the sentence like the image below is displayed, it is OK.  
+<img src = "https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width = "18%">
 
 
 #### Notice
 
+- After uploading the publication information, please make sure that the publication information was added to the Spread Sheet for publication information, just in case.
+
+- In an unstable net environment, it is easy to fail. Please use it in a good net environment.
+
+- If it is an unstable net environment or the size of the upload pdf file is large, uploading takes time. Please wait patiently until the load bar disappears, thank you.
 
 
 ### Sens Publication Remover
