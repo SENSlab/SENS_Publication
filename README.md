@@ -29,7 +29,25 @@
 
 #### 画面説明
 
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MainRegister.PNG">
 
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MenuRegister.PNG"> 
+
+1. メニューボタン  
+押すと2枚目の画像のようにメニューが表示されます．
+
+2. 業績情報フォーム
+
+3. Public/Privateチェックボックス  
+Public: チェックが入っていると，ホームページに情報を反映させることができます．  
+Private: チェックが入っていると，研究室内のデータベースに情報を反映させることができます．
+
+4. SUBMITボタン  
+押すと業績情報を登録します．
+
+5. メニューバー  
+Remover: 押すとSENS Publication Removerに遷移します．  
+Editor: 押すとSENS Publication Editorに遷移します．
 
 #### 使用手順
 
@@ -104,7 +122,35 @@
 
 #### 画面説明
 
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MainRemover.PNG">
 
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MenuRemover.PNG"> 
+
+1. メニューボタン  
+押すと2枚目の画像のようにメニューが表示されます．
+
+2. 検索フォーム  
+削除する業績情報を絞り込むための検索フォームです．
+
+3. SEARCHボタン  
+検索フォームに入力された情報を研究室内のデータベースから検索します．
+
+4. 検索結果  
+
+5. マイナスボタン  
+削除したい業績情報のマイナスボタンを選択します．
+選択すると，マイナスボタンが赤くなります．
+
+6. Publicチェックボックス  
+チェックが入っていると，ホームページに情報を反映させることができます．
+ホームページにマイナスボタンで選択した情報がないとチェックを入れることができません．
+
+7. DELETEボタン  
+押すとマイナスボタンで選択した業績情報を削除します．
+
+5. メニューバー  
+Register: 押すとSENS Publication Registerに遷移します．  
+Editor: 押すとSENS Publication Editorに遷移します．
 
 #### 使用手順
 
@@ -138,7 +184,38 @@
 
 #### 画面説明
 
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MainEditor.PNG">
 
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MenuEditor.PNG"> 
+
+1. メニューボタン  
+押すと2枚目の画像のようにメニューが表示されます．
+
+2. 検索フォーム  
+編集する業績情報を絞り込むための検索フォームです．
+
+3. SEARCHボタン  
+検索フォームに入力された情報を研究室内のデータベースから検索します．
+
+4. 検索結果  
+
+5. 鉛筆ボタン  
+編集したい業績情報の鉛筆ボタンを選択します．
+選択すると，鉛筆ボタンがオレンジ色になります．
+
+6. 編集フォーム  
+編集内容を記入します．
+
+7. Publicチェックボックス  
+チェックが入っていると，ホームページに情報を反映させることができます．
+ホームページに編集ボタンで選択した情報がないとチェックを入れることができません．
+
+8. EDITボタン  
+押すと編集ボタンで選択した業績情報を編集します．
+
+9. メニューバー  
+Register: 押すとSENS Publication Registerに遷移します．  
+Remover: 押すとSENS Publication Removerに遷移します．
 
 #### 使用手順
 
