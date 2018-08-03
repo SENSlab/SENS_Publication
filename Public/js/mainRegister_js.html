@@ -327,7 +327,7 @@ function showResultSpreadSheetError(){
     google.script.run.deleteFileInDrive(url);
     
     $('#result').empty();
-    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--blue\">データの追加に失敗しました． / Fail to add data in spreadsheet.</div>')
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--red\">データの追加に失敗しました． / Fail to add data in spreadsheet.</div>')
     $('#loading_bar').hide();
     $('#submit_btn').attr('disabled', false);
 }
@@ -340,7 +340,7 @@ function showResultSpreadSheetError(){
  */
 function showResultFileError(){
     $('#result').empty();
-    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--blue\">ファイルの追加に失敗しました． / Fail to add file in spreadsheet.</div>')
+    $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--red\">ファイルの追加に失敗しました． / Fail to add file in spreadsheet.</div>')
     $('#loading_bar').hide();
     $('#submit_btn').attr('disabled', false);
 }
