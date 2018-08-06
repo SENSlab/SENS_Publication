@@ -111,32 +111,139 @@ Please check "Private" to reflect information in the database in the laboratory.
 
 
 ### Sens Publication Remover
+
 You can delete publication data from the link below.  
 [sens publicaion remover](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=remover)  
 
 **You need SENS's Google account.**
 
+#### Screen Description
+
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MainRemover.PNG">
+
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/MenuRemover.PNG"> 
+
+1. Menu Button  
+When pressed, the menu will be displayed like the second image.
+
+2. Search Form  
+A search form for filtering the publication information to delete.
+
+3. SEARCH Button  
+Search publication information matched in the search form from the database in the laboratory.
+
+4. Search Results
+
+5. Minus Button  
+Select the minus button of the publication information you want to delete.
+When selected, the minus button turns red.
+
+6. Public Check Box  
+If checked, information will be reflected on the homepage.
+You can not put a check if there is no information selected with the minus button on the homepage.
+
+7. DELETE Button  
+Press the minus button to delete selected publication information.
+
+5. Menu Bar  
+Register: Press to switch to SENS Publication Register.  
+Editor: Press to switch to SENS Publication Editor.
+
 #### Steps
 
+1. Select the category of the publication information to be deleted from the "Category" drop down list.
 
+2. Select the year of the publication information to be deleted from the "Year" drop down list.
+
+3. Press the "SEARCH" button. The deletion candidate is displayed.
+
+4. Please press the minus button on the line of publication information you want to delete. It is OK if the minus button turns red.
+
+5. If you also want to delete publication information from the laboratory homepage, please check "Public". If publication information corresponding to the laboratory homepage is not registered, you can not put a check in "Public".
+
+6. Press the "DELETE" button. If the sentence like the image below is displayed, it is OK.
+<img src = "https://github.com/SENSlab/SENS_Publication/blob/images/delete.PNG" width = "18%">
 
 #### Notice
 
+- Only one minus button can be selected.
+
+- If you click on the "Year" dropdown list immediately after selecting "Category", nothing may be displayed. I'm sorry for troubling you, please click again.
+
+- After deleting publication information, please confirm that deleted information does not exist in Spread Sheet for publication information or Google Drive.
 
 
 ### Sens Publication Editor
+
 You can edit publication data from the link below.  
 [sens publicaion editor](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=editor)  
 
 **You need SENS's Google account.**
 
+
+#### Screen Description
+
+<img src = "https://github.com/SENSlab/SENS_Publication/blob/images/MainEditor.PNG">
+
+<img src = "https://github.com/SENSlab/SENS_Publication/blob/images/MenuEditor.PNG">
+
+1. Menu Button  
+When pressed, the menu will be displayed like the second image.
+
+2. Search Form  
+A search form for filtering the publication information to edit.
+
+3. SEARCH Button    
+Search publication information matched in the search form from the database in the laboratory.
+
+4. Search Results   
+
+5. Pencil Button  
+Select the pencil button for the publication information you want to edit.
+When selected, the pencil button turns orange.
+
+6. Edit form  
+Fill in the edits.
+
+7. Public Check Box  
+If checked, information will be reflected on the homepage.
+You can not put a check if there is no information selected with the pencil button on the homepage.
+
+8. EDIT Button  
+Press and edit the publication information selected with the edit button.
+
+9. Menu Bar  
+Register: Press to switch to SENS Publication Register.
+Remover: Press to switch to SENS Publication Remover.
+
 #### Steps
 
+1. Select the category of publication information to be edited from the "Category" drop down list.
 
+2. From the "Year" drop down list, select the year of the publication information to be edited.
+
+3. Press the "SEARCH" button.
+
+4. Please press the pencil button on the line of publication information you want to edit. It is OK if the pencil button becomes orange.
+
+5. Select the item you want to edit from the "Edit element" drop down list.
+
+6. Please edit.
+
+7. If you also want to edit publication information on the laboratory's homepage, please check "Public". If performance information corresponding to the laboratory's homepage is not registered, you can not put a check in "Public".
+
+8. Press the "EDIT" button. If the sentence like the image below is displayed, it is OK.
+<img src = "https://github.com/SENSlab/SENS_Publication/blob/images/edit.PNG" width = "18%">
 
 #### Notice
 
+- Only one edit button can be selected.
 
+- If you click on the "Year" dropdown list immediately after selecting "Category", nothing may be displayed. I'm sorry for troubling you, please click again.
+
+- After editing the publication information, please confirm that the edited information is reflected in Spread Sheet for the publication information and Google Drive.
+
+- If "edit element" is a file, it is easy to fail if the net environment is not good. Please use it in a good net environment.
 
 ## For Developers
 
