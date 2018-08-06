@@ -21,7 +21,7 @@ You can register publication data from the link below.
 [sens publicaion register](https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=register)  
 **You need SENS's Google account.**
 
-<img src="https://github.com/SENSlab/SENS_Publication/blob/images/error_CantOpenPage.PNG" width="40%">  
+<img src="https://github.com/SENSlab/SENS_Publication/blob/images/error_CantOpenPageEN.PNG" width="40%">  
 If you see the aboce screen, please sign in to Google with SENS Google account and try again.  
 Or try opening a link in secret mode.
 
