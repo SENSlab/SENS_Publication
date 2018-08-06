@@ -34,16 +34,16 @@ Or try opening a link in secret mode.
 1. Menu Button  
 When pressed, the menu will be displayed like the second image.
 
-2. Publication information form
+2. Publication Information Form
 
-3. Public/Private check box  
+3. Public/Private Check Box  
 Public: If checked, information will be reflected on the homepage.  
 Private: If checked, information will be reflected in the database in the laboratory.
 
-4. SUBMIT button  
+4. SUBMIT Button  
 Press to register publication information.
 
-5. Menu bar  
+5. Menu Bar  
 Remover: Press to switch to SENS Publication Remover.  
 Editor: Press to switch to SENS Publication Editor.
 
