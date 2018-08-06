@@ -9,9 +9,9 @@ You can register publication data, remove it, and edit it to "SENS Publication".
 
 There are three functions.
 
-1. Register publication data
-1. Delete publication data
-1. Edit publication data
+1. Register publication data ([SENS Publication Register](#sens-publication-register))
+2. Delete publication data ([SENS Publication Remover](#sens-publication-remover))
+3. Edit publication data ([SENS Publication Editor](#sens-publication-editor))
 
 ## Usage
 
@@ -109,6 +109,7 @@ Please check "Private" to reflect information in the database in the laboratory.
 
 - If it is an unstable net environment or the size of the upload pdf file is large, uploading takes time. Please wait patiently until the load bar disappears, thank you.
 
+- If there isn't a applicable year folder, the system will make new floder automatically.
 
 ### Sens Publication Remover
 

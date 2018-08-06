@@ -112,6 +112,7 @@ Editor: 押すとSENS Publication Editorに遷移します．
 
 - 不安定なネット環境であったり，アップロードするpdfファイルのサイズが大きい場合，アップロードに時間がかかります．ロードバーが消えるまで気長にお待ちください．
 
+- Google Drive内に該当する年のフォルダが存在しない場合は，自動でフォルダを作成します．
 
 ### SENS Publication Remover
 
@@ -168,6 +169,7 @@ Editor: 押すとSENS Publication Editorに遷移します．
 <img src="https://github.com/SENSlab/SENS_Publication/blob/images/delete.PNG" width="18%">  
 
 #### 注意点
+
 - マイナスボタンは一つしか選択できません．
 
 - "カテゴリー"を選択した直後に"年"のドロップダウンリストをクリックすると，何も表示されない場合があります．お手数をお掛けしますが，もう一度クリックし直してください．
