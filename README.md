@@ -96,7 +96,8 @@ Editor: 押すとSENS Publication Editorに遷移します．
 例:
     - 2018_Interaction_N-Tanabe.pdf
     - 2018_IEEEHapticsSymposium_N-Tanabe.pdf
-
+    - 2017_Bachelor_T-Kaminokado.pdf
+    - 2018_Master_R-Mine.pdf
 
 5. 研究室ホームページに情報を反映させる場合，"Public"にチェックを入れてください．研究室内のデータベースに情報を反映させる場合，"Private"にチェックを入れてください．**複数にチェック可能**です．  
 
