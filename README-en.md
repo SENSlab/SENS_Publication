@@ -266,7 +266,7 @@ Public/          # Client side processing
     |- myCustomRemover_css.html
     |- myCustomEditor_css.html
   |- html/
-    |- render.html
+    |- register.html
     |- remover.html
     |- editor.html
   |- js/         

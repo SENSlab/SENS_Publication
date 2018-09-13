@@ -269,7 +269,7 @@ Public/          # クライアントサイドの処理
     |- myCustomRemover_css.html
     |- myCustomEditor_css.html
   |- html/
-    |- render.html
+    |- register.html
     |- remover.html
     |- editor.html
   |- js/         
