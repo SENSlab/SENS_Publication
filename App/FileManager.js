@@ -7,14 +7,10 @@
  *     ファイルが存在しない場合はnullを返す
  */
 function addFileInDrive(fileDataWithCategoryAndYear) {
-  cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
   var folder;
-
-  cipherInstance = new Cipher('S!kL#g&oN@mT6PtB%');
-
   var categoryFolder = getFolderIdByCategory(fileDataWithCategoryAndYear.category);
   var yearFolders = categoryFolder.getFolders();
-
+  
   while (yearFolders.hasNext()) {
     var folderItr = yearFolders.next();
     if(folderItr.getName() === fileDataWithCategoryAndYear.year){

@@ -33,5 +33,11 @@ function getFolderIdByCategory(category){
       return DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_BOOK_FOLDER_ID));
     case 'unknown':
       return DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_UNKNOWN_FOLDER_ID));
+    case 'phd_thesis':
+      return DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_PHD_THESIS_FOLDER_ID));
+    case 'master_thesis':
+      return DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_MASTER_THESIS_FOLDER_ID));
+    case 'bachelor_thesis':
+      return DriveApp.getFolderById(cipherInstance.decrypt(ENCRYPTED_BACHELOR_THESIS_FOLDER_ID));
   }
 }
