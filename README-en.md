@@ -103,6 +103,8 @@ Please check "Private" to reflect information in the database in the laboratory.
 
 #### Notice
 
+- Please compress the file so that the file size is under 50 MB.
+
 - After uploading the publication information, please make sure that the publication information was added to the Spread Sheet for publication information, just in case.
 
 - In an unstable net environment, it is easy to fail. Please use it in a good net environment.

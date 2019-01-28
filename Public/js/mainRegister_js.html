@@ -338,7 +338,8 @@ function showResultSpreadSheetError(){
  * ファイルの追加が失敗したことを表示する
  * @return {void}
  */
-function showResultFileError(){
+function showResultFileError(e){
+    console.error(e);
     $('#result').empty();
     $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--red\">ファイルの追加に失敗しました． / Fail to add file in spreadsheet.</div>')
     $('#loading_bar').hide();

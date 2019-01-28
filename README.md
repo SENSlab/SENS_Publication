@@ -88,7 +88,7 @@ Editor: 押すとSENS Publication Editorに遷移します．
 
 3. "詳細"のテキストエリアに例のような業績情報を入力してください．  
 例:  
-    - 田辺育暉, 浅井唯貴, 榎本龍一, 松倉悠, 岩井大輔, 佐藤宏介, "仮想手操作における非操作手への触覚呈示手法の検討", 情報処理学会インタラクション2018論文集, pp. 785-790, 2018.  
+    - 田辺育暉, 浅井唯貴, 榎本龍一, 松倉悠, 岩井大輔, 佐藤宏介, "仮想手操作における非操作手への触覚呈示手法の検討", 情報処理学会インタラクション2018論文集, pp. 785–790, 2018.  
     - Naruki Tanabe, Yuki Asai, Ryuichi Enomoto, Haruka Matsukura, Daisuke Iwai, and Kosuke Sato, "Haptic Feedback to Non-Manipulating Hand in Manipulating Virtual Hand", In Proceedings of IEEE Haptics Symposium 2018 Demonstrations, p. 125, 2018.
 
 
@@ -106,6 +106,8 @@ Editor: 押すとSENS Publication Editorに遷移します．
 
 
 #### 注意点
+
+- ファイルサイズは50MB以内になるよう圧縮してください．
 
 - 業績情報をアップロードした後は，念のため，業績情報用のSpread Sheetに追加した情報が反映されているか確認してください．
 
