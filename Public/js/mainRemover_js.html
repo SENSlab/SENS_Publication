@@ -143,20 +143,19 @@ $("#delete_btn_parent").on('click', '#delete_btn', function() {
 
         if(category === 'award'){
             google.script.run.withSuccessHandler(showDeleteResult).deleteAwardInSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.deleteRowIndex, privateInformation.isLastDataInYear);
-
-            if($('#public_checkbox').is(':checked')){
-                google.script.run.withSuccessHandler(showDeleteResult).deleteAwardInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.deleteRowIndex, publicInformation.isLastDataInYear);
-            }
+            publicInformation.deleteRowIndex = privateInformation.deleteRowIndex;
+            publicInformation.isLastDataInYear = privateInformation.isLastDataInYear;
+            google.script.run.withSuccessHandler(showDeleteResult).deleteAwardInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.deleteRowIndex, publicInformation.isLastDataInYear);
         }
         else if(
                 category === 'journal' || category === 'international_conference' || category === 'domestic_conference'
              || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
         ){
             google.script.run.withSuccessHandler(showDeleteResult).deletePublicationInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.deleteRowIndex, privateInformation.isLastDataInYear);
-
-            if($('#public_checkbox').is(':checked')){
-                google.script.run.withSuccessHandler(showDeleteResult).deletePublicationInPublicSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.deleteRowIndex, publicInformation.isLastDataInYear);
-            }
+            publicInformation.deleteRowIndex = privateInformation.deleteRowIndex;
+            publicInformation.isLastDataInYear = privateInformation.isLastDataInYear;
+            google.script.run.withSuccessHandler(showDeleteResult).deletePublicationInPublicSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.deleteRowIndex, publicInformation.isLastDataInYear);
+            
         }
         else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
             google.script.run.withSuccessHandler(showDeleteResult).deletePublicationInPrivateSpreadSheet(SPREADSHEET_THESIS_ID, category, privateInformation.deleteRowIndex, privateInformation.isLastDataInYear);
@@ -304,45 +303,10 @@ $('#search_result').on('click', '.minus_btn', function() {
 
         $(this).toggleClass('on');
 
-        if(category === 'award'){
-            //チェックボックスを追加するか減らすか　既に存在している場合に追加するのはなし
-            google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferAwardDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.deleteElementIndex][0], searchResultArray[privateInformation.deleteElementIndex][1]);
-        }
-        else if(
-                category === 'journal' || category === 'international_conference' || category === 'domestic_conference'
-             || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
-        ){
-            google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.deleteElementIndex][0]);
-        }
     }
 
 });
 
-
-
-/**
- * Spread Sheet (public)にも削除したいデータが存在するなら
- *     publicにも反映するチェックボックスをチェックした状態で表示する
- *     存在しない場合はチェックボックスからチェックを外した状態で変更不可モードにする
- * @param {Object} informationInPublicSpreadSheet Spread Sheet (public)上の削除したいデータに関する情報
- * @return {void}
- */
-function ShowOrDisableCheckBox(informationInPublicSpreadSheet){
-    publicInformation.deleteRowIndex = informationInPublicSpreadSheet.deleteRowIndex;
-    publicInformation.isLastDataInYear = informationInPublicSpreadSheet.isLastDataInYear;
-
-    if(informationInPublicSpreadSheet.existData){
-        $('#public_result').empty();
-        $('#public_checkbox').prop('disabled', false);
-        $('#public_checkbox_parent')[0].MaterialCheckbox.check();
-    }
-    else if(!informationInPublicSpreadSheet.existData){
-        $('#public_result').empty();
-        $('#public_checkbox').prop('disabled', true);
-        $('#public_checkbox_parent')[0].MaterialCheckbox.uncheck();
-        $('#public_result').append('<div class=\"mdl-typography--font-bold mdl-color-text--pink-500\">Publicには存在しません / This data does not exist in public</div>');
-    }
-}
 
 
 /**

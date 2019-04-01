@@ -90,9 +90,12 @@ function deletePublicationInPrivateSpreadSheet(SPREADSHEET_ID, category, deleteR
   var spreadSheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = getSheetByCategory(spreadSheet, category);
   var range = sheet.getRange(deleteRowIndex, 3);
-  var url = /"(.*?)"/.exec(range.getFormulaR1C1())[1];
-
-  deleteFileInDrive(url);
+  
+  if(range.getValue() !== ''){
+    var url = /"(.*?)"/.exec(range.getFormulaR1C1())[1];
+    
+    deleteFileInDrive(url);
+  }
 
   if(isLastDataInYear){
     sheet.deleteRows(deleteRowIndex - 1, 2);

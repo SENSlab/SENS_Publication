@@ -63,7 +63,6 @@ var privateInformation = {editElementIndex: 0, editRowIndex: 0};
 $('#loading_bar').hide();
 $('#edit_btn').hide();
 dynamicalFormHide();
-$('#public_checkbox_parent').hide();
 
 /**
  * 動的に追加するフォームをすべて隠す
@@ -140,7 +139,6 @@ $('#year_select').on('click', 'li', function(){
 $('#award_edit_element_select').on('click', 'li', function(){
     editElement = $(this).attr('data-val');
     $('#edit_btn').show();
-    google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferAwardDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0], searchResultArray[privateInformation.editElementIndex][1]);
 
     if(editElement === 'award'){
         $('#detail_text_parent').hide();  //detail編集フォームを隠す
@@ -164,13 +162,6 @@ $('#publication_edit_element_select').on('click', 'li', function(){
     editElement = $(this).attr('data-val');
 
     if(editElement === 'detail'){
-        if(
-        category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
-        category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
-        ){
-            google.script.run.withSuccessHandler(ShowOrDisableCheckBox).ReferPublicationDataInPublicSpreadSheet(SPREADSHEET_HP_ID, category, year, searchResultArray[privateInformation.editElementIndex][0]);
-        }
-
         $('#edit_btn').show();
         $('#file_form_parent').hide();
         $('#detail_text_parent').show();
@@ -178,8 +169,6 @@ $('#publication_edit_element_select').on('click', 'li', function(){
     }
     else if(editElement === 'file'){
         $('#edit_btn').hide();
-        $('#public_result').empty();
-        $('#public_checkbox_parent').hide();
         $('#detail_text_parent').hide();
         $('#file_form_parent').show();
         $('#uploadFile').parent().addClass('is-focused');
@@ -260,8 +249,6 @@ $("#edit_btn_parent").on('click', '#edit_btn', function() {
         $('#result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">編集中．．． / Now editing...</div>');
         $('#loading_bar').show();
         $('#search_result').empty();
-        $('#public_result').empty();
-        $('#public_checkbox_parent').hide();
 
         //対応するカテゴリーの編集内容を取得し，指定したSpread Sheetに情報をセットする
         if(category == 'award'){
@@ -273,10 +260,8 @@ $("#edit_btn_parent").on('click', '#edit_btn', function() {
             }
 
             google.script.run.withSuccessHandler(showEditResult).editAwardInSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.editRowIndex, editElement, editedContent);
-
-            if($('#public_checkbox').is(':checked')){
-                google.script.run.withSuccessHandler(showEditResult).editAwardInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.editRowIndex, editElement, editedContent);
-            }
+            publicInformation.editRowIndex = privateInformation.editRowIndex;
+            google.script.run.withSuccessHandler(showEditResult).editAwardInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.editRowIndex, editElement, editedContent);
         }
         else if(
         category === 'journal' || category === 'international_conference' || category === 'domestic_conference' ||
@@ -285,10 +270,8 @@ $("#edit_btn_parent").on('click', '#edit_btn', function() {
             if(editElement === 'detail'){
                 editedContent = $('#detail_text').val();
                 google.script.run.withSuccessHandler(showEditResult).editPublicationInSpreadSheet(SPREADSHEET_PRIVATE_ID, category, privateInformation.editRowIndex, editedContent);
-
-                if($('#public_checkbox').is(':checked')){
-                    google.script.run.withSuccessHandler(showEditResult).editPublicationInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.editRowIndex, editedContent);
-                }
+                publicInformation.editRowIndex = privateInformation.editRowIndex;
+                google.script.run.withSuccessHandler(showEditResult).editPublicationInSpreadSheet(SPREADSHEET_HP_ID, category, publicInformation.editRowIndex, editedContent);
             }
             else if(editElement === 'file'){
                 let file_form = $('#file_form')[0];
@@ -433,8 +416,6 @@ $('#search_result').on('click', '.pencil_btn', function() {
     dynamicalFormHide();
 
     if($(this).hasClass('on')){
-        $('#public_checkbox_parent').hide();
-
         if(category === 'award'){
             $('#award_edit_element_select_parent').hide();
         }
@@ -456,13 +437,6 @@ $('#search_result').on('click', '.pencil_btn', function() {
     }
 
     else if(!$(this).hasClass('on')){
-        if(
-        category === 'award' || category === 'journal' || category === 'international_conference' ||
-        category === 'domestic_conference' || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
-        ){
-            $('#public_checkbox_parent').show();
-        }
-
         if(category === 'award'){
             $('#award_edit_element_select_parent').show();
         }
@@ -472,13 +446,6 @@ $('#search_result').on('click', '.pencil_btn', function() {
 
         if(pencilBtnOnId != 'null'){
             $('#' + pencilBtnOnId).trigger('click');
-
-            if(
-            category === 'award' || category === 'journal' || category === 'international_conference' ||
-            category === 'domestic_conference' || category === 'survey' || category === 'press' || category === 'book' ||category === 'unknown'
-            ){
-                $('#public_checkbox_parent').show();
-            }
 
             if(category === 'award'){
                 $('#award_edit_element_select_parent').show();
@@ -514,31 +481,6 @@ $('#search_result').on('click', '.pencil_btn', function() {
         }
     }
 });
-
-
-
-/**
- * Spread Sheet (public)にも編集したいデータが存在するなら
- *     publicにも反映するチェックボックスをチェックした状態で表示する
- *     存在しない場合はチェックボックスからチェックを外した状態で変更不可モードにする
- * @param {Object} informationInPublicSpreadSheet Spread Sheet (public)上の編集したいデータに関する情報
- * @return {void}
- */
-function ShowOrDisableCheckBox(informationInPublicSpreadSheet){
-    publicInformation.editRowIndex = informationInPublicSpreadSheet.editRowIndex;
-
-    if(informationInPublicSpreadSheet.existData){
-        $('#public_result').empty();
-        $('#public_checkbox').prop('disabled', false);
-        $('#public_checkbox_parent')[0].MaterialCheckbox.check();
-    }
-    else if(!informationInPublicSpreadSheet.existData){
-        $('#public_result').empty();
-        $('#public_checkbox').prop('disabled', true);
-        $('#public_checkbox_parent')[0].MaterialCheckbox.uncheck();
-        $('#public_result').append('<div class=\"mdl-typography--font-bold mdl-color-text--orange-800\">Publicには存在しません / This data does not exist in public</div>');
-    }
-}
 
 
 

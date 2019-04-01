@@ -76,9 +76,6 @@ $('#category_select li').on('click', function(){
             $('#file_form_parent').hide();
             existFileForm = false;
             $('#award_type_parent').show();
-
-            $('#public_checkbox_parent').show();
-            $('#private_checkbox_parent').show();
         }
         else if($(this).attr('data-val') === 'phd_thesis' || $(this).attr('data-val') === 'master_thesis' || $(this).attr('data-val') === 'bachelor_thesis'){
             $('#award_type_parent').hide();
@@ -87,9 +84,6 @@ $('#category_select li').on('click', function(){
                 $('#file_form_parent').show();
                 existFileForm = true;
             }
-
-            $('#public_checkbox_parent').hide();
-            $('#private_checkbox_parent').hide();
         }
         else if($(this).attr('data-val') !== 'award' || $(this).attr('data-val') !== 'phd_thesis' || $(this).attr('data-val') !== 'master_thesis' || $(this).attr('data-val') !== 'bachelor_thesis'){
             $('#award_type_parent').hide();
@@ -98,9 +92,6 @@ $('#category_select li').on('click', function(){
                 $('#file_form_parent').show();
                 existFileForm = true;
             }
-
-            $('#public_checkbox_parent').show();
-            $('#private_checkbox_parent').show();
         }
         preSelectedCategory = $(this).attr('data-val');
     }
@@ -128,28 +119,6 @@ $('#upload_btn')[0].onchange = function () {
         $('#uploadFile')[0].value = '';
     }
 };
-
-
-
-/**
- * privateチェックボックスを押した際の処理
- * @return {void}
- */
-$('#private_checkbox').on('change', function(){
-    if($('#private_checkbox').is(':checked')){
-        if(
-           category === 'journal' || category === 'international_conference' || category === 'domestic_conference'
-        || category === 'survey' || category === 'press' || category === 'book'
-        || category === 'unknown' || category === 'phd_thesis' || category === 'master_thesis'
-        || category == 'bachelor_thesis'
-        ){
-            $('#file_form_parent').show();
-        }
-    }
-    else if(!$('#private_checkbox').is(':checked')){
-        $('#file_form_parent').hide();
-    }
-});
 
 
 
@@ -197,16 +166,6 @@ function isRequiredComplete(){
     if($('#detail_text').val() === ''){
         $('#detail_text').parent().addClass('is-invalid');
         isEmpty = true;
-    }
-
-    if(category !== 'award'){
-        if($('#uploadFile')[0].value === '' && $('#private_checkbox').is(':checked')){
-            $('#uploadFile').parent().removeClass('is-invalid');
-            $('#filename_error').hide();
-            $('#attached_error').show();
-            $('#uploadFile').parent().addClass('is-invalid');
-            isEmpty = true;
-        }
     }
 
     if(isEmpty){
@@ -278,13 +237,8 @@ function sendData(url) {
 
     if(category === 'award'){
         let award_type = $('#award_type').val();
-        if($('#private_checkbox').is(':checked')){
             google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setAwardInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, year, award_type, detail);
-        }
-
-        if($('#public_checkbox').is(':checked')){
             google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setAwardInPublicSpreadSheet(SPREADSHEET_HP_ID, year, award_type, detail);
-        }
     }
 
     else if(category === 'phd_thesis' || category === 'master_thesis' || category === 'bachelor_thesis'){
@@ -292,12 +246,14 @@ function sendData(url) {
     }
 
     else if(category !== 'award' || category !== 'phd_thesis' || category !== 'master_thesis' || category !== 'bachelor_thesis'){
-        if($('#private_checkbox').is(':checked')){
+        if ($('#uploadFile')[0].value !== '') {
             google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setPublicationWithFileInPrivateSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, url, category, fileName);
-        }
-
-        if($('#public_checkbox').is(':checked')){
             google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setPublicationWithFileInPublicSpreadSheet(SPREADSHEET_HP_ID, year, detail, category);
+        }
+        
+        else if ($('#uploadFile')[0].value === '') {
+            google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setPublicationWithNoFileInSpreadSheet(SPREADSHEET_PRIVATE_ID, year, detail, category);
+            google.script.run.withSuccessHandler(showResultSuccess).withFailureHandler(showResultSpreadSheetError).setPublicationWithNoFileInSpreadSheet(SPREADSHEET_HP_ID, year, detail, category);
         }
     }
 
