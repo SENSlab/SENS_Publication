@@ -36,14 +36,10 @@ When pressed, the menu will be displayed like the second image.
 
 2. Publication Information Form
 
-3. Public/Private Check Box  
-Public: If checked, information will be reflected on the homepage.  
-Private: If checked, information will be reflected in the database in the laboratory.
-
-4. SUBMIT Button  
+3. SUBMIT Button  
 Press to register publication information.
 
-5. Menu Bar  
+4. Menu Bar  
 Remover: Press to switch to SENS Publication Remover.  
 Editor: Press to switch to SENS Publication Editor.
 
@@ -75,10 +71,7 @@ Ex:
 
 4. Enter the name of the winner in the text area of "Detail".
 
-5. Please check "Public" to reflect the publication information on the homepage.
-Please check "Private" to reflect information in the database in the laboratory. **It can be checked more than once**.
-
-6. Press the "SUBMIT" button. If the sentence like the image below is displayed, it is OK.  
+5. Press the "SUBMIT" button. If the sentence like the image below is displayed, it is OK.  
 <img src = "https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width = "18%">
 
 ** When you select other than "Award" in "Category"**
@@ -94,10 +87,7 @@ Ex:
     - 2018_IEEEHapticsSymposium_N-Tanabe.pdf
 
 
-5. Please check "Public" to reflect the publication information on the homepage.
-Please check "Private" to reflect information in the database in the laboratory. **It can be checked more than once**.
-
-6. Press the "SUBMIT" button. If the sentence like the image below is displayed, it is OK.  
+5. Press the "SUBMIT" button. If the sentence like the image below is displayed, it is OK.  
 <img src = "https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width = "18%">
 
 
@@ -141,14 +131,10 @@ Search publication information matched in the search form from the database in t
 Select the minus button of the publication information you want to delete.
 When selected, the minus button turns red.
 
-6. Public Check Box  
-If checked, information will be reflected on the homepage.
-You can not put a check if there is no information selected with the minus button on the homepage.
-
-7. DELETE Button  
+6. DELETE Button  
 Press the minus button to delete selected publication information.
 
-5. Menu Bar  
+7. Menu Bar  
 Register: Press to switch to SENS Publication Register.  
 Editor: Press to switch to SENS Publication Editor.
 
@@ -162,9 +148,7 @@ Editor: Press to switch to SENS Publication Editor.
 
 4. Please press the minus button on the line of publication information you want to delete. It is OK if the minus button turns red.
 
-5. If you also want to delete publication information from the laboratory homepage, please check "Public". If publication information corresponding to the laboratory homepage is not registered, you can not put a check in "Public".
-
-6. Press the "DELETE" button. If the sentence like the image below is displayed, it is OK.
+5. Press the "DELETE" button. If the sentence like the image below is displayed, it is OK.
 <img src = "https://github.com/SENSlab/SENS_Publication/blob/images/delete.PNG" width = "18%">
 
 #### Notice
@@ -208,14 +192,10 @@ When selected, the pencil button turns orange.
 6. Edit form  
 Fill in the edits.
 
-7. Public Check Box  
-If checked, information will be reflected on the homepage.
-You can not put a check if there is no information selected with the pencil button on the homepage.
-
-8. EDIT Button  
+7. EDIT Button  
 Press and edit the publication information selected with the edit button.
 
-9. Menu Bar  
+8. Menu Bar  
 Register: Press to switch to SENS Publication Register.
 Remover: Press to switch to SENS Publication Remover.
 
@@ -233,9 +213,7 @@ Remover: Press to switch to SENS Publication Remover.
 
 6. Please edit.
 
-7. If you also want to edit publication information on the laboratory's homepage, please check "Public". If performance information corresponding to the laboratory's homepage is not registered, you can not put a check in "Public".
-
-8. Press the "EDIT" button. If the sentence like the image below is displayed, it is OK.
+7. Press the "EDIT" button. If the sentence like the image below is displayed, it is OK.
 <img src = "https://github.com/SENSlab/SENS_Publication/blob/images/edit.PNG" width = "18%">
 
 #### Notice

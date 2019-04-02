@@ -38,14 +38,10 @@
 
 2. 業績情報フォーム
 
-3. Public/Privateチェックボックス  
-Public: チェックが入っていると，ホームページに情報を反映させることができます．  
-Private: チェックが入っていると，研究室内のデータベースに情報を反映させることができます．
-
-4. SUBMITボタン  
+3. SUBMITボタン  
 押すと業績情報を登録します．
 
-5. メニューバー  
+4. メニューバー  
 Remover: 押すとSENS Publication Removerに遷移します．  
 Editor: 押すとSENS Publication Editorに遷移します．
 
@@ -79,9 +75,7 @@ Editor: 押すとSENS Publication Editorに遷移します．
 
 4. "詳細"のテキストエリアに受賞者の名前を入力してください．
 
-5. 研究室ホームページに情報を反映させる場合，"Public"にチェックを入れてください．研究室内のデータベースに情報を反映させる場合，"Private"にチェックを入れてください．**複数にチェック可能**です．
-
-6. "SUBMIT"ボタンを押してください．下の画像のような文が表示されていればOKです．  
+5. "SUBMIT"ボタンを押してください．下の画像のような文が表示されていればOKです．  
 <img src="https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width="18%">  
 
 **"カテゴリー"で"受賞"以外を選択した場合**  
@@ -99,9 +93,7 @@ Editor: 押すとSENS Publication Editorに遷移します．
     - 2017_Bachelor_T-Kaminokado.pdf
     - 2018_Master_R-Mine.pdf
 
-5. 研究室ホームページに情報を反映させる場合，"Public"にチェックを入れてください．研究室内のデータベースに情報を反映させる場合，"Private"にチェックを入れてください．**複数にチェック可能**です．  
-
-6. "SUBMIT"ボタンを押してください．下の画像のような文が表示されていればOKです．  
+5. "SUBMIT"ボタンを押してください．下の画像のような文が表示されていればOKです．  
 <img src="https://github.com/SENSlab/SENS_Publication/blob/images/submit.PNG" width="18%">  
 
 
@@ -145,14 +137,10 @@ Editor: 押すとSENS Publication Editorに遷移します．
 削除したい業績情報のマイナスボタンを選択します．
 選択すると，マイナスボタンが赤くなります．
 
-6. Publicチェックボックス  
-チェックが入っていると，ホームページに情報を反映させることができます．
-ホームページにマイナスボタンで選択した情報がないとチェックを入れることができません．
-
-7. DELETEボタン  
+6. DELETEボタン  
 押すとマイナスボタンで選択した業績情報を削除します．
 
-5. メニューバー  
+7. メニューバー  
 Register: 押すとSENS Publication Registerに遷移します．  
 Editor: 押すとSENS Publication Editorに遷移します．
 
@@ -166,9 +154,7 @@ Editor: 押すとSENS Publication Editorに遷移します．
 
 4. 削除したい業績情報の行のマイナスボタンを押してください．マイナスボタンが赤色になればOKです．
 
-5. 研究室ホームページからも業績情報を削除したい場合は，"Public"にチェックを入れてください．研究室ホームページに該当する業績情報が登録されていない場合は，"Public"にチェックを入れることはできません．
-
-6. "DELETE"ボタンを押してください．下の画像のような文が表示されていればOKです．
+5. "DELETE"ボタンを押してください．下の画像のような文が表示されていればOKです．
 <img src="https://github.com/SENSlab/SENS_Publication/blob/images/delete.PNG" width="18%">  
 
 #### 注意点
@@ -211,14 +197,10 @@ Editor: 押すとSENS Publication Editorに遷移します．
 6. 編集フォーム  
 編集内容を記入します．
 
-7. Publicチェックボックス  
-チェックが入っていると，ホームページに情報を反映させることができます．
-ホームページに編集ボタンで選択した情報がないとチェックを入れることができません．
-
-8. EDITボタン  
+7. EDITボタン  
 押すと編集ボタンで選択した業績情報を編集します．
 
-9. メニューバー  
+8. メニューバー  
 Register: 押すとSENS Publication Registerに遷移します．  
 Remover: 押すとSENS Publication Removerに遷移します．
 
@@ -236,9 +218,7 @@ Remover: 押すとSENS Publication Removerに遷移します．
 
 6. 編集してください．
 
-7. 研究室ホームページの業績情報も編集したい場合は，"Public"にチェックを入れてください．研究室ホームページに該当する業績情報が登録されていない場合は，"Public"にチェックを入れることはできません．
-
-8. "EDIT"ボタンを押してください．下の画像のような文が表示されていればOKです．
+7. "EDIT"ボタンを押してください．下の画像のような文が表示されていればOKです．
 <img src="https://github.com/SENSlab/SENS_Publication/blob/images/edit.PNG" width="18%">  
 
 #### 注意点
