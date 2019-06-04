@@ -1,2 +1,2 @@
-Public/js/* linguist-language=JavaScript
+Public/js/*.html linguist-language=JavaScript
 Vendor/* linguist-vendored=true
