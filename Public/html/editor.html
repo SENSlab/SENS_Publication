@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <base target="_top">
     <!--jQuery 3.2.1-->
     <?!= include('Vendor/jQuery/jquery3-2-1_min_js'); ?>
@@ -28,16 +29,24 @@
     <?!= include('Vendor/iconatejs/iconate_min_css'); ?>
     <?!= include('Vendor/iconatejs/iconate_min_js'); ?>
 
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <header class="mdl-layout__header mdl-color--orange-800">
             <div class="mdl-layout__header-row">
                 <!-- Title -->
                 <span class="mdl-layout-title">SENS Publication Editor</span>
                 <div class="mdl-layout-spacer"></div>
+                <a
+                    href="https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=register">Register</a>
+                <a
+                    href="https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=editor">Editor</a>
+                <a
+                    href="https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=remover">Remover</a>
             </div>
         </header>
+        <!--
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">Menu</span>
             <nav class="mdl-navigation">
@@ -45,6 +54,7 @@
                 <a class="mdl-navigation__link" href="https://script.google.com/a/sens.sys.es.osaka-u.ac.jp/macros/s/AKfycbwXxc8mGbcukLNakZh90Phw4v6tRSXbrqKIHnwEkqEJ-89naE0/exec?p=remover">Remover</a>
             </nav>
         </div>
+      -->
         <main class="mdl-layout__content">
             <!--コンテンツ-->
             <div class="page-content">
@@ -59,7 +69,9 @@
                             <ol type="1">
                                 <li>カテゴリーと年を選択して検索ボタンを押す。 / Select a category and a year and push a search button. </li>
                                 <li>編集したい行の鉛筆ボタンを押す。 / Push a pencil button which you want to edit.
-                                <div class="mdl-color-text--red-800">鉛筆ボタンは一つしか選択できません。 / You can select only one pencil button.</div></li>
+                                    <div class="mdl-color-text--red-800">鉛筆ボタンは一つしか選択できません。 / You can select only one
+                                        pencil button.</div>
+                                </li>
                                 <li>編集する項目を選択する。 / Select a element which you want to edit. </li>
                                 <li>データを編集する。 / Edit a data. </li>
                                 <li>削除ボタンを押す。 / Push a delete button.</li>
@@ -95,16 +107,20 @@
                         <div class="mdl-color-text--red-800">*: 必須項目 / Required</div>
 
                         <!--選択ボックス（カテゴリー / Category）-->
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+                        <div
+                            class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
                             <input type="text" value="" class="mdl-textfield__input" id="category_box" readonly>
-                            <input type="hidden" value="" >
+                            <input type="hidden" value="">
                             <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>カテゴリー / Category</label>
-                            <ul  class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="category_select">
+                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>カテゴリー /
+                                Category</label>
+                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="category_select">
                                 <li class="mdl-menu__item" data-val="award">受賞 / Award</li>
                                 <li class="mdl-menu__item" data-val="journal">論文 / Journal Papers</li>
-                                <li class="mdl-menu__item" data-val="international_conference">国際会議 / International Conference</li>
-                                <li class="mdl-menu__item" data-val="domestic_conference">国内会議 / Domestic Conference</li>
+                                <li class="mdl-menu__item" data-val="international_conference">国際会議 / International
+                                    Conference</li>
+                                <li class="mdl-menu__item" data-val="domestic_conference">国内会議 / Domestic Conference
+                                </li>
                                 <li class="mdl-menu__item" data-val="survey">解説記事 / Survey</li>
                                 <li class="mdl-menu__item" data-val="press">報道発表 / Press</li>
                                 <li class="mdl-menu__item" data-val="book">著書 / Book</li>
@@ -117,20 +133,24 @@
                         </div>
 
                         <!--選択ボックス（年 / Year）-->
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" id="year_select_initializer">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                            id="year_select_initializer">
                             <input type="text" value="" class="mdl-textfield__input" id="year_box" readonly>
-                            <input type="hidden" value="" >
+                            <input type="hidden" value="">
                             <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                            <label  class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>年 / Year</label>
-                            <ul  class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="year_select"></ul>
+                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>年 /
+                                Year</label>
+                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="year_select"></ul>
                             <span class="mdl-textfield__error">選択してください / Required</span>
                         </div>
 
                         <div class="custom-margin-20px"></div>
 
                         <!--ボタン-->
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--cyan-A700 mdl-color-text--white" id="search_btn">
-                        Search
+                        <button
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--cyan-A700 mdl-color-text--white"
+                            id="search_btn">
+                            Search
                         </button>
 
 
@@ -157,12 +177,15 @@
                 <!--選択ボックス（受賞：編集項目 / Edit element）-->
                 <div id="award_edit_element_select_parent">
                     <div class="mdl-color--white mdl-cell mdl-cell--5-col mdl-grid">
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" id="award_edit_element_initializer">
-                            <input type="text" value="" class="mdl-textfield__input" id="award_edit_element_box" readonly>
-                            <input type="hidden" value="" >
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                            id="award_edit_element_initializer">
+                            <input type="text" value="" class="mdl-textfield__input" id="award_edit_element_box"
+                                readonly>
+                            <input type="hidden" value="">
                             <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>編集項目 / Edit element</label>
-                            <ul  class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="award_edit_element_select">
+                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>編集項目 /
+                                Edit element</label>
+                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="award_edit_element_select">
                                 <li class="mdl-menu__item" data-val="award">award</li>
                                 <li class="mdl-menu__item" data-val="detail">detail</li>
                             </ul>
@@ -174,12 +197,15 @@
                 <!--選択ボックス（受賞以外：編集項目 / Edit element）-->
                 <div id="publication_edit_element_select_parent">
                     <div class="mdl-color--white mdl-cell mdl-cell--5-col mdl-grid">
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" id="publication_edit_element_initializer">
-                            <input type="text" value="" class="mdl-textfield__input" id="publication_edit_element_box" readonly>
-                            <input type="hidden" value="" >
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                            id="publication_edit_element_initializer">
+                            <input type="text" value="" class="mdl-textfield__input" id="publication_edit_element_box"
+                                readonly>
+                            <input type="hidden" value="">
                             <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>編集項目 / Edit element</label>
-                            <ul  class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="publication_edit_element_select">
+                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>編集項目 /
+                                Edit element</label>
+                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="publication_edit_element_select">
                                 <li class="mdl-menu__item" data-val="detail">detail</li>
                                 <li class="mdl-menu__item" data-val="file">file</li>
                             </ul>
@@ -193,8 +219,9 @@
                     <div class="mdl-color--white mdl-cell mdl-cell--5-col mdl-grid">
                         <form action="#">
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>受賞内容 / Type of Award</label>
-                                <textarea class="mdl-textfield__input" type="text" rows= "3" id="award_type" ></textarea>
+                                <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>受賞内容 /
+                                    Type of Award</label>
+                                <textarea class="mdl-textfield__input" type="text" rows="3" id="award_type"></textarea>
                                 <span class="mdl-textfield__error">入力してください / Required</span>
                             </div>
                         </form>
@@ -206,8 +233,9 @@
                     <div class="mdl-color--white mdl-cell mdl-cell--5-col mdl-grid">
                         <form action="#">
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>詳細 / Detail</label>
-                                <textarea class="mdl-textfield__input" type="text" rows= "3" id="detail_text" ></textarea>
+                                <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>詳細 /
+                                    Detail</label>
+                                <textarea class="mdl-textfield__input" type="text" rows="3" id="detail_text"></textarea>
                                 <span class="mdl-textfield__error">入力してください / Required</span>
                             </div>
                         </form>
@@ -216,14 +244,18 @@
 
                 <div id="file_form_parent">
                     <div class="mdl-color--white mdl-cell mdl-cell--5-col mdl-grid">
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--file mdl-textfield--floating-label" id="file_form_manager">
-                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>ファイル / File</label>
-                            <input class="mdl-textfield__input" type="text" id="uploadFile" readonly/>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--file mdl-textfield--floating-label"
+                            id="file_form_manager">
+                            <label class="mdl-textfield__label"><span class="mdl-color-text--red-800">*</span>ファイル /
+                                File</label>
+                            <input class="mdl-textfield__input" type="text" id="uploadFile" readonly />
                             <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
-                                <i class="material-icons">attach_file</i><form id="file_form"><input name="attached_file" type="file" id="upload_btn"/></form>
+                                <i class="material-icons">attach_file</i>
+                                <form id="file_form"><input name="attached_file" type="file" id="upload_btn" /></form>
                             </div>
                             <span class="mdl-textfield__error" id="attached_error">添付してください / Required</span>
-                            <span class="mdl-textfield__error" id="filename_error">Rename: Year_ConferenceName or etc_AuthorName.*</span>
+                            <span class="mdl-textfield__error" id="filename_error">Rename: Year_ConferenceName or
+                                etc_AuthorName.*</span>
                         </div>
                     </div>
                 </div>
@@ -233,8 +265,10 @@
 
                 <!--ボタン-->
                 <div class="mdl-color--white mdl-cell mdl-cell--5-col mdl-grid" id="edit_btn_parent">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--orange-800 mdl-color-text--white" id="edit_btn">
-                    Edit
+                    <button
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--orange-800 mdl-color-text--white"
+                        id="edit_btn">
+                        Edit
                     </button>
                 </div>
 
@@ -259,4 +293,5 @@
     </div>
     <?!= include('Public/js/mainEditor_js'); ?>
 </body>
+
 </html>
